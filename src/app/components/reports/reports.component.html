@@ -1,0 +1,207 @@
+<!-- Container-fluid starts-->
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-3col-md-3 col-xl-3">
+                    <div class="form-group">
+                        <label for="customer">Cliente</label>
+                        <input type="text" class="form-control" [(ngModel)]="customer" (keyup.enter)="getDailyReport()">
+                    </div>
+                </div>
+                <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                    <div class="form-group">
+                        <label for="customer">Numero Documento</label>
+                        <input type="text" class="form-control" [(ngModel)]="nroDocument"
+                            (keyup.enter)="getDailyReport()">
+                    </div>
+                </div>
+                <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                    <div class="form-group">
+                        <label for="customer">Numero Prestamo</label>
+                        <input type="text" class="form-control" [(ngModel)]="nroLoan" (keyup.enter)="getDailyReport()">
+                    </div>
+                </div>
+                <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                    <div class="form-group">
+                        <label for="customer">Cobrador</label>
+                        <ng-select placeholder="Seleccionar el cobrador" [(ngModel)]="collector"
+                            (keyup.enter)="getDailyReport()">
+                            <ng-option *ngFor="let item of collectoList" [value]="item.id">{{item.name}}
+                            </ng-option>
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                    <div class="form-group">
+                        <label for="customer">Zona</label>
+                        <ng-select placeholder="Seleccionar el cobrador" [(ngModel)]="zoneId"
+                            (keyup.enter)="getDailyReport()">
+                            <ng-option *ngFor="let item of zoneList" [value]="item.id">{{item.name}}
+                            </ng-option>
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                    <label for="customer">Fecha pago Inicio</label>
+                    <div class="dp-hidden position-absolute">
+                        <div class="input-group">
+                            <input name="datepicker" class="form-control" ngbDatepicker #datepicker="ngbDatepicker"
+                                [autoClose]="'outside'" (dateSelect)="onDateSelection($event)" [displayMonths]="2"
+                                [dayTemplate]="t" outsideDays="hidden" [startDate]="fromDate!" tabindex="-1"/>
+                            <ng-template #t let-date let-focused="focused">
+                                <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
+                                    [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
+                                    (mouseleave)="hoveredDate = null">
+                                    {{ date.day }}
+                                </span>
+                            </ng-template>
+                        </div>
+                    </div>
+                    <div class="input-group"> 
+                        <input #dpFromDate class="form-control" placeholder="yyyy-mm-dd" name="dpFromDate"
+                            [value]="formatter.format(fromDate)"
+                            (input)="fromDate = validateInput(fromDate, dpFromDate.value)"/>
+                        <button class="btn btn-outline-dark bi bi-calendar3" (click)="datepicker.toggle()"
+                            type="button">
+                            <i class="fa fa-calendar"></i></button>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                    <label for="customer">Fecha pago Fin</label>
+                    <div class="input-group">
+                        <input #dpToDate class="form-control" placeholder="yyyy-mm-dd" name="dpToDate"
+                            [value]="formatter.format(toDate)"
+                            (input)="toDate = validateInput(toDate, dpToDate.value)" />
+                        <button class="btn btn-outline-dark bi bi-calendar3" (click)="datepicker.toggle()"
+                            type="button">
+                            <i class="fa fa-calendar"></i></button>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                    <div class="form-group">
+                        <label for="customer">Tipo de Documento</label>
+                        <ng-select placeholder="Seleccionar el cobrador" [(ngModel)]="typeDocument"
+                            (keyup.enter)="getDailyReport()">
+                            <ng-option *ngFor="let item of documentList" [value]="item.code">{{item.description}}
+                            </ng-option>
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                    <div class="form-group">
+                        <label for="customer">Tipo Pago</label>
+                        <ng-select placeholder="Seleccionar el cobrador" [(ngModel)]="statePay"
+                            (keyup.enter)="getDailyReport()">
+                            <ng-option *ngFor="let item of stateList" [value]="item.code">{{item.description}}
+                            </ng-option>
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                    <div class="form-group">
+                        <label for="customer">Moneda</label>
+                        <ng-select placeholder="Seleccionar el cobrador" [(ngModel)]="currency"
+                            (keyup.enter)="getDailyReport()">
+                            <ng-option *ngFor="let item of currencyList" [value]="item.code">{{item.description}}
+                            </ng-option>
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                    <div class="form-group">
+                        <label for="customer">Tipo de Pago</label>
+                        <ng-select placeholder="Seleccionar el cobrador" [(ngModel)]="typePay"
+                            (keyup.enter)="getDailyReport()">
+                            <ng-option *ngFor="let item of payList" [value]="item.code">{{item.description}}
+                            </ng-option>
+                        </ng-select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-3col-md-3 col-xl-3">
+                    <div class="form-group"> 
+                        <button class="btn btn-secondary" type="button" (click)="getDailyReport()"> Filtrar</button>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-3col-md-3 col-xl-3">
+                    <button class="btn btn-secondary" type="button"> Excel</button>
+                </div>
+            </div>
+            <div id="batchDelete" class="custom-datatable transcation-datatable">
+                <div class="table-responsive contenedor-tabla">
+                    <table class="table report-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Item</th>
+                                <th scope="col">Nombres</th>
+                                <th scope="col">Numero</th>
+                                <th scope="col">Pagado</th>
+                                <th scope="col">Fecha Pago</th>
+                                <th scope="col">Fecha registro</th>
+                                <th scope="col">Mora</th>
+                                <th scope="col">Costo Mora</th>
+                                <th scope="col">Acomulado</th>
+                                <th scope="col">Tipo Pago </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="noResultados">
+                                <td colspan="15">No hay resultados para el filtro ingresado</td>
+                            </tr>
+                            <ng-container *ngFor="let item of pagosProcesados">
+                                <tr *ngIf="item.esEncabezado" class="table-subtitle">
+                                    <td colspan="9">{{ item.sRazonSocial }} - ({{ item.serie }}) - {{ item.zona }} </td>
+                                </tr>
+                                <tr *ngIf="!item.esEncabezado">
+                                    <td>{{ item.item }}</td>
+                                    <td>{{ item.sHora }}</td>
+                                    <td>{{ item.paymentNumber }}</td>
+                                    <td>{{ item.nMonto | number: '1.2-2' }}</td>
+                                    <td>{{ item.dFechaPago| date:'dd MMM yyyy'}}</td>
+                                    <td>{{ item.dFecReg| date:'dd MMM yyyy'}}</td>
+                                    <td>{{ item.mora }}</td>
+                                    <td>{{ item.moraPor | number: '1.2-2' }}</td>
+                                    <td>{{ item.montoAcomulado | number: '1.2-2' }}</td>
+                                    <td>{{ item.tipoPago }}</td>
+                                </tr>
+                            </ng-container>
+                            <tr *ngIf="!noResultados">
+                                <td colspan="2">
+                                    TOTALES: {{ totalPayday | number: '1.2-2' }}
+                                    <!-- Añade aquí otros totales si es necesario -->
+                                </td>
+                                <td colspan="2">
+                                    TOTAL PAGINA: {{ totales.Pagado | number: '1.2-2' }}
+                                    <!-- Añade aquí otros totales si es necesario -->
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-xl-8 col-sm-8">
+                        <div class="d-flex justify-content-start p-2">
+                            <label for="total"> Existe(n) {{totalRecords}} resultado(s) para mostrar </label>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6 col-xl-4">
+                        <div
+                            class="d-flex justify-content-sm-center justify-content-md-center justify-content-xl-end p-2">
+                            @if (collectionSize != 0) {
+                            <ngb-pagination class="d-flex justify-content-end" [collectionSize]="collectionSize"
+                                [(page)]="page" [pageSize]="pageSize" [rotate]="true" [maxSize]="5"
+                                [boundaryLinks]="true" (pageChange)="loadPage($event)" />
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="square-jelly-box" [fullScreen]="true">
+    <p style="color: white">Cargando...</p>
+</ngx-spinner>

@@ -1,0 +1,226 @@
+<!-- Container-fluid starts-->
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-body">
+      <div class="btn-popup pull-right">
+        <a class="btn btn-primary" (click)="openModal(content,0)">Crear</a>
+      </div>
+      <div class="col-12 col-xl-8 col-sm-7 ">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1" (click)="getAllCustomer()">
+            <i class="fa fa-search"></i>
+          </span>
+          <input type="text" [(ngModel)]="searchText" (keyup.enter)="getAllCustomer()" class="form-control">
+        </div>
+      </div>
+      <div id="batchDelete" class="category-table custom-datatable transcation-datatable user-image">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Documento</th>
+                <th scope="col">Nombres/Razon</th>
+                <th scope="col">Monto P.</th>
+                <th scope="col">Celular</th>
+                <th scope="col">Email</th>
+                <th scope="col">Direccion</th>
+                <th scope="col">Fecha R.</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Observacion</th>
+                <th scope="col" style="width: 1rm;">Accions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of customerList">
+                <td>{{item.numberDocument}} </td>
+                <td>{{item.customerName}} </td>
+                <td>{{item.total }} </td>
+                <td>{{item.phone }} </td>
+                <td>{{item.email }} </td>
+                <td>{{item.address }} </td>
+                <td>{{item.registerDate | date :"dd/MM/yyyy":'es' }} </td>
+                <td>{{item.typeStatus }} </td>
+                <td>{{item.observation }} </td>
+                <td style="width: 1rm;">
+                  <a href="javascript:void(0)" (click)="openModal(content,item.id)"><i
+                      class="fa fa-edit f-12"></i></a>&nbsp;
+                  <a href="javascript:void(0)" (click)="onDelete(item.id)"><i class="fa fa-trash-o"></i></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="row">
+          <div class="col-12 col-xl-8 col-sm-8">
+            <div class="d-flex justify-content-start p-2">
+              <label for="total"> Existe(n) {{totalRecords}} resultado(s) para mostrar </label>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-6 col-xl-4">
+            <div class="d-flex justify-content-sm-center justify-content-md-center justify-content-xl-end p-2">
+              @if (collectionSize != 0) {
+              <ngb-pagination class="d-flex justify-content-end" [collectionSize]="collectionSize" [(page)]="page"
+                [pageSize]="pageSize" [rotate]="true" [maxSize]="5" [boundaryLinks]="true"
+                (pageChange)="loadPage($event)" />
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title f-w-600" id="exampleModalLabel">Cliente</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="needs-validation" autocomplete="off" #forma="ngForm" [formGroup]="customerForm">
+      <div class="row">
+        <div class="col-12 col-xl-4 col-sm-4 ">
+          <label for="exampleFormControlInput1" class="form-label">Tipo documento</label>
+          <ng-select placeholder="Seleccionar documento" formControlName='type'
+            [ngClass]="{'is-invalid': isInvalid('type')}">
+            <ng-option *ngFor="let item of general" [value]="item.code">{{item.description}}
+            </ng-option>
+          </ng-select>
+          <div *ngIf="customerForm.controls.type.touched && customerForm.controls.type.errors?.required"
+            class="text text-danger">
+            Es necesario seleccionar un tipo documento.
+          </div>
+        </div>
+        <div class="col-12 col-xl-8 col-sm-8 ">
+          <label for="exampleFormControlInput1" class="form-label">Nro documento</label>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1" (click)="getBucarDocumento()">
+              <i class="fa fa-search"></i>
+            </span>
+            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nro documento"
+              formControlName="numberDocument" name="numberDocument"
+              [ngClass]="{'is-invalid': isInvalid('numberDocument')}" (keyup.enter)="getBucarDocumento()" />
+          </div>
+          <div *ngIf="isFieldInvalid('numberDocument', 'required')" class="text text-danger">
+            Es necesario el nro de documento.
+          </div>
+        </div>
+
+        <div class="col-12 ">
+          <label for="validationCustom01" class="mb-1">Razón Social / Nombres y Apellidos :</label>
+          <input class="form-control" id="validationCustom01" type="text" formControlName="customerName" name="name"
+            required [ngClass]="{'is-invalid': isInvalid('customerName')}" />
+          <div class="text text-danger" *ngIf="isFieldInvalid('customerName', 'required')">
+            Introduzca un nombre válido por favor.
+          </div>
+        </div>
+
+        <div class="col-12 col-xl-4 col-sm-4">
+          <label for="validationCustom01" class="mb-1">Telefono:</label>
+          <input class="form-control" id="validationCustom01" type="text" formControlName="cellPhone"
+            name="cellPhone" />
+        </div>
+
+        <div class="col-12 col-xl-4 col-sm-4">
+          <label for="validationCustom01" class="mb-1">Email:</label>
+          <input class="form-control" id="validationCustom01" type="text" formControlName="email" name="email" />
+        </div>
+
+        <div class="col-12 col-xl-4 col-sm-4">
+          <label for="validationCustom01" class="mb-1">Monto:</label>
+          <input class="form-control" id="validationCustom01" type="text" formControlName="total" name="total" required
+            [ngClass]="{'is-invalid': isInvalid('total')}" />
+          <div *ngIf="isFieldInvalid('total', 'required')" class="text text-danger">
+            Introduzca el monto de prestamo.
+          </div>
+        </div>
+
+        <div class="col-12 col-xl-12 col-sm-12 ">
+          <label for="validationCustom01" class="mb-1">Direccion:</label>
+          <input #input class="form-control" id="validationCustom01" type="text"
+            [formControl]="customerForm.controls['address']" name="address" required
+            [ngClass]="{'is-invalid': isInvalid('address')}" />
+          <div *ngIf="isFieldInvalid('address', 'required')" class="text text-danger">
+            Es necesario la dirección.
+          </div>
+        </div>
+
+        <div class="col-12 col-xl-4 col-sm-4">
+          <label for="validationCustom01" class="mb-1">Cobrador:</label>
+          <ng-select placeholder="Seleccionar documento" formControlName='collectorId'>
+            <ng-option *ngFor="let item of user" [value]="item.id">{{item.name}}
+            </ng-option>
+          </ng-select>
+          <div *ngIf="isFieldInvalid('collectorId', 'required')" class="text text-danger">
+            Es necesario el cobrador.
+          </div>
+        </div>
+
+        <div class="col-12 col-xl-4 col-sm-4">
+          <label for="validationCustom01" class="mb-1">Estado:</label>
+          <ng-select placeholder="Seleccionar documento" formControlName='typeStatus'>
+            <ng-option *ngFor="let item of status" [value]="item.code">{{item.description}}
+            </ng-option>
+          </ng-select>
+          <div *ngIf="isFieldInvalid('typeStatus', 'required')" class="text text-danger">
+            Seleccione el estado.
+          </div>
+        </div>
+
+        <div class="col-12 col-xl-4 col-sm-4">
+          <label for="validationCustom01" class="mb-1">Zona:</label>
+          <ng-select placeholder="Seleccionar documento" formControlName='zoneId'>
+            <ng-option *ngFor="let item of zone" [value]="item.id">{{item.name}}
+            </ng-option>
+          </ng-select>
+          <div *ngIf="isFieldInvalid('zoneId', 'required')" class="text text-danger">
+            Seleccione la zona del cliente.
+          </div>
+        </div>
+
+        <div class="col-12 col-xl-4 col-sm-4">
+          <label for="validationCustom01" class="mb-1">Avalado por:</label>
+          <ng-select placeholder="Seleccionar documento" formControlName='validateId'>
+            <ng-option *ngFor="let item of valueCustomer" [value]="item.id">{{item.customerName}}
+            </ng-option>
+          </ng-select>
+        </div>
+
+        <div class="col-12 col-xl-4 col-sm-4">
+          <label for="validationCustom01" class="mb-1">Rubro:</label>
+          <ng-select placeholder="Seleccionar documento" formControlName='category'>
+            <ng-option *ngFor="let item of category" [value]="item.id">{{item.name}}
+            </ng-option>
+          </ng-select>
+          <div *ngIf="isFieldInvalid('category', 'required')" class="text text-danger">
+            sleccione el rubro.
+          </div>
+        </div>
+        <div class="col-12 col-xl-12 col-sm-12 ">
+          <label for="validationCustom01" class="mb-1">Observacion:</label>
+          <input #input class="form-control" id="validationCustom01" type="text" formControlName="observation"
+            name="address" required [ngClass]="{'is-invalid': isInvalid('observation')}" />
+          <div *ngIf="isFieldInvalid('observation', 'required')" class="text text-danger">
+            Es necesario la dirección.
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="onSave()" [disabled]="!forma.valid">
+      <i class="fa fa-save"></i>
+      Guardar
+    </button>
+
+    <button class="btn btn-secondary" type="button" data-dismiss="modal" (click)="modal.dismiss('Cross click')">
+      <i class="fa fa-window-close"></i>
+      Cerrar
+    </button>
+  </div>
+</ng-template>
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="square-jelly-box" [fullScreen]="true">
+  <p style="color: white">Cargando...</p>
+</ngx-spinner>
+<!-- Container-fluid Ends-->

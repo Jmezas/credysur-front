@@ -1,0 +1,226 @@
+<!-- Container-fluid starts-->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card tab2-card">
+                <div class="card-header">
+                    <h5> Agregar usuario</h5>
+                </div>
+                <div class="card-body tab2-card">
+                    <form [formGroup]="accountForm" class="needs-validation user-add" novalida>
+                        <h4>Detalles del usuario</h4>
+
+                        <div class="form-group row">
+                            <div class="col-xl-3 col-md-4"><label for="validationCustom1"><span>*</span> Numero
+                                    documento</label></div>
+                            <div class="col-xl-8 col-md-7">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="basic-addon1"
+                                        (click)="searchDocument(inpBuscar.value)">
+                                        <i class="fa fa-search"></i>
+                                    </span>
+                                    <input #inpBuscar class="form-control" type="text" required=""
+                                        formControlName="numberDocument" (keyup.enter)="searchDocument(inpBuscar.value)"
+                                        [class.is-invalid]="
+                                      accountForm.get('numberDocument').invalid && accountForm.get('numberDocument').touched" />
+                                </div>
+                                <div *ngIf="
+                                    accountForm.controls.numberDocument.touched && accountForm.controls.numberDocument.errors?.required
+                                  " class="text text-danger">
+                                    Es necesario introducir un número de documento
+                                </div>
+                                <div *ngIf="accountForm.controls.numberDocument.errors?.pattern"
+                                    class="text text-danger">
+                                    Solo números son permitidos
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-xl-3 col-md-4"><label for="validationCustom1"><span>*</span>
+                                    Nombre</label></div>
+                            <div class="col-xl-8 col-md-7">
+                                <input class="form-control" type="text" required="" formControlName="name"
+                                    [class.is-invalid]="accountForm.get('name').invalid && accountForm.get('name').touched" />
+                                <div *ngIf="accountForm.controls.name.touched && accountForm.controls.name.errors?.required"
+                                    class="text text-danger">
+                                    Es necesario introducir los nombres
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-xl-3 col-md-4"><label for="validationCustom1"><span>*</span>
+                                    Apellido paterno</label></div>
+                            <div class="col-xl-8 col-md-7">
+                                <input class="form-control" type="text" required="" formControlName="firstLastname"
+                                    [class.is-invalid]="accountForm.get('firstLastname').invalid && accountForm.get('firstLastname').touched" />
+                                <div *ngIf="accountForm.controls.firstLastname.touched && accountForm.controls.firstLastname.errors?.required"
+                                    class="text text-danger">
+                                    Es necesario introducir los apellidos.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-xl-3 col-md-4"><label for="validationCustom1"><span>*</span>
+                                    Apellido materno</label></div>
+                            <div class="col-xl-8 col-md-7">
+                                <input class="form-control" type="text" required="" formControlName="secondLastname"
+                                    [class.is-invalid]="accountForm.get('secondLastname').invalid && accountForm.get('secondLastname').touched" />
+                                <div *ngIf="accountForm.controls.secondLastname.touched && accountForm.controls.secondLastname.errors?.required"
+                                    class="text text-danger">
+                                    Es necesario introducir los apellidos.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-xl-3 col-md-4"><label for="validationCustom1"><span>*</span>
+                                    Fecha nacimiento</label></div>
+                            <div class="col-xl-8 col-md-7">
+                                <div class="input-group input-grp-p">
+                                    <div class="input-group">
+                                        <input class="datepicker-here form-control digits" ngbDatepicker
+                                            formControlName="dateBirth" #f="ngbDatepicker" placeholder="dd/MM/yyyy"
+                                            [class.is-invalid]="accountForm.get('dateBirth').invalid && accountForm.get('dateBirth').touched">
+                                        <div class="input-group-append">
+                                            <button class="btn calendar" (click)="f.toggle()" type="button"><i
+                                                    class="fa fa-calendar"></i></button>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="accountForm.controls.dateBirth.touched && accountForm.controls.dateBirth.errors?.required"
+                                        class="text text-danger">
+                                        Es necesario introducir la fecha de nacimiento.
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-xl-3 col-md-4"><label for="validationCustom1"><span>*</span>
+                                    Telefono</label></div>
+                            <div class="col-xl-8 col-md-7">
+                                <input class="form-control" type="text" required="" formControlName="phone" />
+
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-xl-3 col-md-4"><label for="validationCustom2"><span>*</span>
+                                    Email</label></div>
+                            <div class="col-xl-8 col-md-7">
+                                <input class="form-control" type="text" required="" formControlName="email"
+                                    [class.is-invalid]="accountForm.get('email').invalid && accountForm.get('email').touched" />
+                                <div *ngIf="accountForm.controls.email.touched && accountForm.controls.email.errors?.required"
+                                    class="text text-danger">
+                                    Es necesario introducir un correo eléctronico.
+                                </div>
+                                <div *ngIf="accountForm.controls.email.errors?.pattern" class="text text-danger">
+                                    el correo ingresado no es valido.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-xl-3 col-md-4"><label for="validationCustom1"><span>*</span>
+                                    Perfil</label></div>
+                            <div class="col-xl-8 col-md-7">
+                                <ng-select formControlName="roles" placeholder="--Seleccione--" [multiple]="true"
+                                    [closeOnSelect]="true">
+                                    <ng-option *ngFor="let item of roles"
+                                        [value]="item.id">{{item.roleName}}</ng-option>
+                                </ng-select>
+                                <div *ngIf="accountForm.controls.roles.touched && accountForm.controls.roles.errors?.required"
+                                    class="text text-danger">
+                                    Es necesario seleccionar un perfil.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-xl-3 col-md-4"><label for="validationCustom1"><span>*</span>
+                                    Usuario</label></div>
+                            <div class="col-xl-8 col-md-7">
+                                <input class="form-control" type="text" required="" formControlName="user"
+                                    [class.is-invalid]="accountForm.get('user').invalid && accountForm.get('user').touched" />
+                                <div *ngIf="accountForm.controls.user.touched && accountForm.controls.user.errors?.required"
+                                    class="text text-danger">
+                                    Es necesario introducir un usuario.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-xl-3 col-md-4"><label for="validationCustom3"><span>*</span>
+                                    Password</label>
+                            </div>
+                            <div class="col-xl-8 col-md-7">
+                                <input class="form-control" type="password" required="" formControlName="password"
+                                    [class.is-invalid]="accountForm.get('password').invalid && accountForm.get('password').touched" />
+                                <div *ngIf="accountForm.controls.password.touched && accountForm.controls.password.errors?.required"
+                                    class="text text-danger">
+                                    Es necesario introducir un número de teléfono.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-xl-3 col-md-4"><label for="validationCustom3"><span>*</span>
+                                    Direccion</label>
+                            </div>
+                            <div class="col-xl-8 col-md-7">
+                                <input class="form-control" type="text" required="" formControlName="adress"
+                                    [class.is-invalid]="accountForm.get('adress').invalid && accountForm.get('adress').touched" />
+                                <div *ngIf="accountForm.controls.adress.touched && accountForm.controls.adress.errors?.required"
+                                    class="text text-danger">
+                                    Es necesario introducir una dirección.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-xl-3 col-md-4"><label for="validationCustom0"><span>*</span>
+                                    Departamento</label></div>
+                            <div class="col-xl-8 col-md-7">
+                                <ng-select placeholder="--Seleccione--" [ngModelOptions]="{standalone: true}"
+                                    [(ngModel)]="departmentOne" (change)="onChangeDepartament($event)"
+                                    [closeOnSelect]="true">
+                                    <ng-option *ngFor="let item of departament"
+                                        [value]="item.code">{{item.description}}</ng-option>
+                                </ng-select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-xl-3 col-md-4"><label for="validationCustom0"><span>*</span>
+                                    Provincia</label></div>
+                            <div class="col-xl-8 col-md-7">
+                                <ng-select placeholder="--Seleccione--" [ngModelOptions]="{standalone: true}"
+                                    [(ngModel)]="provinceOne" (change)="onChangeProvince($event)"
+                                    [closeOnSelect]="true">
+                                    <ng-option *ngFor="let item of province"
+                                        [value]="item.code">{{item.description}}</ng-option>
+                                </ng-select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-xl-3 col-md-4"><label for="validationCustom0"><span>*</span>
+                                    Distrito</label></div>
+                            <div class="col-xl-8 col-md-7">
+                                <ng-select formControlName="ubigeo" placeholder="--Seleccione--" [closeOnSelect]="true"
+                                    [ngClass]="{'is-invalid': accountForm.get('ubigeo').invalid && accountForm.get('ubigeo').touched}">
+                                    <ng-option *ngFor="let item of district"
+                                        [value]="item.code">{{item.description}}</ng-option>
+                                </ng-select>
+                                <div *ngIf="accountForm.controls.ubigeo.touched && accountForm.controls.ubigeo.errors?.required"
+                                    class="text text-danger">
+                                    Es necesario seleccionar un distrito.
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-primary" (click)="onSave()">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="square-jelly-box" [fullScreen]="true">
+    <p style="color: white">Cargando...</p>
+</ngx-spinner>
+<!-- Container-fluid Ends-->

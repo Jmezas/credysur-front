@@ -1,0 +1,127 @@
+<!-- Container-fluid starts-->
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-12"> 
+          <div class="btn-popup pull-right">
+            <a class="btn btn-primary" (click)="openModal(content,0)">Crear</a>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div id="batchDelete" class="custom-datatable transcation-datatable">
+            <div class="table-responsive">
+              <table class="table report-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Descripcion</th>
+                    <th scope="col">Activida comercial</th>
+                    <th scope="col" style="width: 1rm;">Accions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of categoryList">
+                    <td>{{item.name}} </td>
+                    <td>{{item.description}} </td>
+                    <td>{{item.comercialActivity }} </td>
+                    <td style="width: 1rm;">
+                      <a href="javascript:void(0)" (click)="openModal(content,item.id)"><i
+                          class="fa fa-edit f-12"></i></a>&nbsp;
+                      <a href="javascript:void(0)" (click)="onDelete(item.id)"><i class="fa fa-trash-o"></i></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="row">
+              <div class="col-12 col-xl-8 col-sm-8">
+                <div class="d-flex justify-content-start p-2">
+                  <label for="total"> Existe(n) {{totalRecords}} resultado(s) para mostrar </label>
+                </div>
+              </div>
+              <div class="col-12 col-sm-6 col-md-6 col-xl-4">
+                <div class="d-flex justify-content-sm-center justify-content-md-center justify-content-xl-end p-2">
+                  @if (collectionSize != 0) {
+                  <ngb-pagination class="d-flex justify-content-end" [collectionSize]="collectionSize" [(page)]="page"
+                    [pageSize]="pageSize" [rotate]="true" [maxSize]="5" [boundaryLinks]="true"
+                    (pageChange)="loadPage($event)" />
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title f-w-600" id="exampleModalLabel">Menu</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="needs-validation" autocomplete="off" #forma="ngForm" [formGroup]="categoryForm">
+      <div class="form">
+
+        <div class="form-group">
+          <label for="validationCustom01" class="mb-1"> <span>*</span>Nombre :</label>
+
+          <input class="form-control" type="text" required="" formControlName="name"
+            [class.is-invalid]="categoryForm.get('name').invalid && categoryForm.get('name').touched" />
+
+          <div *ngIf="categoryForm.controls.name.touched && categoryForm.controls.name.errors?.required"
+            class="text text-danger">
+            es necesario el nombre del rubro
+          </div>
+
+        </div>
+        <div class="form-group">
+          <label for="validationCustom01" class="mb-1"> <span>*</span> descripcion :</label>
+
+          <input class="form-control" type="text" required="" formControlName="description"
+            [class.is-invalid]="categoryForm.get('description').invalid && categoryForm.get('description').touched" />
+
+          <div *ngIf="categoryForm.controls.description.touched && categoryForm.controls.description.errors?.required"
+            class="text text-danger">
+            es necesario la descripcion del rubro
+          </div>
+
+        </div>
+        <div class="form-group">
+          <label for="validationCustom01" class="mb-1"> <span>*</span> actividad comercial :</label>
+
+          <input class="form-control" type="text" required="" formControlName="comercialActivity"
+            [class.is-invalid]="categoryForm.get('comercialActivity').invalid && categoryForm.get('comercialActivity').touched" />
+
+          <div
+            *ngIf="categoryForm.controls.comercialActivity.touched && categoryForm.controls.comercialActivity.errors?.required"
+            class="text text-danger">
+            es necesario el nombre de la actividad comercial
+          </div>
+
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="onSave()" [disabled]="!forma.valid">
+      <i class="fa fa-save"></i>
+      Guardar
+    </button>
+
+    <button class="btn btn-secondary" type="button" data-dismiss="modal" (click)="modal.dismiss('Cross click')">
+      <i class="fa fa-window-close"></i>
+      Cerrar
+    </button>
+  </div>
+</ng-template>
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="square-jelly-box" [fullScreen]="true">
+  <p style="color: white">Cargando...</p>
+</ngx-spinner>
+<!-- Container-fluid Ends-->

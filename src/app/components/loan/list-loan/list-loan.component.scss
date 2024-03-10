@@ -1,0 +1,92 @@
+.dp-hidden {
+    width: 0;
+    margin: 0;
+    border: none;
+    padding: 0;
+}
+
+.custom-day {
+    text-align: center;
+    padding: 0.185rem 0.25rem;
+    display: inline-block;
+    height: 2rem;
+    width: 2rem;
+}
+
+.custom-day.focused {
+    background-color: #e6e6e6;
+}
+
+.custom-day.range,
+.custom-day:hover {
+    background-color: rgb(2, 117, 216);
+    color: white;
+}
+
+.custom-day.faded {
+    background-color: rgba(2, 117, 216, 0.5);
+}
+
+.moroso {
+    color: white !important;
+    background-color: #fb3620 !important;
+}
+
+.vencido { 
+    background-color: #FFB6C1 !important;
+}
+
+
+.pendiente {
+    background-color: #ffe97b !important;
+}
+
+.table-responsive thead th {
+    position: sticky;
+    top: 0;
+    //z-index: 1020; /* Asegúrate de que el encabezado esté por encima del contenido */
+    background-color: white;
+    /* O el color de fondo que prefieras */
+}
+
+.detallePago {
+    max-height: 25rem;
+    overflow-y: auto;
+}
+
+.btn-danger {
+    background-color: #ff8173 !important;
+    border-color: #ff8173 !important;
+    text-transform: none !important;
+    font-size: 0.7rem !important;
+}
+
+.table {
+    --bs-table-bg: none;
+    --bs-table-color : none;
+}
+
+.btn-primary {
+    background-color: none !important;
+    color: #007bff !important;
+}
+
+.btn-moroso {
+     a {
+        background-color: transparent !important;
+        color: #ffffff !important
+     }
+;
+}
+
+.btn-vencido {
+    background-color: transparent !important; 
+    a {
+        color: #2d2d2d !important;
+    }
+}
+
+.btn-pendiente {
+    background-color: transparent !important;
+    color: #007bff !important;
+}

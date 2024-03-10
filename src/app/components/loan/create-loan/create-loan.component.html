@@ -1,0 +1,166 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-5">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12 col-sm-6 col-md-6 col-xl-6">
+              <div class="form-group  mb-3">
+                <label for="customer">Fecha de Registro</label>
+                <input type="text" class="form-control">
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-xl-6">
+              <div class="form-group  mb-3">
+                <label for="customer">Moneda</label>
+                <input type="text" class="form-control">
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-xl-6">
+              <div class="form-group  mb-3">
+                <label for="customer">Serie</label>
+                <input type="text" class="form-control">
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-xl-6">
+              <div class="form-group  mb-3">
+                <label for="customer">Nro</label>
+                <input type="text" class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-7">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12 col-sm-5 col-md-5 col-xl-5">
+              <div class="form-group  mb-3">
+                <label for="customer">Tipo Doc. de Identidad(*)</label>
+                <input type="text" class="form-control">
+              </div>
+            </div>
+            <div class="col-12 col-sm-7 col-md-7 col-xl-7">
+              <label for="customer">Número de Documento(*)</label>
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nro documento" />
+                <span class="input-group-text" id="basic-addon1">
+                  <i class="fa fa-search"></i>
+                </span>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-group  mb-3">
+                <label for="customer">Apellidos y Nombres, Denominación o Razón Social</label>
+                <input type="text" class="form-control">
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-group  mb-3">
+                <label for="customer">Dirección</label>
+                <input type="text" class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-sm-2 col-md-2 col-xl-2">
+            <div class="form-group  mb-3">
+              <label for="customer">Estado</label>
+              <input type="text" class="form-control">
+            </div>
+          </div>
+          <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+            <div class="form-group  mb-3">
+              <label for="customer">Monto max. prestamo</label>
+              <input type="text" class="form-control">
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-6 col-xl-6">
+            <div class="col">
+              <label class="d-block mb-2" for="edo-ani">
+                <input class="radio_animated" id="edo-ani" type="radio" name="rdo-ani" checked>
+                Todos los días
+              </label>
+              <label class="d-block mb-2" for="edo-ani1">
+                <input class="radio_animated" id="edo-ani1" type="radio" name="rdo-ani">
+                No Sabados
+              </label>
+              <label class="d-block mb-0" for="edo-ani2">
+                <input class="radio_animated" id="edo-ani2" type="radio" name="rdo-ani">
+                No Domingos
+              </label>
+              <label class="d-block mb-0" for="edo-ani2">
+                <input class="radio_animated" id="edo-ani3" type="radio" name="rdo-ani">
+                No Sábados ni Domingos
+              </label>
+            </div>
+          </div>
+          <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+            <div class="form-group  mb-3">
+              <label for="customer">Monto requerido</label>
+              <input type="text" class="form-control" [(ngModel)]="monto">
+            </div>
+          </div>
+          <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+            <div class="form-group  mb-3">
+              <label for="customer">Interes</label>
+              <input type="text" class="form-control" [(ngModel)]="interes">
+            </div>
+          </div>
+          <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+            <div class="form-group  mb-3">
+              <label for="customer">Nro de Cuotas</label>
+              <input type="text" class="form-control" [(ngModel)]="cuotas">
+            </div>
+          </div>
+          <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+            <div class="form-group  mb-3">
+              <label for="customer">Forma de pago</label>
+              <input type="text" class="form-control">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="btn-popup pull-right">
+            <a class="btn btn-primary" (click)="onCalculate()">Calcular</a>
+          </div>
+          <div class="custom-datatable transcation-datatable">
+            <div class="table-responsive contenedor-tabla">
+              <table class="table report-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Item</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Amortizar Capital</th>
+                    <th scope="col">Monto de interes</th>
+                    <th scope="col">Monto cuota</th>
+                    <th scope="col">Saldo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of listCuotas">
+                    <td> {{item.item}} </td>
+                    <td>{{item.fecha|date:'dd/MM/yyyy'}} </td>
+                    <td>{{item.monto}} </td>
+                    <td> {{item.interes}}</td>
+                    <td> {{item.total}}</td>
+                    <td> {{item.item}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,74 @@
+<div class="page-wrapper">
+    <div class="authentication-box">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-5 p-0 card-left">
+            <div class="card bg-primary">
+              <div class="svg-icon">
+                <img [attr.src]="iconStart" alt="" />
+              </div>
+              <div class="single-item">
+                <owl-carousel-o [options]="owlcarouselOptions">
+                  <ng-container *ngFor="let data of owlcarousel">
+                    <ng-template carouselSlide class="item">
+                      <div>
+                        <h3>{{ data.title }}</h3>
+                        <p>{{ data.desc }}</p>
+                      </div>
+                    </ng-template>
+                  </ng-container>
+                </owl-carousel-o>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-7 p-0 card-right">
+            <div class="card tab2-card">
+              <div class="card-header">
+                <h4>INICIO DE SESIÓN</h4>
+              </div>
+              <div class="card-body">
+                <div class="tab-pane fade active show" id="account" role="tabpanel" aria-labelledby="account-tab">
+                  <form [formGroup]="loginForm" class="form-horizontal auth-form" novalidate autocomplete="off">
+                    <div class="form-group">
+                      <input required="" name="login[userName]" type="userName" class="form-control"
+                        placeholder="Usuario o userName" id="exampleInputuserName1" formControlName="userName"
+                        [class.is-invalid]="loginForm.get('userName').invalid && loginForm.get('userName').touched" />
+                      <div *ngIf="loginForm.controls.userName.touched && loginForm.controls.userName.errors?.required"
+                        class="text text-danger">
+                        es necesario el usuario
+                      </div>
+                       
+                    </div>
+                    <div class="form-group">
+                      <input required="" name="login[password]" type="password" class="form-control"
+                        placeholder="Password" formControlName="password"
+                        [class.is-invalid]="loginForm.get('password').invalid && loginForm.get('password').touched" />
+                      <div *ngIf="loginForm.controls.password.touched && loginForm.controls.password.errors?.required"
+                        class="text text-danger">
+                        es necesario una contraseña
+                      </div>
+                    </div>
+                    <div class="form-terms">
+                      <div class="custom-control custom-checkbox d-flex align-items-center flex-wrap">
+                        <input type="checkbox" class="custom-control-input me-2" id="customControlAutosizing"
+                          formControlName="active" />
+                        <label class="custom-control-label" for="customControlAutosizing">Recuerdar usuario</label>
+                        <a routerLink="/auth/forget-password" class="btn btn-default forgot-pass ms-auto">¿Se te olvidó tu
+                          contraseña?</a>
+                      </div>
+                    </div>
+                    <div class="form-button">
+                      <a> <button class="btn btn-primary" type="submit" (click)="onSubmit()">Imgresar</button></a>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="square-jelly-box" [fullScreen]="true">
+    <p style="color: white">Cargando...</p>
+  </ngx-spinner>

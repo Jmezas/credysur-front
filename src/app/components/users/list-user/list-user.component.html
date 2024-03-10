@@ -1,0 +1,62 @@
+<!-- Container-fluid starts-->
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <h5>User Details</h5>
+        </div>
+        <div class="card-body">
+            <div class="btn-popup pull-right">
+                <a class="btn btn-primary" [routerLink]="'/users/create-user'">Crear usuario</a>
+            </div>
+            <div id="batchDelete" class="category-table custom-datatable transcation-datatable user-image">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Perfil</th>
+                                <th scope="col" sortable="fName" (sort)="onSort($event)">Usuario</th>
+                                <th scope="col" sortable="lName" (sort)="onSort($event)">Nombres</th>
+                                <th scope="col" sortable="email" (sort)="onSort($event)">Numero Doc</th>
+                                <th scope="col" sortable="last_login" (sort)="onSort($event)">Celular</th>
+                                <th scope="col" sortable="role" (sort)="onSort($event)">Correo</th>
+                                <th scope="col" sortable="role" (sort)="onSort($event)">Direccion</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of user_list">
+                                <td>{{item.role}} </td>
+                                <td>{{item.user}} </td>
+                                <td>{{item.Name}} {{item.firstLastname}} {{item.secondLastname}}</td>
+                                <td>{{item.numberDocument}}</td>
+                                <td>{{item.email}}</td> 
+                                <td>{{item.phone}}</td>
+                                <td>{{item.email}}</td>
+                                <td>{{item.address}}</td>
+                                <td>
+                                    <a routerLink="/users/{{ item.id }}/edit-user"><i
+                                            class="fa fa-edit f-12"></i></a>&nbsp;
+                                    <a href="javascript:void(0)" (click)="onDelete(item.id)"><i
+                                            class="fa fa-trash-o"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="d-flex justify-content-end p-2">
+                        @if (collectionSize != 0) {
+                            <ngb-pagination class="d-flex justify-content-end" 
+                            [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
+                            [rotate]="true" [maxSize]="5" [boundaryLinks]="true"  (pageChange)="loadPage($event)"/> 
+                        }
+                       
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="square-jelly-box" [fullScreen]="true">
+    <p style="color: white">Cargando...</p>
+  </ngx-spinner>
+<!-- Container-fluid Ends-->

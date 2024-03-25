@@ -52,6 +52,35 @@
                 </div>
             </div>
         </div>
-    </div>
+        <div class="col-xl-6 xl-100">
+            <div class="card height-equal">
+                <div class="card-header">
+                    <h5>Pagos semanal  de ({{weekGraphFirst |  date: 'dd/MM/yyyy'}} - {{weekGraphEnd |  date: 'dd/MM/yyyy'}})</h5>
+                </div>
+                <div class="card-body">
+                    <div  style="display: block">
+                        <canvas baseChart [datasets]="barChartDatasetsWeek" [labels]="barChartLabelsWeek" [options]="barChartOptions"
+                        [legend]="barChartLegend" [type]="barChartType">
+                    </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 xl-100">
+            <div class="card height-equal">
+                <div class="card-header">
+                    <h5>Pagos Mensual del año ({{yearGraph}})</h5>
+                </div>
+                <div class="card-body">
+                    <div  style="display: block">
+                        <canvas baseChart [datasets]="barChartDatasetsMonth" [labels]="barChartLabelsMonth" [options]="barChartOptions"
+                        [legend]="barChartLegend" [type]="barChartType">
+                    </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+     
+    </div> 
 </div>
 <!-- Container-fluid Ends-->

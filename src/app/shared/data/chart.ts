@@ -56,7 +56,7 @@ export var doughnutChartcolorScheme = {
 };
 
 // Chart 5 Line chart with area
-export var chart5: any= {
+export var chart5: any = {
   type: 'Line',
   data: {
     labels: [1, 2, 3, 4, 5, 6, 7, 8],
@@ -335,10 +335,9 @@ export var smallLine4ChartType = 'line';
 export var chart3: any = {
   type: 'Bar',
   data: {
-    labels: ['100', '200', '300', '400', '500', '600', '700', '800'],
+    labels: ['julio', '200', '300', '400', '500', '600', '700', '4444'],
     series: [
-      [2.5, 3, 3, 0.9, 1.3, 1.8, 3.8, 1.5],
-      [3.8, 1.8, 4.3, 2.3, 3.6, 2.8, 2.8, 2.8]
+      [2.5, 3, 3, 0.9, 1.3, 1.8, 3.8, 1.5]
     ]
   },
   options: {
@@ -347,6 +346,7 @@ export var chart3: any = {
     axisX: {
       showGrid: false,
       labelInterpolationFnc: function (value) {
+        console.log(value)
         return value[0];
       }
     }

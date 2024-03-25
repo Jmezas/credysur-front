@@ -73,4 +73,15 @@ export class LoanService {
       headers: this.headers,
     });
   }
+
+  getWeekGraph() {
+    return this.http.get(`${this.baseUrl}/loan/GetWeekGraph`, {
+      headers: this.headers,
+    });
+  }
+  getMontGraph() {
+    return this.http.get(`${this.baseUrl}/loan/GetMonthGraph`, {
+      headers: this.headers,
+    });
+  }
 }

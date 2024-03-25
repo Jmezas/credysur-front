@@ -7,11 +7,12 @@
                     <div class="media static-top-widget row">
                         <div class="icons-widgets col-4">
                             <div class="align-self-center text-center">
-                                <app-feather-icons [icon]="'navigation'" class="font-warning"></app-feather-icons>
+                                <app-feather-icons [icon]="'dollar-sign'" class="font-warning"></app-feather-icons>
                             </div>
                         </div>
-                        <div class="media-body col-8"><span class="m-0">Earnings</span>
-                            <h3 class="mb-0">$ <span class="counter">6659</span><small> This Month</small></h3>
+                        <div class="media-body col-8"><span class="m-0">Pagos realizados</span>
+                            <h3 class="mb-0">S/ <span class="counter">{{Pay | number: '1.2-2'}}</span><small> Este
+                                    día</small></h3>
                         </div>
                     </div>
                 </div>
@@ -23,11 +24,12 @@
                     <div class="media static-top-widget row">
                         <div class="icons-widgets col-4">
                             <div class="align-self-center text-center">
-                                <app-feather-icons [icon]="'box'" class="font-secondary"></app-feather-icons>
+                                <app-feather-icons [icon]="'dollar-sign'" class="font-secondary"></app-feather-icons>
                             </div>
                         </div>
-                        <div class="media-body col-8"><span class="m-0">Products</span>
-                            <h3 class="mb-0">$ <span class="counter">9856</span><small> This Month</small></h3>
+                        <div class="media-body col-8"><span class="m-0">Pagos pendientes</span>
+                            <h3 class="mb-0">S/ <span class="counter">{{PendingPayment | number: '1.2-2'}}</span><small>
+                                    Este día</small></h3>
                         </div>
                     </div>
                 </div>
@@ -39,32 +41,17 @@
                     <div class="media static-top-widget row">
                         <div class="icons-widgets col-4">
                             <div class="align-self-center text-center">
-                                <app-feather-icons [icon]="'message-square'" class="font-primary"></app-feather-icons>
+                                <app-feather-icons [icon]="'dollar-sign'" class="font-primary"></app-feather-icons>
                             </div>
                         </div>
-                        <div class="media-body col-8"><span class="m-0">Messages</span>
-                            <h3 class="mb-0">$ <span class="counter">893</span><small> This Month</small></h3>
+                        <div class="media-body col-8"><span class="m-0">Pagos programados</span>
+                            <h3 class="mb-0">S/ <span class="counter">{{ProgrammedPayment | number:
+                                    '1.2-2'}}</span><small> Este día</small></h3>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-md-6 xl-50">
-            <div class="card o-hidden widget-cards">
-                <div class="bg-danger card-body">
-                    <div class="media static-top-widget row">
-                        <div class="icons-widgets col-4">
-                            <div class="align-self-center text-center">
-                                <app-feather-icons [icon]="'users'" class="font-danger"></app-feather-icons>
-                            </div>
-                        </div>
-                        <div class="media-body col-8"><span class="m-0">New Vendors</span>
-                            <h3 class="mb-0">$ <span class="counter">45631</span><small> This Month</small></h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> 
     </div>
 </div>
 <!-- Container-fluid Ends-->

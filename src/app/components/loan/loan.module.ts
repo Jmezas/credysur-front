@@ -7,16 +7,18 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { SharedModule } from "../../shared/shared.module";
 @NgModule({
-  imports: [
-    CommonModule,
-    LoanRoutingModule,
-    NgbModule,
-    NgxSpinnerModule,
-    NgSelectModule,
-    FormsModule,
-    ReactiveFormsModule
-  ],
-  declarations: [ListLoanComponent,CreateLoanComponent]
+    declarations: [ListLoanComponent, CreateLoanComponent],
+    imports: [
+        CommonModule,
+        LoanRoutingModule,
+        NgbModule,
+        NgxSpinnerModule,
+        NgSelectModule,
+        FormsModule,
+        ReactiveFormsModule,
+        SharedModule
+    ]
 })
 export class LoanModule { }

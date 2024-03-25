@@ -75,6 +75,7 @@ export class AuthService {
     const refreshToken = localStorage.getItem("REFRESH_TOKEN");
     return this.http.get(`${this.baseUrl}/auth/refreshtoken/${refreshToken}`);
   }
+  
   getByEmail(email) {
     return this.http.get(`${this.baseUrl}/auth/getEmail/${email}`);
   }

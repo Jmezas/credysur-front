@@ -1,6 +1,7 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { NavService, Menu } from '../../service/nav.service';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,8 +14,11 @@ export class SidebarComponent {
   public menuItems: Menu[];
   public url: any;
   public fileurl: any;
+  user:any
+  role:any
 
-  constructor(private router: Router, public navServices: NavService) {
+  constructor(private router: Router, public navServices: NavService, private authService: AuthService) {
+    this.getUserInfo();
     this.navServices.items.subscribe(menuItems => {
       this.menuItems = menuItems
       this.router.events.subscribe((event) => {
@@ -88,6 +92,15 @@ export class SidebarComponent {
     reader.onload = (_event) => {
       this.url = reader.result;
     }
+  }
+
+  getUserInfo(){
+    this.user = this.authService.getUserInfo();
+
+    let roles = JSON.parse(this.user.Role);
+    this.role = roles.map((item) => item.roleName).join(', ');
+
+    console.log(this.role)
   }
 
 }

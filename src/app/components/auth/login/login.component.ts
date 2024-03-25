@@ -39,16 +39,12 @@ export class LoginComponent implements OnInit {
  }
   owlcarousel = [
     {
-      title: "Welcome to Multikart",
-      desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy.",
+      title: "CREDYSUR",
+      desc: "Credysur es un sistema de préstamos diseñado para evaluar a los solicitantes y calcular los montos de préstamos y la venta de artículos de manera eficiente.",
     },
     {
-      title: "Welcome to Multikart",
-      desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy.",
-    },
-    {
-      title: "Welcome to Multikart",
-      desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy.",
+      title: "CREDYSUR",
+      desc: "Credysur es una plataforma de préstamos que agiliza el acceso a créditos y la adquisición de artículos, gracias a un eficaz sistema de evaluación",
     }
   ]
   owlcarouselOptions = {

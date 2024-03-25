@@ -35,8 +35,8 @@ const routes: Routes = [
     path: 'category',
     component: CategoryComponent,
     data: {
-      title: "Categoria",
-      breadcrumb: "Categoria"
+      title: "Rubro de negocio",
+      breadcrumb: "Rubro"
     }
   },
 ];

@@ -63,5 +63,14 @@ export class LoanService {
       headers: this.headers,
     });
   }
-
+  getserie() {
+    return this.http.get(`${this.baseUrl}/loan/GetList`, {
+      headers: this.headers,
+    });
+  }
+  getPayMainStatus() {
+    return this.http.get(`${this.baseUrl}/loan/GetPayMainStatus`, {
+      headers: this.headers,
+    });
+  }
 }

@@ -62,18 +62,18 @@ export class NavService {
 		// 	]
 		// }, 
 		{
-			title: 'Prestamo', icon: 'user-plus', type: 'sub', active: false, children: [
-				{ path: '/loans/list-loan', title: 'Lista', type: 'link' },
+			title: 'Prestamo', icon: 'dollar-sign', type: 'sub', active: false, children: [
+				{ path: '/loans/list-loan', title: 'Cobranza', type: 'link', icon: 'fa fa-trash' },
 				{ path: '/loans/create-loan', title: 'Crear', type: 'link' },
 			]
 		},
 		{
-			title: 'Usuarios', icon: 'user-plus', type: 'sub', active: false, children: [
+			title: 'Usuarios', icon: 'users', type: 'sub', active: false, children: [
 				{ path: '/users/list-user', title: 'Lista', type: 'link' },
 				{ path: '/users/create-user', title: 'Crear', type: 'link' },
 			]
 		},
-	 
+
 		{
 			title: 'Reporte Pago', path: '/reports', icon: 'bar-chart', type: 'link', active: false
 		},

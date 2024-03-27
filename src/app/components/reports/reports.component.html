@@ -138,6 +138,7 @@
                                 <th scope="col">Nombres</th>
                                 <th scope="col">Numero</th>
                                 <th scope="col">Pagado</th>
+                                <th scope="col">Descuento</th>
                                 <th scope="col">Fecha Pago</th>
                                 <th scope="col">Fecha registro</th>
                                 <th scope="col">Mora</th>
@@ -152,13 +153,14 @@
                             </tr>
                             <ng-container *ngFor="let item of pagosProcesados">
                                 <tr *ngIf="item.esEncabezado" class="table-subtitle">
-                                    <td colspan="9">{{ item.sRazonSocial }} - ({{ item.serie }}) - {{ item.zona }} </td>
+                                    <td colspan="20">{{ item.sRazonSocial }} - ({{ item.serie }}) - {{ item.zona }} </td>
                                 </tr>
                                 <tr *ngIf="!item.esEncabezado">
                                     <td>{{ item.item }}</td>
                                     <td>{{ item.sHora }}</td>
                                     <td>{{ item.paymentNumber }}</td>
                                     <td>{{ item.nMonto | number: '1.2-2' }}</td>
+                                    <td>{{ item.discount | number: '1.2-2' }}</td>
                                     <td>{{ item.dFechaPago| date:'dd MMM yyyy'}}</td>
                                     <td>{{ item.dFecReg| date:'dd MMM yyyy'}}</td>
                                     <td>{{ item.mora }}</td>
@@ -169,13 +171,17 @@
                             </ng-container>
                             <tr *ngIf="!noResultados">
                                 <td colspan="2">
-                                    TOTALES: {{ totalPayday | number: '1.2-2' }}
-                                    <!-- Añade aquí otros totales si es necesario -->
+                                    TOTALES: {{ totalPayday | number: '1.2-2' }} 
                                 </td>
                                 <td colspan="2">
-                                    TOTAL PAGINA: {{ totales.Pagado | number: '1.2-2' }}
-                                    <!-- Añade aquí otros totales si es necesario -->
+                                    DESCUENTO TOTAL: {{discountTotal| number: '1.2-2' }} 
                                 </td>
+                                <td colspan="2">
+                                    TOTAL PAGINA: {{ totales.Pagado | number: '1.2-2' }} 
+                                </td>
+                                <td colspan="2">
+                                    DESCUENTO TOTAL PAGINA: {{ totales.discount | number: '1.2-2' }} 
+                                </td> 
                             </tr>
                         </tbody>
                     </table>

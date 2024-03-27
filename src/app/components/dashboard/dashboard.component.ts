@@ -14,7 +14,7 @@ export class DashboardComponent implements OnInit {
   PendingPayment: number = 0
   ProgrammedPayment: number = 0
   Pay: number = 0
-
+  discount = 0;
 
   barChartOptions: ChartOptions = {
     responsive: true,
@@ -47,12 +47,12 @@ export class DashboardComponent implements OnInit {
       this.PendingPayment = rest.payload.data.pendingPayment
       this.ProgrammedPayment = rest.payload.data.programmedPayment
       this.Pay = rest.payload.data.pay
+      this.discount = rest.payload.data.discountTotal
     })
   }
 
   getWeekGraph() {
     this.loanService.getWeekGraph().subscribe((rest: Result) => {
-      console.log(rest)
       this.weekGraphFirst = rest.payload.data[0].date  
       this.weekGraphEnd = rest.payload.data[rest.payload.data.length - 1].date 
       const newDatasets = [
@@ -80,7 +80,6 @@ export class DashboardComponent implements OnInit {
 
   getMonthGraph() {
     this.loanService.getMontGraph().subscribe((rest: Result) => {
-      console.log('getMonthGraph', rest)
       this.yearGraph = rest.payload.data[0].year
       const newDatasets = [
         {

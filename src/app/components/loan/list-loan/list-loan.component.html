@@ -122,7 +122,7 @@
       </div>
       <div id="batchDelete" class="custom-datatable transcation-datatable">
         <div class="table-responsive contenedor-tabla">
-          <table class="table report-table">
+          <table class="table table-bordered">
             <thead>
               <tr>
                 <th scope="col">Item</th>
@@ -139,12 +139,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let item of listReport" [ngClass]="
-              {
-                'pendiente': item.estado === 'PENDIENTE',
-                'vencido': item.estado === 'VENCIDO',
-                'moroso': item.estado === 'MOROSO'
-              }">
+              <tr *ngFor="let item of listReport">
                 <td>{{ item.item }}</td>
                 <td>{{ item.documento }}</td>
                 <td>{{ item.sRazonSocial }}</td>
@@ -154,11 +149,15 @@
                 <td>{{ item.fechaVenta | date : 'dd/MM/yyyy' }}</td>
                 <td>{{ item.nTotal | number: '1.2-2' }}</td>
                 <td>{{ item.nPendiente | number: '1.2-2' }}</td>
-                <td>{{ item.estado }}</td>
+                <td [ngClass]="
+                {
+                  'pendiente': item.estado === 'PENDIENTE',
+                  'vencido': item.estado === 'VENCIDO',
+                  'moroso': item.estado === 'MOROSO'
+                }">{{ item.estado }}</td>
                 <td [ngClass]="
                 { 
-                  'btn-vencido': item.estado === 'VENCIDO',
-                  'btn-moroso': item.estado === 'MOROSO'
+                  'btn-vencido': item.estado === 'VENCIDO'
                 }">
                   <a href="javascript:void(0)" title="Detalle" (click)="openModal(content,item)"><i
                       class="fa fa-edit"></i> </a> &nbsp;
@@ -228,17 +227,17 @@
     <div class="row">
       <div class="col-12 col-sm-4 col-md-4 col-xl-4">
         <div class="form-group  mb-3">
-          <a class="btn btn-danger" href="javascript:void(0)"><i class="fa fa-file-pdf-o"></i> Cronograma de pago </a>
+          <a class="btn btn-primary" href="javascript:void(0)"><i class="fa fa-file-pdf-o"></i> Cronograma de pago </a>
         </div>
       </div>
       <div class="col-12 col-sm-4 col-md-4 col-xl-4">
         <div class="form-group  mb-3">
-          <button class="btn btn-danger"><i class="fa fa-file-pdf-o"></i> Compromizo de pago </button>
+          <button class="btn btn-primary"><i class="fa fa-file-pdf-o"></i> Compromizo de pago </button>
         </div>
       </div>
       <div class="col-12 col-sm-4 col-md-4 col-xl-4">
         <div class="form-group  mb-3">
-          <button class="btn btn-danger" (click)="openModalAmortizar(contentAmortizar)"><i class="fa fa-money"></i>
+          <button class="btn btn-primary" (click)="openModalAmortizar(contentAmortizar)"><i class="fa fa-money"></i>
             Amortizar pago </button>
         </div>
       </div>
@@ -246,13 +245,14 @@
     <div class="row">
       <div id="batchDelete" class="custom-datatable transcation-datatable">
         <div class="table-responsive contenedor-tabla detallePago">
-          <table class="table report-table">
+          <table class="table table-bordered">
             <thead>
               <tr>
-                <th scope="col">Item</th>
+                <th scope="col"> Item</th>
                 <th scope="col">Descripción</th>
                 <th scope="col">Nro Cuota</th>
                 <th scope="col">Pagado</th>
+                <th scope="col">Descuento</th>
                 <th scope="col">Fecha de pago</th>
                 <th scope="col">Estado </th>
                 <th scope="col">Tipo Pago </th>
@@ -270,6 +270,7 @@
                 <td>{{ item.descripcion }}</td>
                 <td>{{ item.totales | number: '1.2-2' }}</td>
                 <td>{{ item.pago | number: '1.2-2' }}</td>
+                <td>{{ item.discount | number: '1.2-2' }}</td>
                 <td>{{ item.fecha }}</td>
                 <td>{{ item.estado }}</td>
                 <td>{{ item.tipoPago }}</td>
@@ -280,7 +281,7 @@
                   <a *ngIf="item.estado !='PAGADO'" href="javascript:void(0)" title="Pagar"
                     (click)="openModalPago(contentPago,item)"><i class="fa fa-money"></i>
                   </a>&nbsp;
-                  <a href="javascript:void(0)" title="Lista de Pago" (click)="openModalDetail(contentPay,item)"><i
+                  <a *ngIf="item.estado =='PAGADO'" ref="javascript:void(0)" title="Lista de Pago" (click)="openModalDetail(contentPay,item)"><i
                       class="fa fa-th-list"></i> </a>
                 </td>
               </tr>
@@ -311,12 +312,13 @@
     <div class="row">
       <div id="batchDelete" class="custom-datatable transcation-datatable">
         <div class="table-responsive contenedor-tabla detallePago">
-          <table class="table report-table">
+          <table class="table table-bordered">
             <thead>
               <tr>
                 <th scope="col">Item</th>
                 <th scope="col">Hora</th>
                 <th scope="col">Monto</th>
+                <th scope="col">Descuento</th>
                 <th scope="col">Fecha pago</th>
                 <th scope="col">Fecha registro</th>
                 <th scope="col">Usuario registro </th>
@@ -328,6 +330,7 @@
                 <td>{{ item.item }}</td>
                 <td>{{ item.sHora }}</td>
                 <td>{{ item.nMonto }}</td>
+                <td>{{ item.discount }}</td>
                 <td>{{ item.dFecha }}</td>
                 <td>{{ item.dFecReg }}</td>
                 <td>{{ item.usuario }}</td>
@@ -409,7 +412,7 @@
             <label for="customer">Fecha Pago</label>
             <div class="input-group">
               <input class="datepicker-here form-control digits" ngbDatepicker #f="ngbDatepicker"
-                placeholder="dd/mm/yyyy" [value]="formatter.format(fromDateAmortizar)">
+                placeholder="dd/mm/yyyy" [(ngModel)]="datePayAmortizar">
               <div class="input-group-append">
                 <button class="btn calendar" (click)="f.toggle()" type="button"><i class="fa fa-calendar"></i></button>
               </div>
@@ -421,13 +424,14 @@
             <label for="customer">Detalle</label>
             <div id="batchDelete" class="custom-datatable transcation-datatable">
               <div class="table-responsive contenedor-tabla detallePago">
-                <table class="table report-table">
+                <table class="table table-bordered">
                   <thead>
                     <tr>
                       <th scope="col">Item</th>
                       <th scope="col">Nro Cuota </th>
                       <th scope="col">Monto</th>
-                      <th scope="col">Pagado</th>
+                      <th scope="col">Descuento</th>
+                      <th scope="col">Fecha Pago</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -435,6 +439,7 @@
                       <td>{{ item.number }}</td>
                       <td>{{ item.pay | number: '1.2-2'}}</td>
                       <td>{{ item.monto | number: '1.2-2'}}</td>
+                      <td>{{ item.discount }}</td>
                       <td>{{ item.payDate }}</td>
                     </tr>
                   </tbody>
@@ -459,6 +464,12 @@
           <div class="form-group  mb-3">
             <label for="customer">Monto por interes</label>
             <input type="text" class="form-control" [(ngModel)]="remainingPaymentPorcentje" disabled="true">
+          </div>
+        </div>
+        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+          <div class="form-group  mb-3">
+            <label for="customer">Descuento</label>
+            <input type="text" class="form-control" [(ngModel)]="discountAmortizacion" (ngModelChange)="onCalculateDiscount()">
           </div>
         </div>
       </div>
@@ -588,7 +599,7 @@
       </div>
       <div class="col-12 col-sm-3 col-md-3 col-xl-3">
         <div class="form-group  mb-3">
-          <label for="customer">Moonto Restante</label>
+          <label for="customer">Monto Restante</label>
           <input type="text" class="form-control" value="{{ payMountRest | number: '1.2-2'}}" disabled="true">
         </div>
       </div>
@@ -596,6 +607,12 @@
         <div class="form-group  mb-3">
           <label for="customer">Monto por interes</label>
           <input type="text" class="form-control" [(ngModel)]="remainingPaymentPorcentje" disabled="true">
+        </div>
+      </div>
+      <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+        <div class="form-group  mb-3">
+          <label for="customer">Descuento</label>
+          <input type="text" class="form-control" [(ngModel)]="discount">
         </div>
       </div>
     </div>

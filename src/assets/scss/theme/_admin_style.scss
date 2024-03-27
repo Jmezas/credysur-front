@@ -1,3 +1,18 @@
+
+/* Estilo por defecto del input */
+.form-control {
+  border: 1.5px solid #000000 !important;
+}
+.form-control:focus {
+  border: 2px solid #007bff !important;
+}
+.ng-select .ng-select-container {
+  border: 1.5px solid #000000;
+}
+.ng-select .ng-select-container:focus-within {
+  border: 2px solid #007bff;  
+}
+
 $btn-padding : 0.5rem 1.5rem;
 
 /**=====================

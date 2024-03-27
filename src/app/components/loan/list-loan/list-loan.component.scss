@@ -32,7 +32,7 @@
     background-color: #fb3620 !important;
 }
 
-.vencido { 
+.vencido {
     background-color: #FFB6C1 !important;
 }
 
@@ -46,7 +46,6 @@
     top: 0;
     //z-index: 1020; /* Asegúrate de que el encabezado esté por encima del contenido */
     background-color: white;
-    /* O el color de fondo que prefieras */
 }
 
 .detallePago {
@@ -63,27 +62,31 @@
 
 .table {
     --bs-table-bg: none;
-    --bs-table-color : none;
+    --bs-table-color: none;
+    border-collapse: collapse;  
+    border: 1px solid #000000;
 }
-
-.btn-primary {
-    background-color: none !important;
-    color: #007bff !important;
-}
+ 
 
 .btn-moroso {
-     a {
+    a {
         background-color: transparent !important;
         color: #ffffff !important
-     }
-;
+    }
+
+    ;
 }
 
 .btn-vencido {
-    background-color: transparent !important; 
+    background-color: transparent !important;
+
     a {
         color: #2d2d2d !important;
     }
+}
+
+table thead th {
+    border-bottom : none !important
 }
 
 .btn-pendiente {

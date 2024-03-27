@@ -26,9 +26,11 @@ export class ReportsComponent implements OnInit {
     Pagado: 0,
     Pendiente: 0,
     Mora: 0,
-    Acomulado: 0
+    Acomulado: 0,
+    discount: 0
   };
   totalPayday: number = 0;
+  discountTotal: number = 0;
 
   calendar = inject(NgbCalendar);
   formatter = inject(NgbDateParserFormatter);
@@ -141,7 +143,8 @@ export class ReportsComponent implements OnInit {
       Pagado: 0,
       Pendiente: 0,
       Mora: 0,
-      Acomulado: 0
+      Acomulado: 0,
+      discount: 0
     };
     
     this.apiLoan.getDailyReport(data).subscribe(
@@ -154,7 +157,7 @@ export class ReportsComponent implements OnInit {
         this.noResultados = this.listReport.length === 0;
         this.pagosProcesados = [];
         this.totalPayday = this.listReport[0].totalPayDay;
-        console.log("totalPayday", this.totalPayday);
+        this.discountTotal = this.listReport[0].discountTotal;
         this.listReport.forEach((item) => {
           // Comprobar si es un nuevo grupo de 'iIdPrestamo'
           if (!this.pagosProcesados.some(p => p.iIdPrestamo === item.iIdPrestamo)) {
@@ -174,9 +177,10 @@ export class ReportsComponent implements OnInit {
 
         this.totales = this.listReport.reduce((acc, item) => {
           acc.Pagado += item.nMonto;
-          acc.Pendiente += item.PendienteDetalle; // Asumiendo que esta propiedad existe
+          acc.Pendiente += item.PendienteDetalle; 
           acc.Mora += item.moraPor;
           acc.Acomulado += item.montoAcomulado;
+          acc.discount += item.discount;
           return acc;
         }, { ...this.totales });
       }
@@ -209,7 +213,8 @@ export class ReportsComponent implements OnInit {
       Pagado: 0,
       Pendiente: 0,
       Mora: 0,
-      Acomulado: 0
+      Acomulado: 0,
+      discount: 0
     };
     this.apiLoan.getDailyReport(data).subscribe(
       (res: Result) => {
@@ -243,6 +248,7 @@ export class ReportsComponent implements OnInit {
           acc.Pendiente += item.PendienteDetalle; // Asumiendo que esta propiedad existe
           acc.Mora += item.moraPor;
           acc.Acomulado += item.montoAcomulado;
+          acc.discount += item.discount;
           return acc;
         }, { ...this.totales });
       }

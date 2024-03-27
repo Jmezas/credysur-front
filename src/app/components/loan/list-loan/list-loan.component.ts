@@ -19,7 +19,7 @@ import Swal from 'sweetalert2';
   selector: 'app-list-loan',
   templateUrl: './list-loan.component.html',
   styleUrls: ['./list-loan.component.scss'],
-  
+
 })
 export class ListLoanComponent implements OnInit {
   listReport: LoansReponse[] = [];
@@ -78,12 +78,16 @@ export class ListLoanComponent implements OnInit {
   remainingPayment: number = 0;
   remainingPaymentPorcentje: number = 0;
   modalAmortizacion: any;
+  discountAmortizacion: number = 0;
 
   //detalle pago
   listDetailPay: ListDetailPayResponse[] = [];
   datePay: string = "";
+  datePayAmortizar: string = "";
   modalPay: any;
   numberDocument: string = "";
+  discount: number = 0;
+
   payDateDetail: string = "";
   payTotalDetail: number = 0;
   payCuota: number = 0;
@@ -295,7 +299,7 @@ export class ListLoanComponent implements OnInit {
    */
   openModal(content, item: LoansReponse) {
     this.onListPago(item);
-    this.modalService.open(content, { ariaLabelledBy: "modal-basic-title", size: "lg", centered: true }).result.then(
+    this.modalService.open(content, { ariaLabelledBy: "modal-basic-title", size: "xl", centered: true }).result.then(
       (result) => {
         this.closeResult = `Closed with: ${result}`;
       },
@@ -337,7 +341,8 @@ export class ListLoanComponent implements OnInit {
   selectAll(event: Event) {
     const checked = (event.target as HTMLInputElement).checked;
     this.listDetail.forEach(elemento => {
-      if (checked) {
+      console.log('elemento', elemento);
+      if (checked && elemento.estado != 'PAGADO') {
         this.selectAlls[elemento.numero] = true;
       }
       else {
@@ -431,6 +436,7 @@ export class ListLoanComponent implements OnInit {
 
   onAmortizar() {
     this.dataAmortizar = [];
+    this.datePayAmortizar = this.today;
     this.listDetail.filter((item) => this.selectAlls[item.numero])
       .forEach((item) => {
         this.dataAmortizar.push({
@@ -438,6 +444,7 @@ export class ListLoanComponent implements OnInit {
           pay: item.totales,
           monto: item.pago,
           payDate: item.fecha,
+          discount: 0
         });
         this.totalPay += item.totales;
         this.remainingPayment += item.pago;
@@ -448,6 +455,36 @@ export class ListLoanComponent implements OnInit {
   onCalculateInteres() {
     this.remainingPaymentPorcentje = this.totalPay * (this.moraPorcentaje / 100)
   }
+  onCalculateDiscount() {
+    // Convertir directamente a número y tratar valores falsy como 0
+    this.discountAmortizacion = Number(this.discountAmortizacion) || 0;
+  
+    if (this.discountAmortizacion === 0) {
+      this.dataAmortizar.forEach((item) => {
+        item.discount = 0;
+      });
+      return;
+    }
+
+    if(this.totalPay < this.discountAmortizacion){
+      Swal.fire({
+        title: "¡Error!",
+        text: "El monto de descuento es mayor al monto total a pagar",
+        icon: "error",
+        confirmButtonText: "Aceptar",
+      });
+      this.discountAmortizacion = 0;
+      return;
+    }
+    
+    const allPayDetail = this.dataAmortizar.length; // Cantidad de detalles de pago seleccionados
+    const discountValue = this.discountAmortizacion / allPayDetail;
+  
+    this.dataAmortizar.forEach((item) => {
+      item.discount = discountValue;
+    });
+  }
+  
 
   onSaveAmortizar() {
     this.dataAmortizar.map((item) => {
@@ -457,11 +494,12 @@ export class ListLoanComponent implements OnInit {
       item.moraPor = this.moraPorcentaje;
       item.typePay = this.typePay;
       item.type = 2;
-      item.payDate = this.fromDateAmortizar.year + this.DELIMITER + this.fromDateAmortizar.month + this.DELIMITER + this.fromDateAmortizar.day;
+      item.payDate = this.datePayAmortizar['year'] + this.DELIMITER + this.datePayAmortizar['month'] + this.DELIMITER + this.datePayAmortizar['day'];
       item.accumulatedAmount = this.remainingPayment;
       item.accumulatedAmountPorcentaje = this.remainingPaymentPorcentje;
     });
     console.log(this.dataAmortizar);
+    debugger
     this.apiLoan.paymentAmortization(this.dataAmortizar).subscribe((res: Result) => {
       console.log(res);
       Swal.fire({
@@ -504,7 +542,7 @@ export class ListLoanComponent implements OnInit {
     this.remainingPaymentPorcentje = 0;
     this.moraPorcentaje = 0;
     this.isVisibledMora = false;
-    this.datePay= this.today;
+    this.datePay = this.today;
     this.modalPay = this.modalService.open(content, { ariaLabelledBy: "modal-basic-title", size: "lg", centered: true });
     this.modalPay.result.then(
       (result) => {
@@ -549,10 +587,9 @@ export class ListLoanComponent implements OnInit {
   }
 
   get today() {
-		return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
-	}
+    return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
+  }
   onSavePay() {
-    console.log(this.datePay);
     let data = {
       idLoan: this.idPay,
       number: this.numberPay,
@@ -564,7 +601,8 @@ export class ListLoanComponent implements OnInit {
       typeBank: this.typeBank === null ? 0 : this.typeBank,
       payDate: this.datePay['year'] + this.DELIMITER + this.datePay['month'] + this.DELIMITER + this.datePay['day'],
       accumulatedAmount: this.payMountRest,
-      accumulatedAmountPorcentaje: this.remainingPaymentPorcentje
+      accumulatedAmountPorcentaje: this.remainingPaymentPorcentje,
+      discount: this.discount === null ? 0 : this.discount
     }
     console.log(this.datePay);
     this.apiLoan.payment(data).subscribe((res: Result) => {
@@ -601,7 +639,6 @@ export class ListLoanComponent implements OnInit {
     this.numberDetailPay = number;
     this.apiLoan.getListDetailPay(id, number).subscribe({
       next: (res: Result) => {
-        console.log("pago...", res)
         this.listDetailPay = res.payload.data;
       },
       error: (err) => {
@@ -632,6 +669,7 @@ export class ListLoanComponent implements OnInit {
           next: (res) => {
             this.getDetailPay(this.idDetailPay, this.numberDetailPay);
             this.getListDetail(this.idDetailPay);
+            this.getLoanReport();
             console.log('resultao del elimano', res)
             this.toastr.success(this.constants.MESSAGE_SUCCESS_DELETE, this.constants.TITLE_SUCCESS);
           }

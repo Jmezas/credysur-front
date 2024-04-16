@@ -33,21 +33,13 @@
 }
 
 .vencido {
-    background-color: #FFB6C1 !important;
+    background-color: #ff8597c9 !important;
 }
-
 
 .pendiente {
     background-color: #ffe97b !important;
 }
-
-.table-responsive thead th {
-    position: sticky;
-    top: 0;
-    //z-index: 1020; /* Asegúrate de que el encabezado esté por encima del contenido */
-    background-color: white;
-}
-
+    
 .detallePago {
     max-height: 25rem;
     overflow-y: auto;
@@ -58,23 +50,13 @@
     border-color: #ff8173 !important;
     text-transform: none !important;
     font-size: 0.7rem !important;
-}
-
-.table {
-    --bs-table-bg: none;
-    --bs-table-color: none;
-    border-collapse: collapse;  
-    border: 1px solid #000000;
-}
- 
+} 
 
 .btn-moroso {
     a {
         background-color: transparent !important;
         color: #ffffff !important
     }
-
-    ;
 }
 
 .btn-vencido {
@@ -84,11 +66,7 @@
         color: #2d2d2d !important;
     }
 }
-
-table thead th {
-    border-bottom : none !important
-}
-
+ 
 .btn-pendiente {
     background-color: transparent !important;
     color: #007bff !important;

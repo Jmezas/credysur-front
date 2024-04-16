@@ -1,6 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import {Calculate, LoanRequest} from './models/loan';
+import {Observable} from 'rxjs';
+import {Result} from '../../models/result.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -83,5 +86,25 @@ export class LoanService {
     return this.http.get(`${this.baseUrl}/loan/GetMonthGraph`, {
       headers: this.headers,
     });
+  }
+
+  calculcateLoanPay(data: Calculate) {
+    console.log(this.headers)
+    return this.http.post(`${this.baseUrl}/loan/CalculateLoan`, data, {
+      headers: this.headers,
+    });
+  }
+
+  insertLoan(data: LoanRequest):Observable<Result> {
+    console.log(this.headers)
+    return this.http.post<Result>(`${this.baseUrl}/loan/InserLoan`, data, {
+      headers: this.headers,
+    });
+  }
+
+  reportPaymentSchedule(){
+    return this.http.get(`${this.baseUrl}/loan/ReportSchedulePDF`, {
+      headers: this.headers,
+    })
   }
 }

@@ -1,0 +1,35 @@
+<div class="modal-header">
+    <h5 class="modal-title f-w-600" id="exampleModalLabel">PDF</h5>
+    <button type="button" class="btn btn-danger-gradien" aria-label="Close"
+            (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-xl-4">
+            <button class="btn btn-primary" title="Visualizar pdf del pagare"  (click)="openModal(constantPDF.Pagare)"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                <strong>PAGARE</strong>
+            </button>
+        </div>
+        <div class="col-xl-4">
+            <button class="btn btn-primary" title="Visualizar pdf de Fianza Solida"(click)="openModal(constantPDF.FianzaSolida)"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+
+                <strong>FIANZA SOLIDA</strong>
+            </button>
+        </div>
+        <div class="col-xl-4">
+            <button class="btn btn-primary" title="Visualizar pdf de Cronograma de pago" (click)="openModal(constantPDF.Compromiso)"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                <strong>CRONOGRAMA DE PAGO</strong>
+
+            </button>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+
+    <button class="btn btn-secondary" type="button" data-dismiss="modal" (click)="activeModal.dismiss('Cross click')">
+        <i class="fa fa-window-close"></i>
+        Cerrar
+    </button>
+</div>

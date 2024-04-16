@@ -83,7 +83,6 @@ export class LoginComponent implements OnInit {
       } else {
         localStorage.removeItem("ACTIVE");
       }
-      console.log(res);
       this.api.saveToken(res.payload.data.accessToken, res.payload.data.refreshToken);
       this.router.navigateByUrl("/dashboard/default");
     },

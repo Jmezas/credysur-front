@@ -1,4 +1,5 @@
-export interface ListDetailResponse { 
+export interface ListDetailResponse {
+    discount: number; 
     total: number;
     item: number;
     numero: number;

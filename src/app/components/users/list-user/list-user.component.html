@@ -10,7 +10,7 @@
             </div>
             <div id="batchDelete" class="category-table custom-datatable transcation-datatable user-image">
                 <div class="table-responsive">
-                    <table class="table table-striped">
+                    <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th scope="col">Perfil</th>
@@ -18,8 +18,8 @@
                                 <th scope="col" sortable="lName" (sort)="onSort($event)">Nombres</th>
                                 <th scope="col" sortable="email" (sort)="onSort($event)">Numero Doc</th>
                                 <th scope="col" sortable="last_login" (sort)="onSort($event)">Celular</th>
-                                <th scope="col" sortable="role" (sort)="onSort($event)">Correo</th>
                                 <th scope="col" sortable="role" (sort)="onSort($event)">Direccion</th>
+                                <th scope="col" sortable="role" (sort)="onSort($event)">Correo</th>
                                 <th scope="col">Actions</th>
                             </tr>
                         </thead>
@@ -29,10 +29,9 @@
                                 <td>{{item.user}} </td>
                                 <td>{{item.Name}} {{item.firstLastname}} {{item.secondLastname}}</td>
                                 <td>{{item.numberDocument}}</td>
-                                <td>{{item.email}}</td> 
                                 <td>{{item.phone}}</td>
-                                <td>{{item.email}}</td>
                                 <td>{{item.address}}</td>
+                                <td>{{item.email}}</td>     
                                 <td>
                                     <a routerLink="/users/{{ item.id }}/edit-user"><i
                                             class="fa fa-edit f-12"></i></a>&nbsp;

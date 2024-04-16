@@ -64,13 +64,13 @@ export class NavService {
 		{
 			title: 'Prestamo', icon: 'dollar-sign', type: 'sub', active: false, children: [
 				{ path: '/loans/list-loan', title: 'Cobranza', type: 'link', icon: 'fa fa-trash' },
-				{ path: '/loans/create-loan', title: 'Crear', type: 'link' },
+				{ path: '/loans/create-loan', title: 'Crear prestamo', type: 'link' },
 			]
 		},
 		{
 			title: 'Usuarios', icon: 'users', type: 'sub', active: false, children: [
-				{ path: '/users/list-user', title: 'Lista', type: 'link' },
-				{ path: '/users/create-user', title: 'Crear', type: 'link' },
+				{ path: '/users/list-user', title: 'Lista de usuarios', type: 'link' },
+				{ path: '/users/create-user', title: 'Crear usuario', type: 'link' },
 			]
 		},
 

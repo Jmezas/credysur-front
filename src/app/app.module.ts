@@ -18,6 +18,8 @@ import { AuthInterceptor } from './shared/service/auth-interceptor';
 import { ToastrModule } from "ngx-toastr";
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';  
 import { LoanModule } from './components/loan/loan.module';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,7 +39,7 @@ import { LoanModule } from './components/loan/loan.module';
     AgGridModule,
     HttpClientModule,
     ToastrModule.forRoot(),
-    SweetAlert2Module.forRoot(),
+    SweetAlert2Module.forRoot()
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'es' } ,  ],
   bootstrap: [AppComponent]

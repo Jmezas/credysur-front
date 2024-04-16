@@ -2,9 +2,11 @@
 /* Estilo por defecto del input */
 .form-control {
   border: 1.5px solid #000000 !important;
+  font-weight: bold; 
 }
 .form-control:focus {
   border: 2px solid #007bff !important;
+  cursor: pointer !important;
 }
 .ng-select .ng-select-container {
   border: 1.5px solid #000000;
@@ -12,6 +14,26 @@
 .ng-select .ng-select-container:focus-within {
   border: 2px solid #007bff;  
 }
+label {
+  font-weight: bold;
+}
+
+.table-responsive thead th {
+  position: sticky;
+  top: 0; 
+  color: #e6e6e6;
+  background-color: #010160; 
+ 
+}
+
+.table {
+  --bs-table-bg: none;
+  --bs-table-color: none;
+  border-collapse: collapse;  
+  border: 1px solid #000000;
+  font-weight: bold; 
+}
+
 
 $btn-padding : 0.5rem 1.5rem;
 

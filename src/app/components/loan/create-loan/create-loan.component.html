@@ -1,205 +1,279 @@
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-md-5">
-      <div class="card">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-12 col-sm-6 col-md-6 col-xl-6">
-              <div class="form-group  mb-3">
-                <label for="customer">Fecha de Registro</label>
-                <div class="input-group">
-                  <input class="datepicker-here form-control digits" ngbDatepicker #f="ngbDatepicker"
-                    placeholder="dd/mm/yyyy" [value]="formatter.format(fromDateAmortizar)">
-                  <div class="input-group-append">
-                    <button class="btn calendar" (click)="f.toggle()" type="button"><i
-                        class="fa fa-calendar"></i></button>
-                  </div>
+    <form [formGroup]="formLoan">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-sm-6 col-md-6 col-xl-6">
+                                <div class="form-group  mb-3">
+                                    <label>Fecha de Registro</label>
+                                    <div class="input-group">
+                                        <input class="datepicker-here form-control digits" ngbDatepicker
+                                               #f="ngbDatepicker"
+                                               placeholder="dd/mm/yyyy" [value]="formatter.format(fromDateAmortizar)"
+                                               formControlName="dateIssue">
+                                        <div class="input-group-append">
+                                            <button class="btn calendar" (click)="f.toggle()" type="button"><i
+                                                    class="fa fa-calendar"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-6 col-xl-6">
+                                <div class="form-group  mb-3">
+                                    <label>Moneda</label>
+                                    <ng-select placeholder="Seleccionar el moneda" formControlName="currency">
+                                        <ng-option *ngFor="let item of currencyList"
+                                                   [value]="item.code">{{ item.description }}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-6 col-xl-6">
+                                <div class="form-group  mb-3">
+                                    <label>Serie</label>
+                                    <input type="text" class="form-control" formControlName="serie" [readonly]="true">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-6 col-xl-6">
+                                <div class="form-group  mb-3">
+                                    <label>Nro</label>
+                                    <input type="text" class="form-control" formControlName="numero" [readonly]="true">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-6 col-xl-6">
-              <div class="form-group  mb-3">
-                <label for="customer">Moneda</label>
-                <ng-select placeholder="Seleccionar el moneda" [(ngModel)]="currency">
-                  <ng-option *ngFor="let item of currencyList" [value]="item.code">{{item.description}}
-                  </ng-option>
-                </ng-select>
-              </div>
+            <div class="col-md-7">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-sm-4 col-md-4 col-xl-4">
+                                <div class="form-group  mb-3">
+                                    <label>Tipo Doc.(*)</label>
+                                    <ng-select placeholder="Seleccionar el tipo documento" [(ngModel)]="typeDocument"
+                                               [ngModelOptions]="{ standalone: true }">
+                                        <ng-option *ngFor="let item of typeDocumentList"
+                                                   [value]="item.code">{{ item.description }}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-8 col-md-8 col-xl-8">
+                                <label>Número de Documento(*)</label>
+                                <ng-select class="w-100" placeholder="Escribe para buscar..."
+                                           (search)="searchCustomer($event)"
+                                           formControlName="customerId" (change)="onCustomerChange($event)">
+                                    <ng-option *ngFor="let item of customerList" [value]="item.id">
+                                        {{ item.numberDocument }} - {{ item.name }}
+                                    </ng-option>
+                                </ng-select>
+                                <div *ngIf="formLoan.get('customerId').touched && formLoan.get('customerId').errors?.required"
+                                     class="text text-danger">
+                                    El cliente es necesario.
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group  mb-3">
+                                    <label>Apellidos y Nombres, Denominación o Razón Social</label>
+                                    <input type="text" class="form-control" [(ngModel)]="customerName"
+                                           [ngModelOptions]="{ standalone: true }" disabled>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group  mb-3">
+                                    <label>Dirección</label>
+                                    <input type="text" class="form-control" [(ngModel)]="address"
+                                           [ngModelOptions]="{ standalone: true }" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-6 col-xl-6">
-              <div class="form-group  mb-3">
-                <label for="customer">Serie</label>
-                <input type="text" class="form-control" [(ngModel)]="serie" [disabled]="true">
-              </div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-6 col-xl-6">
-              <div class="form-group  mb-3">
-                <label for="customer">Nro</label>
-                <input type="text" class="form-control" [(ngModel)]="numero" [disabled]="true">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-7">
-      <div class="card">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-12 col-sm-4 col-md-4 col-xl-4">
-              <div class="form-group  mb-3">
-                <label for="customer">Tipo Doc.(*)</label>
-                <ng-select placeholder="Seleccionar el tipo documento" [(ngModel)]="typeDocument">
-                  <ng-option *ngFor="let item of typeDocumentList" [value]="item.code">{{item.description}}
-                  </ng-option>
-                </ng-select>
-              </div>
-            </div>
-            <div class="col-12 col-sm-8 col-md-8 col-xl-8">
-              <label for="customer">Número de Documento(*)</label>
-              <ng-select class="w-100" placeholder="Escribe para buscar..." (search)="searchCustomer($event)"
-                [(ngModel)]="customerId" (ngModelChange)="onCustomerChange($event)">
-                <ng-option *ngFor="let item of customerList" [value]="item.id">
-                  {{item.numberDocument}} - {{item.name}}
-                </ng-option>
-              </ng-select>
-            </div>
-            <div class="col-12">
-              <div class="form-group  mb-3">
-                <label for="customer">Apellidos y Nombres, Denominación o Razón Social</label>
-                <input type="text" class="form-control" [(ngModel)]="customerName">
-              </div>
-            </div>
-            <div class="col-12">
-              <div class="form-group  mb-3">
-                <label for="customer">Dirección</label>
-                <input type="text" class="form-control" [(ngModel)]="address">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="card">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-12 col-sm-2 col-md-2 col-xl-2">
-            <div class="form-group  mb-3">
-              <label for="customer">Estado</label>
-              <input type="text" class="form-control" [(ngModel)]="state" [disabled]="true">
-            </div>
-          </div>
-          <div class="col-12 col-sm-3 col-md-3 col-xl-3">
-            <div class="form-group  mb-3">
-              <label for="customer">Monto max. prestamo</label>
-              <input type="text" class="form-control" [(ngModel)]="mountTotal" [disabled]="true">
-            </div>
-          </div>
-          <div class="col-12 col-sm-6 col-md-6 col-xl-6">
-            <div class="col">
-              <label class="d-block mb-2" for="edo-ani">
-                <input class="radio_animated" id="edo-ani" type="radio" name="rdo-ani" checked>
-                Todos los días
-              </label>
-              <label class="d-block mb-2" for="edo-ani1">
-                <input class="radio_animated" id="edo-ani1" type="radio" name="rdo-ani">
-                No Sabados
-              </label>
-              <label class="d-block mb-0" for="edo-ani2">
-                <input class="radio_animated" id="edo-ani2" type="radio" name="rdo-ani">
-                No Domingos
-              </label>
-              <label class="d-block mb-0" for="edo-ani2">
-                <input class="radio_animated" id="edo-ani3" type="radio" name="rdo-ani">
-                No Sábados ni Domingos
-              </label>
-            </div>
-          </div>
-          <div class="col-12 col-sm-3 col-md-3 col-xl-3">
-            <div class="form-group  mb-3">
-              <label for="customer">Monto requerido</label>
-              <input type="text" class="form-control" [(ngModel)]="monto">
-            </div>
-          </div>
-          <div class="col-12 col-sm-3 col-md-3 col-xl-3">
-            <div class="form-group mb-3">
-              <label for="customer">Interes</label>
-              <input type="text" class="form-control" [(ngModel)]="interes">
-            </div>
-          </div>
-          <div class="col-12 col-sm-3 col-md-3 col-xl-3">
-            <div class="form-group  mb-3">
-              <label for="customer">Nro de Cuotas</label>
-              <input type="text" class="form-control" [(ngModel)]="cuotas">
-            </div>
-          </div>
-          <div class="col-12 col-sm-3 col-md-3 col-xl-3">
-            <div class="form-group  mb-3">
-              <label for="customer">Forma de pago</label>
-              <ng-select placeholder="Seleccionar el forma de pago" [(ngModel)]="formePay">
-                <ng-option *ngFor="let item of formeList" [value]="item.code">{{item.description}}
-                </ng-option>
-              </ng-select>
-            </div>
-          </div>
         </div>
         <div class="row">
-          <div class="btn-popup pull-right">
-            <a class="btn btn-primary" (click)="onCalculate()">Calcular</a>
-          </div>
-          <div class="row mb-3">
-            <div class="col-12 col-lg-6">
-              <div class="form-group">
-                <label for="observaciones">Observaciones</label>
-                <textarea id="observaciones" class="form-control" [(ngModel)]="observaciones"></textarea>
-              </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-sm-2 col-md-2 col-xl-2">
+                            <div class="form-group  mb-3">
+                                <label>Estado</label>
+                                <input type="text" class="form-control" [(ngModel)]="state" [disabled]="true"
+                                       [ngModelOptions]="{ standalone: true }">
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                            <div class="form-group  mb-3">
+                                <label>Monto max. prestamo</label>
+                                <input type="text" class="form-control" [(ngModel)]="amountTotalLoanText"
+                                       [disabled]="true"
+                                       [ngModelOptions]="{ standalone: true }"
+                                       [inputMask]="currencyInputMask" placeholder="S/ 0.00">
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-6 col-xl-6" *ngIf="isVisibleFormPay">
+                            <div class="col">
+                                <label class="d-block mb-1" for="edo-ani">
+                                    <input class="radio_animated" id="edo-ani" type="radio" name="rdo-ani" value="1"
+                                           (change)="onItemChange($event.target.value)" [checked]="true">
+                                    Todos los días
+                                </label>
+                                <label class="d-block mb-1" for="edo-ani1">
+                                    <input class="radio_animated" id="edo-ani1" type="radio" name="rdo-ani" value="2"
+                                           (change)="onItemChange($event.target.value)">
+                                    No Sabados
+                                </label>
+                                <label class="d-block mb-1" for="edo-ani1">
+                                    <input class="radio_animated" id="edo-ani2" type="radio" name="rdo-ani" value="3"
+                                           (change)="onItemChange($event.target.value)">
+                                    No Domingos
+                                </label>
+                                <label class="d-block mb-1" for="edo-ani2">
+                                    <input class="radio_animated" id="edo-ani3" type="radio" name="rdo-ani" value="4"
+                                           (change)="onItemChange($event.target.value)">
+                                    No Sábados ni Domingos
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                            <div class="form-group mb-3">
+                                <label>Monto requerido</label>
+                                <input type="text" class="form-control" formControlName="amount"
+                                       [inputMask]="currencyInputMask" placeholder="S/ 0.00"
+                                       [class.is-invalid]="formLoan.get('amount').invalid && formLoan.get('amount').touched">
+                                <div *ngIf="formLoan.get('amount').touched && formLoan.get('amount').errors?.required"
+                                     class="text text-danger">
+                                    Agregar el monto requerido.
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                            <div class="form-group mb-3">
+                                <label>Interes</label>
+                                <input type="text" class="form-control" formControlName="interest"
+                                       [inputMask]="numberInputMask" placeholder="0"
+                                       [class.is-invalid]="formLoan.get('interest').invalid && formLoan.get('interest').touched">
+                                <div *ngIf="formLoan.get('interest').touched && formLoan.get('interest').errors?.required"
+                                     class="text text-danger">
+                                    El interes no debe de ser 0.
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                            <div class="form-group  mb-3">
+                                <label>Nro de Cuotas</label>
+                                <input type="text" class="form-control" formControlName="quota"
+                                       [inputMask]="numberInputMask" placeholder="0">
+                                <div *ngIf="formLoan.get('quota').touched && formLoan.get('quota').errors?.required"
+                                     class="text text-danger">
+                                    La couta no debe de ser 0.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                            <div class="form-group  mb-3">
+                                <label>Forma de pago</label>
+                                <ng-select placeholder="Seleccionar el forma de pago" formControlName="fromPay"
+                                           (change)="onFormeChange()"
+                                           [ngClass]="{ 'is-invalid': formLoan.get('fromPay').invalid && formLoan.get('fromPay').touched }">
+                                    <ng-option *ngFor="let item of formeList" [value]="item.code">{{ item.description }}
+                                    </ng-option>
+                                </ng-select>
+                                <div *ngIf="formLoan.get('fromPay').touched && formLoan.get('fromPay').errors?.required"
+                                     class="text text-danger">
+                                    Seleccione una forma de pago.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                            <div class="form-group  mb-3">
+                                <label>Fecha Inicio de pago</label>
+                                <div class="input-group">
+                                    <input class="datepicker-here form-control digits" ngbDatepicker #g="ngbDatepicker"
+                                           placeholder="dd/mm/yyyy" [(ngModel)]="startDate"
+                                           [ngModelOptions]="{ standalone: true }">
+                                    <div class="input-group-append">
+                                        <button class="btn calendar" (click)="g.toggle()" type="button"><i
+                                                class="fa fa-calendar"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+
+                            <div class="btn-popup pull-left">
+                                <a class="btn btn-primary" (click)="onCalculate()"><i class="fa fa-calculator"></i>
+                                    Calcular</a>
+                            </div>
+                            <div class="btn-popup pull-right">
+                                <a class="btn btn-primary" (click)="onSaveLoan()"><i class="fa fa-save"></i>
+                                    Guardar</a>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-12 col-lg-6">
+                                <div class="form-group">
+                                    <label for="observaciones">Observaciones</label>
+                                    <textarea id="observaciones" class="form-control"
+                                              formControlName="observation"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="p-3 mb-2 bg-light text-dark border">Totales</div>
+                                <div class="row border-top border-bottom py-2">
+                                    <div class="col-6">Valor por cuotas</div>
+                                    <div class="col-6 text-right">{{ quotaTotal | number: '1.2-2' }}</div>
+                                </div>
+                                <div class="row border-bottom py-2">
+                                    <div class="col-6">Interes</div>
+                                    <div class="col-6 text-right">{{ interesCuota | number: '1.2-2' }}</div>
+                                </div>
+                                <div class="row border-bottom py-2">
+                                    <div class="col-6">Monto Calculado</div>
+                                    <div class="col-6 text-right">{{ totalCapital | number: '1.2-2' }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="custom-datatable transcation-datatable">
+                            <div class="table-responsive contenedor-tabla">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">N°</th>
+                                        <th scope="col">Fecha</th>
+                                        <th scope="col">Cuota</th>
+                                        <th scope="col">Interes Pagado</th>
+                                        <th scope="col">Capital Pagado</th>
+                                        <th scope="col">Saldo Pagado</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr *ngFor="let item of calculateLoan">
+                                        <td>{{ item.numeroPago }}</td>
+                                        <td>{{ item.fechaPago |date:'dd/MM/yyyy' }}</td>
+                                        <td>{{ item.cuota | number: '1.2-2' }}</td>
+                                        <td>{{ item.interesPagado | number: '1.2-2' }}</td>
+                                        <td>{{ item.capitalPagado | number: '1.2-2' }}</td>
+                                        <td>{{ item.saldoPendiente | number: '1.2-2' }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-12 col-lg-6">
-              <div class="p-3 mb-2 bg-light text-dark border">Totales</div>
-              <div class="row border-top border-bottom py-2">
-                <div class="col-6">Valor por cuotas</div>
-                <div class="col-6 text-right">{{nroCuotas | number: '1.2-2'}}</div>
-              </div>
-              <div class="row border-bottom py-2">
-                <div class="col-6">Interes</div>
-                <div class="col-6 text-right">{{interesCuota | number: '1.2-2'}}</div>
-              </div>
-              <div class="row border-bottom py-2">
-                <div class="col-6">Monto Calculado</div>
-                <div class="col-6 text-right">{{totalCapital | number: '1.2-2'}}</div>
-              </div>
-            </div>
-          </div>
-          <div class="custom-datatable transcation-datatable">
-            <div class="table-responsive contenedor-tabla">
-              <table class="table report-table">
-                <thead>
-                  <tr>
-                    <th scope="col">N°</th>
-                    <th scope="col">Fecha</th>
-                    <th scope="col">Cuota</th>
-                    <th scope="col">Interes Pagado</th>
-                    <th scope="col">Capital Pagado</th>
-                    <th scope="col">Saldo Pagado</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of amortizacion">
-                    <td> {{item.numeroPago}} </td>
-                    <td>{{item.fecha|date:'dd/MM/yyyy'}} </td>
-                    <td>{{item.cuota | number: '1.2-2'}} </td>
-                    <td> {{item.interesPagado | number: '1.2-2'}}</td>
-                    <td> {{item.capitalPagado | number: '1.2-2'}}</td>
-                    <td> {{item.saldoPendiente | number: '1.2-2'}}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </div>
+    </form>
 </div>
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="square-jelly-box" [fullScreen]="true">
+    <p style="color: white">Cargando...</p>
+</ngx-spinner>

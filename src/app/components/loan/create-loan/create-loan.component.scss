@@ -3,4 +3,7 @@
   .fa-search {
     cursor: pointer; /* Opcional: si el icono es interactivo */
   }
-  
+
+  .is-invalid {
+    border-color: var(--bs-form-invalid-border-color) !important;
+  }

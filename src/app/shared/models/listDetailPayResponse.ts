@@ -5,5 +5,8 @@ export interface ListDetailPayResponse {
     sHora: string;
     nMonto: number;
     dFecha: string;
-    usuario: string; 
+    usuario: string;
+    discount:number;
+    dFecReg:string;
+
 }

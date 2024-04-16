@@ -1,0 +1,114 @@
+<!--LISTA DE PAGO-->
+
+<div class="modal-header">
+    <h5 class="modal-title f-w-600" id="exampleModalLabel">Lista de pago</h5>
+    <button type="button" class="close" aria-label="Close" data-dismiss="modal" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-12 col-sm-2 col-md-2 col-xl-2">
+            <div class="form-group  mb-3">
+                <label>Tipo Documento:</label>
+                <input type="text" class="form-control" [(ngModel)]="loan.documento" disabled="true">
+            </div>
+        </div>
+        <div class="col-12 col-sm-2 col-md-2 col-xl-2">
+            <div class="form-group  mb-3">
+                <label>Serie - Numero:</label>
+                <input type="text" class="form-control" [(ngModel)]="loan.serie" disabled="true">
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-6 col-xl-6">
+            <div class="form-group  mb-3">
+                <label>Cliente:</label>
+                <input type="text" class="form-control" [(ngModel)]="loan.sRazonSocial" disabled="true">
+            </div>
+        </div>
+        <div class="col-12 col-sm-2 col-md-2 col-xl-2">
+            <div class="form-group  mb-3">
+                <label>Total</label>
+                <input type="text" class="form-control" value="{{loan.nTotal | number: '1.2-2'}}" disabled="true">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-sm-4 col-md-4 col-xl-4">
+            <div class="form-group  mb-3">
+                <a class="btn btn-primary" href="javascript:void(0)" (click)="openModalPDF()"><i
+                        class="fa fa-file-pdf-o"></i> Cronograma de pago </a>
+            </div>
+        </div>
+        <div class="col-12 col-sm-4 col-md-4 col-xl-4">
+            <div class="form-group  mb-3">
+                <button class="btn btn-primary"><i
+                        class="fa fa-file-pdf-o"></i> Compromizo de pago
+                </button>
+            </div>
+        </div>
+        <div class="col-12 col-sm-4 col-md-4 col-xl-4">
+            <div class="form-group  mb-3">
+                <button class="btn btn-primary" (click)="openModalAmortizar()"><i
+                        class="fa fa-money"></i>
+                    Amortizar pago
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="batchDelete" class="custom-datatable transcation-datatable">
+            <div class="table-responsive contenedor-tabla detallePago">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col"> Item</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Nro Cuota</th>
+                        <th scope="col">Pagado</th>
+                        <th scope="col">Descuento</th>
+                        <th scope="col">Fecha de pago</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Tipo Pago</th>
+                        <th scope="col">Pagar <input type="checkbox" (change)="selectAll($event)"></th>
+                        <th scope="col">Accion</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of listDetail" [ngClass]="
+                      {
+                        'pendiente': item.estado === 'POR VENCER',
+                        'vencido': item.estado === 'VENCIDO',
+                      }">
+                        <td>{{ item.item }}</td>
+                        <td>{{ item.descripcion }}</td>
+                        <td>{{ item.totales | number: '1.2-2' }}</td>
+                        <td>{{ item.pago | number: '1.2-2' }}</td>
+                        <td>{{ item.discount | number: '1.2-2' }}</td>
+                        <td>{{ item.fecha }}</td>
+                        <td>{{ item.estado }}</td>
+                        <td>{{ item.tipoPago }}</td>
+                        <td><input type="checkbox" [checked]="selectAlls[item.numero]"
+                                   (change)="selectItem(item.numero, $event)" *ngIf="item.estado !='PAGADO'"></td>
+                        <td>
+                            <a href="javascript:void(0)" title="Descargar"><i class="fa fa-download"></i> </a>&nbsp;
+                            <a *ngIf="item.estado !='PAGADO'" href="javascript:void(0)" title="Pagar"
+                               (click)="openModalPago(item)" style="color:#b2da00"><i class="fa fa-money"></i>
+                            </a>&nbsp;
+                            <a *ngIf="item.pago !==0" href="javascript:void(0)" title="Lista de Pago" (click)="openModalDetail(item)"><i class="fa fa-th-list"></i> </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+
+    <button class="btn btn-secondary" type="button" (click)="activeModal.dismiss('Cross click')">
+        <i class="fa fa-window-close"></i>
+        Cerrar
+    </button>
+</div>
+

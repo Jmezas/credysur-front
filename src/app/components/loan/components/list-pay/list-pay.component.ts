@@ -1,6 +1,4 @@
 import {Component, Input, OnInit, inject} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {ReactiveFormsModule} from '@angular/forms';
 import {ListDetailResponse} from '../../../../shared/models/listDetailResponse';
 import {DismissReason} from '../../../../shared/common/dismissReason';
 import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
@@ -13,6 +11,7 @@ import {DetailPayComponent} from '../detail-pay/detail-pay.component';
 import {AmortizationPayComponent} from '../amortization-pay/amortization-pay.component';
 import {PdfViewerComponent} from '../../../../shared/components/pdf-viewer/pdf-viewer.component';
 import {PdfViewerPayComponent} from '../../../../shared/components/pdf-viewer-pay/pdf-viewer-pay.component';
+import {ConstantPDF} from '../../../../shared/models/Constants';
 
 @Component({
     selector: 'app-list-pay',
@@ -25,7 +24,7 @@ export class ListPayComponent implements OnInit {
     selectAlls: { [key: number]: boolean } = {};
     @Input() public loan: LoansReponse;
     closeResult: string = '';
-
+    constantPDF = ConstantPDF;
     constructor(
         private modalService: NgbModal,
         private apiLoan: LoanService,
@@ -137,8 +136,7 @@ export class ListPayComponent implements OnInit {
     /**
      * modal lista detalle pago
      */
-    openModalDetail(item: LoansReponse) {
-        console.log(item);
+    openModalDetail(item) {
         const modalDetailPay = this.modalService.open(DetailPayComponent, {
             ariaLabelledBy: 'modal-basic-title',
             size: 'lg',
@@ -159,9 +157,12 @@ export class ListPayComponent implements OnInit {
         });
     }
 
-    openModalPDF() {
-      const modalPdf = this.modalService.open(PdfViewerComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', centered: true});
+    openModalPayPDF(numberId:number) {
+        const modalPdf = this.modalService.open(PdfViewerPayComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', centered: true});
         modalPdf.componentInstance.loanId = this.loan.iIdPrestamo;
+        modalPdf.componentInstance.numberId = numberId;
+        modalPdf.componentInstance.payId = 0;
+        modalPdf.componentInstance.title = 'TICKET DE PAGO';
         modalPdf.result.then ((result) => {
                 this.closeResult = `Closed with: ${result}`;
             },
@@ -171,13 +172,21 @@ export class ListPayComponent implements OnInit {
         );
     }
 
-    openModalPayPDF(numberId:number) {
-        const modalPdf = this.modalService.open(PdfViewerPayComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', centered: true});
-        modalPdf.componentInstance.loanId = this.loan.iIdPrestamo;
-        modalPdf.componentInstance.numberId = numberId;
-        modalPdf.componentInstance.payId = 0;
-        modalPdf.componentInstance.title = 'TICKET DE PAGO';
-        modalPdf.result.then ((result) => {
+    openModal(constPDF: number, title:string) {
+        const modalPDF = this.modalService.open(PdfViewerComponent,
+            {
+                ariaLabelledBy: 'modal-basic-title',
+                size: 'xl',
+                centered: true,
+                backdrop: 'static',
+                animation: true,
+                backdropClass: 'modal-backdrop',
+            });
+        modalPDF.componentInstance.loanId =  this.loan.iIdPrestamo;
+        modalPDF.componentInstance.typePDF = constPDF;
+        modalPDF.componentInstance.title = title;
+        modalPDF.result.then(
+            (result) => {
                 this.closeResult = `Closed with: ${result}`;
             },
             (reason) => {

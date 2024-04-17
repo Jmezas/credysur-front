@@ -2,7 +2,8 @@
 
 <div class="modal-header">
     <h5 class="modal-title f-w-600" id="exampleModalLabel">Lista de pago</h5>
-    <button type="button" class="close" aria-label="Close" data-dismiss="modal" (click)="activeModal.dismiss('Cross click')">
+    <button type="button" class="close" aria-label="Close" data-dismiss="modal"
+            (click)="activeModal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
@@ -29,32 +30,38 @@
         <div class="col-12 col-sm-2 col-md-2 col-xl-2">
             <div class="form-group  mb-3">
                 <label>Total</label>
-                <input type="text" class="form-control" value="{{loan.nTotal | number: '1.2-2'}}" disabled="true">
+                <input type="text" class="form-control" value="{{loan.nTotal | number: '1.2-2'}}" [disabled]="true">
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-12 col-sm-4 col-md-4 col-xl-4">
+        <div class="col-12 col-sm-12 col-md-12 col-xl-12">
             <div class="form-group  mb-3">
-                <a class="btn btn-primary" href="javascript:void(0)" (click)="openModalPDF()"><i
-                        class="fa fa-file-pdf-o"></i> Cronograma de pago </a>
-            </div>
-        </div>
-        <div class="col-12 col-sm-4 col-md-4 col-xl-4">
-            <div class="form-group  mb-3">
-                <button class="btn btn-primary"><i
-                        class="fa fa-file-pdf-o"></i> Compromizo de pago
+                <button class="btn btn-primary" href="javascript:void(0)"
+                        (click)="openModal(constantPDF.Compromiso,'CRONOGRAMA DE PAGO')"><i
+                        class="fa fa-file-pdf-o"></i> Cronograma de pago
                 </button>
-            </div>
-        </div>
-        <div class="col-12 col-sm-4 col-md-4 col-xl-4">
-            <div class="form-group  mb-3">
+                &nbsp;&nbsp;
+                <button class="btn btn-primary" title="Visualizar pdf del pagare"
+                        (click)="openModal(constantPDF.Pagare, 'PAGARE')"><i class="fa fa-file-pdf-o"
+                                                                             aria-hidden="true"></i>
+                    <strong>PAGARE</strong>
+                </button>
+                &nbsp;&nbsp;
+                <button class="btn btn-primary" title="Visualizar pdf de Fianza Solida"
+                        (click)="openModal(constantPDF.FianzaSolida, 'FIANZA SOLIDA')"><i class="fa fa-file-pdf-o"
+                                                                                          aria-hidden="true"></i>
+
+                    <strong>FIANZA SOLIDA</strong>
+                </button>
+                &nbsp;&nbsp;
                 <button class="btn btn-primary" (click)="openModalAmortizar()"><i
                         class="fa fa-money"></i>
                     Amortizar pago
                 </button>
             </div>
         </div>
+
     </div>
     <div class="row">
         <div id="batchDelete" class="custom-datatable transcation-datatable">
@@ -91,11 +98,13 @@
                         <td><input type="checkbox" [checked]="selectAlls[item.numero]"
                                    (change)="selectItem(item.numero, $event)" *ngIf="item.estado !='PAGADO'"></td>
                         <td>
-                            <a href="javascript:void(0)" *ngIf="item.pago !=0" title="Descargar" (click)="openModalPayPDF(item.item)"><i class="fa fa-download"></i> </a>&nbsp;
+                            <a href="javascript:void(0)" *ngIf="item.pago !=0" title="Descargar"
+                               (click)="openModalPayPDF(item.item)"><i class="fa fa-download"></i> </a>&nbsp;
                             <a *ngIf="item.estado !='PAGADO'" href="javascript:void(0)" title="Pagar"
                                (click)="openModalPago(item)" style="color:#b2da00"><i class="fa fa-money"></i>
                             </a>&nbsp;
-                            <a *ngIf="item.pago !==0" href="javascript:void(0)" title="Lista de Pago" (click)="openModalDetail(item)"><i class="fa fa-th-list"></i> </a>
+                            <a *ngIf="item.pago !==0" href="javascript:void(0)" title="Lista de Pago"
+                               (click)="openModalDetail(item)"><i class="fa fa-th-list"></i> </a>
                         </td>
                     </tr>
                     </tbody>

@@ -114,30 +114,7 @@
                                        [inputMask]="currencyInputMask" placeholder="S/ 0.00">
                             </div>
                         </div>
-                        <div class="col-12 col-sm-6 col-md-6 col-xl-6" *ngIf="isVisibleFormPay">
-                            <div class="col">
-                                <label class="d-block mb-1" for="edo-ani">
-                                    <input class="radio_animated" id="edo-ani" type="radio" name="rdo-ani" value="1"
-                                           (change)="onItemChange($event.target.value)" [checked]="true">
-                                    Todos los días
-                                </label>
-                                <label class="d-block mb-1" for="edo-ani1">
-                                    <input class="radio_animated" id="edo-ani1" type="radio" name="rdo-ani" value="2"
-                                           (change)="onItemChange($event.target.value)">
-                                    No Sabados
-                                </label>
-                                <label class="d-block mb-1" for="edo-ani1">
-                                    <input class="radio_animated" id="edo-ani2" type="radio" name="rdo-ani" value="3"
-                                           (change)="onItemChange($event.target.value)">
-                                    No Domingos
-                                </label>
-                                <label class="d-block mb-1" for="edo-ani2">
-                                    <input class="radio_animated" id="edo-ani3" type="radio" name="rdo-ani" value="4"
-                                           (change)="onItemChange($event.target.value)">
-                                    No Sábados ni Domingos
-                                </label>
-                            </div>
-                        </div>
+
                         <div class="col-12 col-sm-3 col-md-3 col-xl-3">
                             <div class="form-group mb-3">
                                 <label>Monto requerido</label>
@@ -202,6 +179,30 @@
                                                 class="fa fa-calendar"></i></button>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-6 col-xl-6" *ngIf="isVisibleFormPay">
+                            <div class="col">
+                                <label class="d-block mb-1" for="edo-ani">
+                                    <input class="radio_animated" id="edo-ani" type="radio" name="rdo-ani" value="1"
+                                           (change)="onItemChange($event.target.value)" [checked]="true">
+                                    Todos los días
+                                </label>
+                                <label class="d-block mb-1" for="edo-ani1">
+                                    <input class="radio_animated" id="edo-ani1" type="radio" name="rdo-ani" value="2"
+                                           (change)="onItemChange($event.target.value)">
+                                    No Sabados
+                                </label>
+                                <label class="d-block mb-1" for="edo-ani1">
+                                    <input class="radio_animated" id="edo-ani2" type="radio" name="rdo-ani" value="3"
+                                           (change)="onItemChange($event.target.value)">
+                                    No Domingos
+                                </label>
+                                <label class="d-block mb-1" for="edo-ani2">
+                                    <input class="radio_animated" id="edo-ani3" type="radio" name="rdo-ani" value="4"
+                                           (change)="onItemChange($event.target.value)">
+                                    No Sábados ni Domingos
+                                </label>
                             </div>
                         </div>
                     </div>

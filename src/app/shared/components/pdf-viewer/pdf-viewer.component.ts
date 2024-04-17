@@ -12,7 +12,7 @@ export class PdfViewerComponent implements OnInit {
     pdfSrc: string;
     @Input() loanId: number;
     @Input() typePDF: number;
-
+    @Input() title:string;
     constructor(private apiReport: ReportService) {
     }
 

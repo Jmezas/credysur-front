@@ -1,6 +1,6 @@
 import {Component, inject, Input, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ListDetailPayResponse} from '../../../../shared/models/listDetailPayResponse';
 import {Result} from '../../../../shared/models/result.interface';
 import {LoanService} from '../../../../shared/service/loans/loan.service';
@@ -9,6 +9,8 @@ import {LoansReponse} from '../../../../shared/models/loanResponse';
 import Swal from 'sweetalert2';
 import {ToastrService} from 'ngx-toastr';
 import {Constants} from 'src/app/shared/common/constants';
+import {PdfViewerPayComponent} from '../../../../shared/components/pdf-viewer-pay/pdf-viewer-pay.component';
+import {DismissReason} from '../../../../shared/common/dismissReason';
 
 @Component({
     selector: 'app-detail-pay',
@@ -21,12 +23,13 @@ export class DetailPayComponent implements OnInit {
 
     @Input() detailPay: ListDetailResponse;
     @Input() loan: LoansReponse;
-
+    closeResult: string = '';
     constants: Constants = new Constants();
 
     constructor(
         private apiLoan: LoanService,
         private toastr: ToastrService,
+        private modalService: NgbModal,
     ) {
 
     }
@@ -45,7 +48,20 @@ export class DetailPayComponent implements OnInit {
             },
         });
     }
-
+    openModalPayPDF(payId:number) {
+        const modalPdf = this.modalService.open(PdfViewerPayComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', centered: true});
+        modalPdf.componentInstance.loanId = this.loan.iIdPrestamo;
+        modalPdf.componentInstance.numberId = this.detailPay.numero;
+        modalPdf.componentInstance.payId = payId;
+        modalPdf.componentInstance.title = 'TICKET DE PAGO';
+        modalPdf.result.then ((result) => {
+                this.closeResult = `Closed with: ${result}`;
+            },
+            (reason) => {
+                this.closeResult = `Dismissed ${new DismissReason(reason)}`;
+            }
+        );
+    }
     onDeletePay(id: number) {
         Swal.fire({
             title: '¿Estas seguro?',

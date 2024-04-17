@@ -27,7 +27,7 @@ export class AllPdfLoanComponent implements OnInit {
 
     }
 
-    openModal(constPDF: number) {
+    openModal(constPDF: number, title:string) {
         const modalPDF = this.modalService.open(PdfViewerComponent,
             {
                 ariaLabelledBy: 'modal-basic-title',
@@ -40,6 +40,7 @@ export class AllPdfLoanComponent implements OnInit {
 
         modalPDF.componentInstance.loanId = this.loanId;
         modalPDF.componentInstance.typePDF = constPDF;
+        modalPDF.componentInstance.title = title;
         modalPDF.result.then(
             (result) => {
                 this.closeResult = `Closed with: ${result}`;

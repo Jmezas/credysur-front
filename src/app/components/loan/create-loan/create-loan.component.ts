@@ -182,8 +182,6 @@ export class CreateLoanComponent implements OnInit {
             this.formLoan.get('interestGained').patchValue(this.interesCuota);
             this.formLoan.get('total').patchValue(this.totalCapital);
             this.formLoan.get('quotaValue').patchValue(this.quotaTotal);
-
-
         });
     }
 
@@ -217,7 +215,8 @@ export class CreateLoanComponent implements OnInit {
     }
 
     onFormeChange() {
-        if (this.formePay === 1) {
+        console.log('entro!!');
+        if (this.formLoan.value.fromPay === 1) {
             this.isVisibleFormPay = true;
             return;
         }
@@ -234,7 +233,7 @@ export class CreateLoanComponent implements OnInit {
                 size: 'lg',
                 centered: true,
                 backdrop: 'static',
-                animation:true,
+                animation: true,
                 backdropClass: 'modal-backdrop',
             });
 
@@ -251,49 +250,53 @@ export class CreateLoanComponent implements OnInit {
     }
 
     onSaveLoan() {
+        if (this.formLoan.invalid) {
+            this.toastr.warning('Falta agregar campos', 'ADVERTENCIA!');
+            this.formLoan.markAllAsTouched();
+            return;
+        }
+        if (this.amountLoan > this.amountTotalLoan) {
+            this.toastr.warning('El monto de requerido supera al monto de préstamo', 'ADVERTENCIA!');
+            return;
+        }
+        if (this.calculateLoan.length === 0) {
+            this.toastr.warning('Falta realizar el cálculo', 'ADVERTENCIA!');
+            return;
+        }
+        let data: LoanRequest = {
+            customerID: this.formLoan.value.customerId,
+            serie: this.formLoan.value.serie,
+            numero: this.formLoan.value.numero,
+            dateIssue: `${this.formLoan.value.dateIssue['year']}-${this.formLoan.value.dateIssue['month']}-${this.formLoan.value.dateIssue['day']}`,
+            currency: this.formLoan.value.currency,
+            amount: this.amountLoan,
+            interest: this.formLoan.value.interest,
+            quota: this.formLoan.value.quota,
+            fromPay: this.formLoan.value.fromPay,
+            quotaValue: this.formLoan.value.quotaValue,
+            interestGained: this.formLoan.value.interestGained,
+            total: this.formLoan.value.total,
+            observation: this.formLoan.value.observation,
+        };
+        console.log('data====>', data);
+        this.apiLoan.insertLoan(data).subscribe((res: Result) => {
+            const [status, message, additionalData] = res.payload.data.split('|');
+            const swalOptions = {
+                title: status === 'success' ? 'Exito!' : 'Error!',
+                text: message,
+                icon: status,
+                confirmButtonText: 'Aceptar',
+                confirmButtonColor: '#3085d6'
+            };
 
-        this.onCleanForm();
-        this.openModal(19111);
-        // if (this.formLoan.invalid) {
-        //     this.toastr.warning('Falta agregar campos', 'ADVERTENCIA!');
-        //     this.formLoan.markAllAsTouched();
-        //     return;
-        // }
-        // if (this.amountLoan > this.amountTotalLoan) {
-        //     this.toastr.warning('El monto de requerido supera al monto de prestamo', 'ADVERTENCIA!');
-        //     return;
-        // }
-        // let data: LoanRequest = {
-        //     customerID: this.formLoan.value.customerId,
-        //     serie:this.formLoan.value.serie,
-        //     numero:this.formLoan.value.numero,
-        //     dateIssue:`${this.formLoan.value.dateIssue['year']}-${this.formLoan.value.dateIssue['month']}-${this.formLoan.value.dateIssue['day']}` ,
-        //     currency:this.formLoan.value.currency,
-        //     amount:this.amountLoan,
-        //     interest:this.formLoan.value.interest,
-        //     quota:this.formLoan.value.quota,
-        //     fromPay:this.formLoan.value.fromPay,
-        //     quotaValue:this.formLoan.value.quotaValue,
-        //     interestGained:this.formLoan.value.interestGained,
-        //     total:this.formLoan.value.total,
-        //     observation:this.formLoan.value.observation,
-        // };
-        // console.log("data==>>",data);
-        // this.apiLoan.insertLoan(data).subscribe((res: Result) => {
-        //     console.log(res);
-        //     Swal.fire({
-        //         title:"Exito!",
-        //         text: res.payload.data.split('|')[1],
-        //         icon: 'success',
-        //         confirmButtonText: 'Aceptar',
-        //         confirmButtonColor: '#3085d6',
-        //     }).then((result)=> {
-        //         if (result.isConfirmed) {
-        //             this.onCleanForm();
-        //              this.openModal(res.payload.data.split('|')[2])
-        //         }
-        //     })
-        // })
+            Swal.fire(swalOptions).then((result) => {
+                if (result.isConfirmed && status === 'success') {
+                    this.onCleanForm();
+                    this.openModal(additionalData);
+                }
+            });
+
+        });
     }
 
     onCleanForm() {

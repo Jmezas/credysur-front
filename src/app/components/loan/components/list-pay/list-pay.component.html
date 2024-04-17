@@ -91,7 +91,7 @@
                         <td><input type="checkbox" [checked]="selectAlls[item.numero]"
                                    (change)="selectItem(item.numero, $event)" *ngIf="item.estado !='PAGADO'"></td>
                         <td>
-                            <a href="javascript:void(0)" title="Descargar"><i class="fa fa-download"></i> </a>&nbsp;
+                            <a href="javascript:void(0)" *ngIf="item.pago !=0" title="Descargar" (click)="openModalPayPDF(item.item)"><i class="fa fa-download"></i> </a>&nbsp;
                             <a *ngIf="item.estado !='PAGADO'" href="javascript:void(0)" title="Pagar"
                                (click)="openModalPago(item)" style="color:#b2da00"><i class="fa fa-money"></i>
                             </a>&nbsp;

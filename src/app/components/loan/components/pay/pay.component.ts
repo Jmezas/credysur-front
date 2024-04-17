@@ -1,5 +1,5 @@
 import {Component, inject, Input, OnInit} from '@angular/core';
-import {NgbActiveModal, NgbCalendar, NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
+import {NgbActiveModal, NgbCalendar, NgbDateAdapter, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ListDetailResponse} from '../../../../shared/models/listDetailResponse';
 import {LoansReponse} from '../../../../shared/models/loanResponse';
 import {GeneralService} from '../../../../shared/service/General/general.service';
@@ -9,6 +9,8 @@ import {ToastrService} from 'ngx-toastr';
 import {LoanService} from '../../../../shared/service/loans/loan.service';
 import Swal from 'sweetalert2';
 import {Droplist} from '../../../../shared/models/droplist';
+import {PdfViewerPayComponent} from '../../../../shared/components/pdf-viewer-pay/pdf-viewer-pay.component';
+import {DismissReason} from '../../../../shared/common/dismissReason';
 @Component({
     selector: 'app-pay',
     templateUrl: './pay.component.html',
@@ -30,12 +32,14 @@ export class PayComponent implements OnInit {
     typeBank;
     payMountRest: number = 0;
     discount : number  =0;
+    closeResult: string = '';
     constructor(private dateAdapter: NgbDateAdapter<string>,
                 private ngbCalendar: NgbCalendar,
                 private apiGeneral: GeneralService,
                 private apiBank: BankService,
                 private toastr: ToastrService,
                 private apiLoan: LoanService,
+                private modalService: NgbModal,
                 ) {
     }
 
@@ -155,14 +159,34 @@ export class PayComponent implements OnInit {
         };
         console.log(data);
         this.apiLoan.payment(data).subscribe((res: Result) => {
-            console.log(res);
-            Swal.fire({
-                title: '¡Exito!',
-                text: res.payload.data,
-                icon: 'success',
+            const [status, message, additionalData] = res.payload.data.split('|');
+            const swalOptions = {
+                title: status === 'success' ? 'Exito!' : 'Error!',
+                text: message,
+                icon: status,
                 confirmButtonText: 'Aceptar',
+                confirmButtonColor: '#3085d6'
+            };
+            Swal.fire(swalOptions).then((result) => {
+                if (result.isConfirmed && status === 'success') {
+                    this.activeModal.close();
+                    this.openModalPayPDF(additionalData);
+                }
             });
-            this.activeModal.close();
         });
+    }
+    openModalPayPDF(payId:number) {
+        const modalPdf = this.modalService.open(PdfViewerPayComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', centered: true});
+        modalPdf.componentInstance.loanId = this.loan.iIdPrestamo;
+        modalPdf.componentInstance.numberId = this.detailPay.numero;
+        modalPdf.componentInstance.payId = payId;
+        modalPdf.componentInstance.title = 'TICKET DE PAGO';
+        modalPdf.result.then ((result) => {
+                this.closeResult = `Closed with: ${result}`;
+            },
+            (reason) => {
+                this.closeResult = `Dismissed ${new DismissReason(reason)}`;
+            }
+        );
     }
 }

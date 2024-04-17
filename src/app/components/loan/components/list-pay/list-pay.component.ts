@@ -12,6 +12,7 @@ import {PayComponent} from '../pay/pay.component';
 import {DetailPayComponent} from '../detail-pay/detail-pay.component';
 import {AmortizationPayComponent} from '../amortization-pay/amortization-pay.component';
 import {PdfViewerComponent} from '../../../../shared/components/pdf-viewer/pdf-viewer.component';
+import {PdfViewerPayComponent} from '../../../../shared/components/pdf-viewer-pay/pdf-viewer-pay.component';
 
 @Component({
     selector: 'app-list-pay',
@@ -161,6 +162,21 @@ export class ListPayComponent implements OnInit {
     openModalPDF() {
       const modalPdf = this.modalService.open(PdfViewerComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', centered: true});
         modalPdf.componentInstance.loanId = this.loan.iIdPrestamo;
+        modalPdf.result.then ((result) => {
+                this.closeResult = `Closed with: ${result}`;
+            },
+            (reason) => {
+                this.closeResult = `Dismissed ${new DismissReason(reason)}`;
+            }
+        );
+    }
+
+    openModalPayPDF(numberId:number) {
+        const modalPdf = this.modalService.open(PdfViewerPayComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', centered: true});
+        modalPdf.componentInstance.loanId = this.loan.iIdPrestamo;
+        modalPdf.componentInstance.numberId = numberId;
+        modalPdf.componentInstance.payId = 0;
+        modalPdf.componentInstance.title = 'TICKET DE PAGO';
         modalPdf.result.then ((result) => {
                 this.closeResult = `Closed with: ${result}`;
             },

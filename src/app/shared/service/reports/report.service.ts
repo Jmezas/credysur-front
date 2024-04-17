@@ -45,15 +45,15 @@ export class ReportService {
     });
   }
 
-  getReportPDFId(id: number) {
-    return this.http.get(`${this.baseUrl}/report/ReportCommitmentPDF/${id}`, {
+  postReportDayExcel(data: any) {
+    return this.http.post(`${this.baseUrl}/report/ReportLoanExcel`, data, {
       headers: this.headers,
       responseType: 'blob'
     });
   }
 
-  postReportDayExcel(data: any) {
-    return this.http.post(`${this.baseUrl}/report/ReportLoanExcel`, data, {
+  getReportPayLoanPDF(id: number,numberPay:number,pay:number) {
+    return this.http.get(`${this.baseUrl}/report/ReportPayLoanPDF/${id}/${numberPay}/${pay}`, {
       headers: this.headers,
       responseType: 'blob'
     });

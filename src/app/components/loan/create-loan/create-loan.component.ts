@@ -295,7 +295,6 @@ export class CreateLoanComponent implements OnInit {
                     this.openModal(additionalData);
                 }
             });
-
         });
     }
 

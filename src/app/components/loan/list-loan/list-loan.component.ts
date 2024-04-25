@@ -141,7 +141,6 @@ export class ListLoanComponent implements OnInit {
         const data = this.prepareteList();
         console.log(data);
         this.apiLoan.getLoanReport(data).subscribe((res: Result) => {
-            console.log(res);
             this.page = 1;
             this.listReport = res.payload.data;
             this.collectionSize = res.payload.total;
@@ -270,6 +269,9 @@ export class ListLoanComponent implements OnInit {
                 this.closeResult = `Dismissed ${new DismissReason(reason)}`;
             }
         );
+        modalRefPayList.hidden.subscribe(() => {
+            this.getLoanReport();
+        });
     }
 
     prepareteList() {

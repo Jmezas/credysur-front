@@ -121,14 +121,12 @@
         </div>
       </div>
       <div class="custom-datatable transcation-datatable">
-        <div class="table-responsive contenedor-tabla">
+        <div class="table-responsive detallePago">
           <table class="table table-bordered">
             <thead>
               <tr>
-                <th scope="col">Item</th>
-                <th scope="col">Tipo Doc</th>
+                <th scope="col">N°</th>
                 <th scope="col">Cliente</th>
-                <th scope="col">Moneda</th>
                 <th scope="col">Serie - Numero</th>
                 <th scope="col">Fecha emisión </th>
                 <th scope="col">Fecha fin </th>
@@ -141,9 +139,7 @@
             <tbody>
               <tr *ngFor="let item of listReport">
                 <td>{{ item.item }}</td>
-                <td>{{ item.documento }}</td>
                 <td>{{ item.sRazonSocial }}</td>
-                <td>{{ item.moneda }}</td>
                 <td>{{ item.serie }}</td>
                 <td>{{ item.fechaEmision }}</td>
                 <td>{{ item.fechaVenta | date : 'dd/MM/yyyy' }}</td>

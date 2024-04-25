@@ -40,27 +40,7 @@ export class NavService {
 		{
 			path: '/dashboard/default', title: 'panel', icon: 'home', type: 'link', badgeType: 'primary', active: false
 		},
-		// {
-		// 	title: 'Products', icon: 'box', type: 'sub', active: false, children: [
-		// 		{
-		// 			title: 'Physical', type: 'sub', children: [
-		// 				{ path: '/products/physical/category', title: 'Category', type: 'link' },
-		// 				{ path: '/products/physical/sub-category', title: 'Sub Category', type: 'link' },
-		// 				{ path: '/products/physical/product-list', title: 'Product List', type: 'link' },
-		// 				{ path: '/products/physical/product-detail', title: 'Product Detail', type: 'link' },
-		// 				{ path: '/products/physical/add-product', title: 'Add Product', type: 'link' },
-		// 			]
-		// 		},
-		// 		{
-		// 			title: 'digital', type: 'sub', children: [
-		// 				{ path: '/products/digital/digital-category', title: 'Category', type: 'link' },
-		// 				{ path: '/products/digital/digital-sub-category', title: 'Sub Category', type: 'link' },
-		// 				{ path: '/products/digital/digital-product-list', title: 'Product List', type: 'link' },
-		// 				{ path: '/products/digital/digital-add-product', title: 'Add Product', type: 'link' },
-		// 			]
-		// 		},
-		// 	]
-		// }, 
+
 		{
 			title: 'Prestamo', icon: 'dollar-sign', type: 'sub', active: false, children: [
 				{ path: '/loans/list-loan', title: 'Cobranza', type: 'link', icon: 'fa fa-trash' },

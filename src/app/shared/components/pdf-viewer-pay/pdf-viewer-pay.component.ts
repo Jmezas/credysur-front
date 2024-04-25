@@ -18,16 +18,17 @@ export class PdfViewerPayComponent implements OnInit {
     @Input() numberId: number;
     @Input() payId: number;
     @Input() title: string;
+    @Input() send: boolean;
 
     constructor(private apiReport: ReportService) {
     }
 
     ngOnInit() {
-        this.onSeePDF(this.loanId, this.numberId, this.payId);
+        this.onSeePDF(this.loanId, this.numberId, this.payId, this.send);
     }
 
-    onSeePDF(idFile: number, NumberId: number, PayId: number) {
-        this.apiReport.getReportPayLoanPDF(idFile, NumberId, PayId).subscribe((response) => {
+    onSeePDF(idFile: number, NumberId: number, PayId: number, Send: boolean) {
+        this.apiReport.getReportPayLoanPDF(idFile, NumberId, PayId, Send).subscribe((response) => {
             console.log(response);
             const fileURL = URL.createObjectURL(response);
             console.log('this.pdfSrc', fileURL.split('blob:')[1]);

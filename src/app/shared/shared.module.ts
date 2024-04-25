@@ -13,7 +13,6 @@ import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.componen
 import { RightSidebarComponent } from './components/right-sidebar/right-sidebar.component';
 import { TableService } from './service/table.service';
 import { NgbdSortableHeader } from './directives/NgbdSortableHeader';
-import { PdfViewerModule } from 'ng2-pdf-viewer'; 
 
 @NgModule({
   declarations: [
@@ -30,7 +29,6 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
   imports: [
     CommonModule,
     RouterModule,
-    PdfViewerModule, 
   ],
   providers: [NavService, TableService, WINDOW_PROVIDERS],
   exports: [FeatherIconsComponent, ToggleFullscreenDirective,NgbdSortableHeader]

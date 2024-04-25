@@ -54,6 +54,7 @@ export class DetailPayComponent implements OnInit {
         modalPdf.componentInstance.numberId = this.detailPay.numero;
         modalPdf.componentInstance.payId = payId;
         modalPdf.componentInstance.title = 'TICKET DE PAGO';
+        modalPdf.componentInstance.send = false;
         modalPdf.result.then ((result) => {
                 this.closeResult = `Closed with: ${result}`;
             },

@@ -124,7 +124,7 @@ export class PayComponent implements OnInit {
             this.remainingPaymentPorcentje = this.payMount * (this.moraPorcentaje / 100);
             return;
         }
-        this.payMount = value;
+        this.payMount = value == 0 ? 0 : this.payMount;
 
     }
     onSavePay() {
@@ -181,6 +181,7 @@ export class PayComponent implements OnInit {
         modalPdf.componentInstance.numberId = this.detailPay.numero;
         modalPdf.componentInstance.payId = payId;
         modalPdf.componentInstance.title = 'TICKET DE PAGO';
+        modalPdf.componentInstance.send = true;
         modalPdf.result.then ((result) => {
                 this.closeResult = `Closed with: ${result}`;
             },

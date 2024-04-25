@@ -168,7 +168,7 @@ export class CreateLoanComponent implements OnInit {
             rateInterestAnnual: this.formLoan.value.interest,
             quotaNumber: this.formLoan.value.quota,
             formePay: this.formLoan.value.fromPay,
-            optionFrequency: this.optionFrequency = 0 ? this.optionFrequency : 1,
+            optionFrequency: this.optionFrequency === 0 ? 1 : this.optionFrequency,
             startDate: `${this.startDate['year']}-${this.startDate['month']}-${this.startDate['day']}`,
         };
         console.log(requestData);

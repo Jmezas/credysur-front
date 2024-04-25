@@ -64,8 +64,8 @@ export class ListPayComponent implements OnInit {
                 this.closeResult = `Dismissed ${new DismissReason(reason)}`;
             }
         );
+        //cerrar modal
         modalPay.hidden.subscribe(() => {
-            // Lógica después de cerrar el modal
             this.getListDetail(this.loan.iIdPrestamo);
         });
     }

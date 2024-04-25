@@ -26,7 +26,8 @@
               "lodash",
               "chartist",
               "chart.js",
-              "clone-deep"
+              "clone-deep",
+              "lodash"
             ],
             "outputPath": "dist/credysur-front",
             "index": "src/index.html",

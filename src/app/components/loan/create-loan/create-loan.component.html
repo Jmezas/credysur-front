@@ -193,12 +193,12 @@
                                            (change)="onItemChange($event.target.value)">
                                     No Sabados
                                 </label>
-                                <label class="d-block mb-1" for="edo-ani1">
+                                <label class="d-block mb-1" for="edo-ani2">
                                     <input class="radio_animated" id="edo-ani2" type="radio" name="rdo-ani" value="3"
                                            (change)="onItemChange($event.target.value)">
                                     No Domingos
                                 </label>
-                                <label class="d-block mb-1" for="edo-ani2">
+                                <label class="d-block mb-1" for="edo-ani3">
                                     <input class="radio_animated" id="edo-ani3" type="radio" name="rdo-ani" value="4"
                                            (change)="onItemChange($event.target.value)">
                                     No Sábados ni Domingos
@@ -243,23 +243,23 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="custom-datatable transcation-datatable">
-                            <div class="table-responsive contenedor-tabla">
+                        <div class="custom-datatable product-page-main">
+                            <div class="table-responsive detalleCalculate">
                                 <table class="table table-bordered">
                                     <thead>
                                     <tr>
-                                        <th scope="col">N°</th>
+                                        <th scope="row">N°</th>
                                         <th scope="col">Fecha</th>
                                         <th scope="col">Cuota</th>
-                                        <th scope="col">Interes Pagado</th>
-                                        <th scope="col">Capital Pagado</th>
+                                        <th scope="rowgroup">Interes Pagado</th>
+                                        <th scope="rowgroup">Capital Pagado</th>
                                         <th scope="col">Saldo Pagado</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr *ngFor="let item of calculateLoan">
                                         <td>{{ item.numeroPago }}</td>
-                                        <td>{{ item.fechaPago |date:'dd/MM/yyyy' }}</td>
+                                        <td>{{ item.dia }}  {{ item.fechaPago |date:'dd/MM/yyyy' }}</td>
                                         <td>{{ item.cuota | number: '1.2-2' }}</td>
                                         <td>{{ item.interesPagado | number: '1.2-2' }}</td>
                                         <td>{{ item.capitalPagado | number: '1.2-2' }}</td>

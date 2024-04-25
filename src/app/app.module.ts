@@ -41,7 +41,8 @@ import { LoanModule } from './components/loan/loan.module';
     ToastrModule.forRoot(),
     SweetAlert2Module.forRoot()
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'es' } ,  ],
+  providers: [{ provide: LOCALE_ID, useValue: 'es' } ,
+              { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -7,6 +7,8 @@ export class LoanRequest {
     zoneId: number;
     startDate: string;
     endDate: string;
+    startDatePay: string;
+    endDatePay: string;
     paymentMethod: number; 
     numPage: number;
     allPage: number; 

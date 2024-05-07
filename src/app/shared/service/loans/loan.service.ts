@@ -95,6 +95,13 @@ export class LoanService {
     });
   }
 
+  calculcateLoanPay_v2(data: Calculate) {
+    console.log(this.headers)
+    return this.http.post(`${this.baseUrl}/loan/CalculateLoan_v2`, data, {
+      headers: this.headers,
+    });
+  }
+
   insertLoan(data: LoanRequest):Observable<Result> {
     console.log(this.headers)
     return this.http.post<Result>(`${this.baseUrl}/loan/InserLoan`, data, {

@@ -24,6 +24,7 @@ export class PdfViewerPayComponent implements OnInit {
     }
 
     ngOnInit() {
+        console.log(this.send)
         this.onSeePDF(this.loanId, this.numberId, this.payId, this.send);
     }
 

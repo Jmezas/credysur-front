@@ -1,190 +1,227 @@
 <!-- Container-fluid starts-->
 <div class="container-fluid">
-  <div class="card">
-    <div class="card-body">
-      <div class="row">
-        <div class="col-12 col-sm-6 col-md-6 col-xl-6">
-          <div class="form-group  mb-3">
-            <label >CLIENTE</label>
-            <input type="text" class="form-control" [(ngModel)]="customer" (keyup.enter)="getLoanReport()">
-          </div>
-        </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-6 col-xl-6">
+                    <div class="form-group  mb-3">
+                        <label>CLIENTE</label>
+                        <input type="text" class="form-control" [(ngModel)]="customer" (keyup.enter)="getLoanReport()">
+                    </div>
+                </div>
 
-        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
-          <div class="form-group  mb-3">
-            <label>COBRADOR</label>
-            <ng-select placeholder="Seleccionar el cobrador" [(ngModel)]="collector" (keyup.enter)="getLoanReport()">
-              <ng-option *ngFor="let item of collectoList" [value]="item.id">{{item.name }} - {{item.firstLastname}}
-              </ng-option>
-            </ng-select>
-          </div>
-        </div>
-        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
-          <div class="form-group  mb-3">
-            <label >ZONA</label>
-            <ng-select placeholder="Seleccionar el zona" [(ngModel)]="zoneId" (keyup.enter)="getLoanReport()">
-              <ng-option *ngFor="let item of zoneList" [value]="item.id">{{item.name}}
-              </ng-option>
-            </ng-select>
-          </div>
-        </div>
-        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
-          <label >FECHA PAGO INCIO</label>
-          <div class="dp-hidden position-absolute">
-            <div class="input-group">
-              <input name="datepicker" class="form-control" ngbDatepicker #datepicker="ngbDatepicker"
-                [autoClose]="'outside'" (dateSelect)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t"
-                outsideDays="hidden" [startDate]="fromDate!" tabindex="-1" />
-              <ng-template #t let-date let-focused="focused">
-                <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
-                  [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
-                  (mouseleave)="hoveredDate = null">
-                  {{ date.day }}
-                </span>
-              </ng-template>
+                <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                    <div class="form-group  mb-3">
+                        <label>COBRADOR</label>
+                        <ng-select placeholder="Seleccionar el cobrador" [(ngModel)]="collector"
+                                   (keyup.enter)="getLoanReport()">
+                            <ng-option *ngFor="let item of collectoList" [value]="item.id">{{ item.name }}
+                                - {{ item.firstLastname }}
+                            </ng-option>
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                    <div class="form-group  mb-3">
+                        <label>ZONA</label>
+                        <ng-select placeholder="Seleccionar el zona" [(ngModel)]="zoneId"
+                                   (keyup.enter)="getLoanReport()">
+                            <ng-option *ngFor="let item of zoneList" [value]="item.id">{{ item.name }}
+                            </ng-option>
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                    <label>FECHA EMISION INCIO</label>
+                    <div class="dp-hidden position-absolute">
+                        <div class="input-group">
+                            <input name="datepicker" class="form-control" ngbDatepicker #datepicker="ngbDatepicker"
+                                   [autoClose]="'outside'" (dateSelect)="onDateSelectionEmition($event)"
+                                   [displayMonths]="2"
+                                   [dayTemplate]="t"
+                                   outsideDays="hidden" [startDate]="fromDateEmision!" tabindex="-1"/>
+                            <ng-template #t let-date let-focused="focused">
+                            <span class="custom-day" [class.focused]="focused" [class.range]="isRangeEmition(date)"
+                                  [class.faded]="isHoveredEmition(date) || isInsideEmition(date)"
+                                  (mouseenter)="hoveredDate = date"
+                                  (mouseleave)="hoveredDate = null">
+                              {{ date.day }}
+                            </span>
+                            </ng-template>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <input #dpFromDate class="form-control" placeholder="yyyy-mm-dd" name="dpFromDate"
+                               [value]="formatter.format(fromDateEmision)"
+                               (input)="fromDateEmision = validateInput(fromDateEmision, dpFromDate.value)"/>
+                        <button class="btn btn-outline-dark bi bi-calendar3" (click)="datepicker.toggle()"
+                                type="button">
+                            <i class="fa fa-calendar"></i></button>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                    <label>FECHA EMISION FIN</label>
+                    <div class="input-group">
+                        <input #dpToDate class="form-control" placeholder="yyyy-mm-dd" name="dpToDate"
+                               [value]="formatter.format(toDateEmision)"
+                               (input)="toDateEmision = validateInput(toDateEmision, dpToDate.value)"/>
+                        <button class="btn btn-outline-dark bi bi-calendar3" (click)="datepicker.toggle()"
+                                type="button">
+                            <i class="fa fa-calendar"></i></button>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                    <label>FECHA PAGO INCIO</label>
+                    <div class="dp-hidden position-absolute">
+                        <div class="input-group">
+                            <input name="datepickerPay" class="form-control" ngbDatepicker
+                                   #datepickerPay="ngbDatepicker"
+                                   [autoClose]="'outside'" (dateSelect)="onDateSelectionPay($event)" [displayMonths]="2"
+                                   [dayTemplate]="p"
+                                   outsideDays="hidden" [startDate]="fromDatePay!" tabindex="-1"/>
+                            <ng-template #p let-datePay let-focused="focused">
+                                <span class="custom-day" [class.focused]="focused" [class.range]="isRangePay(datePay)"
+                                      [class.faded]="isHoveredPay(datePay) || isInsidePay(datePay)"
+                                      (mouseenter)="hoveredDate = datePay"
+                                      (mouseleave)="hoveredDate = null">
+                                  {{ datePay.day }}
+                                </span>
+                            </ng-template>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input #dpFromDate class="form-control" placeholder="yyyy-mm-dd" name="dpFromDate"
+                               [value]="formatter.format(fromDatePay)"
+                               (input)="fromDatePay = validateInput(fromDatePay, dpFromDate.value)"/>
+                        <button class="btn btn-outline-dark bi bi-calendar3" (click)="datepickerPay.toggle()"
+                                type="button">
+                            <i class="fa fa-calendar"></i></button>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                    <label>FECHA PAGO FIN</label>
+                    <div class="input-group">
+                        <input #dpToDatePay class="form-control" placeholder="yyyy-mm-dd" name="dpToDatePay"
+                               [value]="formatter.format(toDatePay)"
+                               (input)="toDatePay = validateInput(toDatePay, dpToDatePay.value)"/>
+                        <button class="btn btn-outline-dark bi bi-calendar3" (click)="datepickerPay.toggle()"
+                                type="button">
+                            <i class="fa fa-calendar"></i></button>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                    <div class="form-group  mb-3">
+                        <label>ESTADO DE PAGO</label>
+                        <ng-select placeholder="Seleccionar el estado pago" [(ngModel)]="statePay"
+                                   (keyup.enter)="getLoanReport()">
+                            <ng-option *ngFor="let item of stateList" [value]="item.code">{{ item.description }}
+                            </ng-option>
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                    <div class="form-group  mb-3">
+                        <label>FORMA DE PAGO</label>
+                        <ng-select placeholder="Seleccionar el forma de pago" [(ngModel)]="formePay"
+                                   (keyup.enter)="getLoanReport()">
+                            <ng-option *ngFor="let item of formeList" [value]="item.code">{{ item.description }}
+                            </ng-option>
+                        </ng-select>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="input-group">
-            <input #dpFromDate class="form-control" placeholder="yyyy-mm-dd" name="dpFromDate"
-              [value]="formatter.format(fromDate)" (input)="fromDate = validateInput(fromDate, dpFromDate.value)" />
-            <button class="btn btn-outline-dark bi bi-calendar3" (click)="datepicker.toggle()" type="button">
-              <i class="fa fa-calendar"></i></button>
-          </div>
-        </div>
-        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
-          <label >FECHA PAGO FIN</label>
-          <div class="input-group">
-            <input #dpToDate class="form-control" placeholder="yyyy-mm-dd" name="dpToDate"
-              [value]="formatter.format(toDate)" (input)="toDate = validateInput(toDate, dpToDate.value)" />
-            <button class="btn btn-outline-dark bi bi-calendar3" (click)="datepicker.toggle()" type="button">
-              <i class="fa fa-calendar"></i></button>
-          </div>
-        </div>
-        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
-          <div class="form-group  mb-3">
-            <label >TIPO DOCUMENTO</label>
-            <ng-select placeholder="Seleccionar el tipo de Documento" [(ngModel)]="typeDocument"
-              (keyup.enter)="getLoanReport()">
-              <ng-option *ngFor="let item of documentList" [value]="item.code">{{item.description}}
-              </ng-option>
-            </ng-select>
-          </div>
-        </div>
-        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
-          <div class="form-group  mb-3">
-            <label >ESTADO DE PAGO</label>
-            <ng-select placeholder="Seleccionar el estado pago" [(ngModel)]="statePay" (keyup.enter)="getLoanReport()">
-              <ng-option *ngFor="let item of stateList" [value]="item.code">{{item.description}}
-              </ng-option>
-            </ng-select>
-          </div>
-        </div>
-        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
-          <div class="form-group  mb-3">
-            <label >MONEDA</label>
-            <ng-select placeholder="Seleccionar el moneda" [(ngModel)]="currency" (keyup.enter)="getLoanReport()">
-              <ng-option *ngFor="let item of currencyList" [value]="item.code">{{item.description}}
-              </ng-option>
-            </ng-select>
-          </div>
-        </div>
-        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
-          <div class="form-group  mb-3">
-            <label >FORMA DE PAGO</label>
-            <ng-select placeholder="Seleccionar el forma de pago" [(ngModel)]="formePay"
-              (keyup.enter)="getLoanReport()">
-              <ng-option *ngFor="let item of formeList" [value]="item.code">{{item.description}}
-              </ng-option>
-            </ng-select>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12 col-sm-2 col-md-2 col-xl-2">
-          <div class="form-group  mb-4">
-            <button class="btn btn-primary" type="button" (click)="getLoanReport()"> Buscar
-              <i class="fa fa-search"></i>
-            </button>
-          </div>
-        </div>
-        <div class="col-12 col-sm-2 col-md-2 col-xl-2">
-          <div class="form-group  mb-3">
-            <button class="btn btn-primary" type="button" (click)="onClean()"> Limpiar
-              <i class="fa fa-trash"></i>
-            </button>
-          </div>
-        </div>
-        <div class="col-12 col-sm-3col-md-3 col-xl-3">
-          <button class="btn btn-primary" type="button" (click)="donwloadExcel()"> Excel
-            <i class="fa fa-file-excel-o"></i>
-          </button>
-        </div>
-      </div>
-      <div class="custom-datatable transcation-datatable">
-        <div class="table-responsive detallePago">
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th scope="col">N°</th>
-                <th scope="col">Cliente</th>
-                <th scope="col">Serie - Numero</th>
-                <th scope="col">Fecha emisión </th>
-                <th scope="col">Fecha fin </th>
-                <th scope="col">Monto prestamo</th>
-                <th scope="col">Monto faltante</th>
-                <th scope="col">Estado</th>
-                <th scope="col">Acción</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let item of listReport">
-                <td>{{ item.item }}</td>
-                <td>{{ item.sRazonSocial }}</td>
-                <td>{{ item.serie }}</td>
-                <td>{{ item.fechaEmision }}</td>
-                <td>{{ item.fechaVenta | date : 'dd/MM/yyyy' }}</td>
-                <td>{{ item.nTotal | number: '1.2-2' }}</td>
-                <td>{{ item.nPendiente | number: '1.2-2' }}</td>
-                <td [ngClass]="
-                {
-                  'pendiente': item.estado === 'PENDIENTE',
-                  'vencido': item.estado === 'VENCIDO',
-                  'moroso': item.estado === 'MOROSO'
-                }">{{ item.estado }}</td>
-                <td [ngClass]="
-                { 
-                  'btn-vencido': item.estado === 'VENCIDO'
-                }">
-                  <a href="javascript:void(0)" title="Detalle" (click)="openModal(item)"><i
-                      class="fa fa-edit"></i> </a> &nbsp;
-                  <a href="javascript:void(0)" title="Eliminar" (click)="onDelete(item.iIdPrestamo)"><i
-                      class="fa fa-trash"></i> </a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="row">
-          <div class="col-12 col-xl-8 col-sm-8">
-            <div class="d-flex justify-content-start p-2">
-              <label> Existe(n) {{totalRecords}} resultado(s) para mostrar </label>
+            <div class="row">
+                <div class="col-12 col-sm-2 col-md-2 col-xl-2">
+                    <div class="form-group  mb-4">
+                        <button class="btn btn-primary" type="button" (click)="getLoanReport()"> Buscar
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-2 col-md-2 col-xl-2">
+                    <div class="form-group  mb-3">
+                        <button class="btn btn-primary" type="button" (click)="onClean()"> Limpiar
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-3col-md-3 col-xl-3">
+                    <button class="btn btn-primary" type="button" (click)="donwloadExcel()"> Excel
+                        <i class="fa fa-file-excel-o"></i>
+                    </button>
+                </div>
             </div>
-          </div>
-          <div class="col-12 col-sm-6 col-md-6 col-xl-4">
-            <div class="d-flex justify-content-sm-center justify-content-md-center justify-content-xl-end p-2">
-              @if (collectionSize != 0) {
-              <ngb-pagination class="d-flex justify-content-end" [collectionSize]="collectionSize" [(page)]="page"
-                [pageSize]="pageSize" [rotate]="true" [maxSize]="5" [boundaryLinks]="true"
-                (pageChange)="loadPage($event)" />
-              }
+            <div class="custom-datatable transcation-datatable">
+                <div class="table-responsive detallePago">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th scope="col">N°</th>
+                            <th scope="col">Cliente</th>
+                            <th scope="col">Serie - Numero</th>
+                            <th scope="col">Fecha emisión</th>
+                            <th scope="col">Fecha fin</th>
+                            <th scope="col">Fecha pago fin</th>
+                            <th scope="col">Monto prestamo</th>
+                            <th scope="col">Monto faltante</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Acción</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let item of listReport">
+                            <td>{{ item.item }}</td>
+                            <td>{{ item.sRazonSocial }}</td>
+                            <td>{{ item.serie }}</td>
+                            <td>{{ item.fechaEmision }}</td>
+                            <td>{{ item.fechaVenta | date : 'dd/MM/yyyy' }}</td>
+                            <td> {{ item.fechaPagoFin }}</td>
+                            <td>{{ item.nTotal | number: '1.2-2' }}</td>
+                            <td>{{ item.nPendiente | number: '1.2-2' }}</td>
+                            <td [ngClass]="
+                                {
+                                  'pendiente': item.estado === 'PENDIENTE',
+                                  'vencido': item.estado === 'VENCIDO',
+                                  'moroso': item.estado === 'MOROSO'
+                                }">{{ item.estado }}
+                            </td>
+                            <td [ngClass]="
+                                {
+                                  'btn-vencido': item.estado === 'VENCIDO'
+                                }">
+                                <a href="javascript:void(0)" title="Detalle" (click)="openModal(item)"><i
+                                        class="fa fa-edit"></i> </a> &nbsp;
+                                <a href="javascript:void(0)" title="Eliminar" (click)="onDelete(item.iIdPrestamo)"><i
+                                        class="fa fa-trash"></i> </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-xl-8 col-sm-8">
+                        <div class="d-flex justify-content-start p-2">
+                            <label> Existe(n) {{ totalRecords }} resultado(s) para mostrar </label>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6 col-xl-4">
+                        <div class="d-flex justify-content-sm-center justify-content-md-center justify-content-xl-end p-2">
+                            @if (collectionSize != 0) {
+                                <ngb-pagination class="d-flex justify-content-end" [collectionSize]="collectionSize"
+                                                [(page)]="page"
+                                                [pageSize]="pageSize" [rotate]="true" [maxSize]="5"
+                                                [boundaryLinks]="true"
+                                                (pageChange)="loadPage($event)"/>
+                            }
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 
 <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="square-jelly-box" [fullScreen]="true">
-  <p style="color: white">Cargando...</p>
+    <p style="color: white">Cargando...</p>
 </ngx-spinner>

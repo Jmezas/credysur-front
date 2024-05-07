@@ -163,6 +163,7 @@ export class ListPayComponent implements OnInit {
         modalPdf.componentInstance.numberId = numberId;
         modalPdf.componentInstance.payId = 0;
         modalPdf.componentInstance.title = 'TICKET DE PAGO';
+        modalPdf.componentInstance.send = false;
         modalPdf.result.then ((result) => {
                 this.closeResult = `Closed with: ${result}`;
             },

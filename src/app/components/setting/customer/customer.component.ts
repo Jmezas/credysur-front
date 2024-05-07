@@ -72,6 +72,7 @@ export class CustomerComponent implements OnInit {
       type: [null, Validators.required],
       numberDocument: ["", Validators.required],
       customerName: ["", Validators.required],
+      phone: [""],
       cellPhone: [""],
       email: [""],
       address: ["", Validators.required],
@@ -81,7 +82,7 @@ export class CustomerComponent implements OnInit {
       zoneId: [null, Validators.required],
       validateId: [null,],
       category: [null, Validators.required],
-      observation: ["", Validators.required],
+      observation: [""],
     });
   }
 
@@ -255,6 +256,7 @@ export class CustomerComponent implements OnInit {
         type: data.type,
         numberDocument: data.numberDocument,
         customerName: data.customerName,
+        phone: data.phone,
         cellPhone: data.cellPhone,
         email: data.email,
         address: data.address,
@@ -299,6 +301,7 @@ export class CustomerComponent implements OnInit {
       type: this.customerForm.value.type,
       numberDocument: this.customerForm.value.numberDocument,
       customerName: this.customerForm.value.customerName,
+      phone: this.customerForm.value.phone,
       cellPhone: this.customerForm.value.cellPhone,
       email: this.customerForm.value.email,
       address: this.customerForm.value.address,

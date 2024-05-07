@@ -8,6 +8,7 @@ export interface LoansReponse {
     moneda: string;
     serie: string;
     fechaEmision: string;
+    fechaPagoFin: string;
     nTotal: number;
     nPendiente: number;
     estado: string;

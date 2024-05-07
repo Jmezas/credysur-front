@@ -30,13 +30,17 @@ export class ListLoanComponent implements OnInit {
     totalRecords: number;
     totalPage: number;
     collectionSize = 0;
+    numberPage: number;
 
     calendar = inject(NgbCalendar);
     formatter = inject(NgbDateParserFormatter);
 
     hoveredDate: NgbDate | null = null;
-    fromDate: NgbDate | null = null;
-    toDate: NgbDate | null = null;
+    fromDateEmision: NgbDate | null = null;
+    toDateEmision: NgbDate | null = null;
+
+    fromDatePay: NgbDate | null = null;
+    toDatePay: NgbDate | null = null;
 
     zoneList = [];
     collectoList = [];
@@ -54,7 +58,6 @@ export class ListLoanComponent implements OnInit {
     nroDocument: string = '';
     statePay: number = null;
 
-    DELIMITER: string = '-';
     closeResult: string;
 
     //detalle
@@ -150,8 +153,12 @@ export class ListLoanComponent implements OnInit {
     }
 
     loadPage($event: any) {
-        const startDate = this.fromDate === null ? '' : this.fromDate.year + this.DELIMITER + this.fromDate.month + this.DELIMITER + this.fromDate.day;
-        const endDate = this.toDate === null ? '' : this.toDate.year + this.DELIMITER + this.toDate.month + this.DELIMITER + this.toDate.day;
+        const startDate = this.fromDateEmision === null ? '' : `${this.fromDateEmision.year}-${this.fromDateEmision.month}-${this.fromDateEmision.day}`;
+        const endDate = this.toDateEmision === null ? '' : `${this.toDateEmision.year}-${this.toDateEmision.month}-${this.toDateEmision.day}`;
+
+        const startDatePay = this.fromDatePay === null ? '' : `${this.fromDatePay.year}-${this.fromDatePay.month}-${this.fromDatePay.day}`;
+        const endDatePay = this.toDatePay === null ? '' : `${this.toDatePay.year}-${this.toDatePay.month}-${this.toDatePay.day}`;
+
         const data: LoanRequest = {
             collector: this.collector === null ? 0 : this.collector,
             customer: this.customer === '' ? '' : this.customer,
@@ -161,13 +168,16 @@ export class ListLoanComponent implements OnInit {
             zoneId: this.zoneId === null ? 0 : this.zoneId,
             startDate: startDate === null ? '' : startDate,
             endDate: endDate === null ? '' : endDate,
+            startDatePay: startDatePay === null ? '' : startDatePay,
+            endDatePay: endDatePay === null ? '' : endDatePay,
             paymentMethod: this.formePay === null ? 0 : this.formePay,
-            numPage: $event,
+            numPage: $event === undefined ? 1 : $event,
             allPage: 0,
             cantFile: this.pageSize
         };
-
-        console.log(data);
+        //asignar valor el numero de pagina
+        this.numberPage = $event;
+        console.log('data', data);
         this.apiLoan.getLoanReport(data).subscribe((res: Result) => {
             console.log(res);
             this.listReport = res.payload.data;
@@ -177,33 +187,33 @@ export class ListLoanComponent implements OnInit {
         });
     }
 
-    onDateSelection(date: NgbDate) {
-        if (!this.fromDate && !this.toDate) {
-            this.fromDate = date;
-        } else if (this.fromDate && !this.toDate && date && date.after(this.fromDate)) {
-            this.toDate = date;
+    onDateSelectionEmition(date: NgbDate) {
+        if (!this.fromDateEmision && !this.toDateEmision) {
+            this.fromDateEmision = date;
+        } else if (this.fromDateEmision && !this.toDateEmision && date && date.after(this.fromDateEmision)) {
+            this.toDateEmision = date;
         } else {
-            this.toDate = null;
-            this.fromDate = date;
+            this.toDateEmision = null;
+            this.fromDateEmision = date;
         }
     }
 
-    isHovered(date: NgbDate) {
+    isHoveredEmition(date: NgbDate) {
         return (
-            this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate)
+            this.fromDateEmision && !this.toDateEmision && this.hoveredDate && date.after(this.fromDateEmision) && date.before(this.hoveredDate)
         );
     }
 
-    isInside(date: NgbDate) {
-        return this.toDate && date.after(this.fromDate) && date.before(this.toDate);
+    isInsideEmition(date: NgbDate) {
+        return this.toDateEmision && date.after(this.fromDateEmision) && date.before(this.toDateEmision);
     }
 
-    isRange(date: NgbDate) {
+    isRangeEmition(date: NgbDate) {
         return (
-            date.equals(this.fromDate) ||
-            (this.toDate && date.equals(this.toDate)) ||
-            this.isInside(date) ||
-            this.isHovered(date)
+            date.equals(this.fromDateEmision) ||
+            (this.toDateEmision && date.equals(this.toDateEmision)) ||
+            this.isInsideEmition(date) ||
+            this.isHoveredEmition(date)
         );
     }
 
@@ -212,9 +222,43 @@ export class ListLoanComponent implements OnInit {
         return parsed && this.calendar.isValid(NgbDate.from(parsed)) ? NgbDate.from(parsed) : currentValue;
     }
 
+    //pago
+    onDateSelectionPay(date: NgbDate) {
+        if (!this.fromDatePay && !this.toDatePay) {
+            this.fromDatePay = date;
+        } else if (this.fromDatePay && !this.toDatePay && date && date.after(this.fromDatePay)) {
+            this.toDatePay = date;
+        } else {
+            this.toDatePay = null;
+            this.fromDatePay = date;
+        }
+    }
+
+    isHoveredPay(date: NgbDate) {
+        return (
+            this.fromDatePay && !this.toDatePay && this.hoveredDate && date.after(this.fromDatePay) && date.before(this.hoveredDate)
+        );
+    }
+
+    isInsidePay(date: NgbDate) {
+        return this.toDatePay && date.after(this.fromDatePay) && date.before(this.toDatePay);
+    }
+
+    isRangePay(date: NgbDate) {
+        return (
+            date.equals(this.fromDatePay) ||
+            (this.toDatePay && date.equals(this.toDatePay)) ||
+            this.isInsideEmition(date) ||
+            this.isHoveredEmition(date)
+        );
+    }
+
+
     onClean() {
-        this.fromDate = null;
-        this.toDate = null;
+        this.fromDateEmision = null;
+        this.toDateEmision = null;
+        this.fromDatePay = null;
+        this.toDatePay = null;
         this.zoneId = null;
         this.collector = null;
         this.typeDocument = null;
@@ -260,6 +304,7 @@ export class ListLoanComponent implements OnInit {
         // Pasar datos al componente modal
         modalRefPayList.componentInstance.loan = item;
 
+
         // Manejar el resultado del modal
         modalRefPayList.result.then(
             (result) => {
@@ -270,14 +315,15 @@ export class ListLoanComponent implements OnInit {
             }
         );
         modalRefPayList.hidden.subscribe(() => {
-            this.getLoanReport();
+            this.loadPage(this.numberPage);
         });
     }
 
     prepareteList() {
-        let startDate = this.fromDate === null ? '' : this.fromDate.year + this.DELIMITER + this.fromDate.month + this.DELIMITER + this.fromDate.day;
-
-        let endDate = this.toDate === null ? '' : this.toDate.year + this.DELIMITER + this.toDate.month + this.DELIMITER + this.toDate.day;
+        const startDate = this.fromDateEmision === null ? '' : `${this.fromDateEmision.year}-${this.fromDateEmision.month}-${this.fromDateEmision.day}`;
+        const endDate = this.toDateEmision === null ? '' : `${this.toDateEmision.year}-${this.toDateEmision.month}-${this.toDateEmision.day}`;
+        const startDatePay = this.fromDatePay === null ? '' : `${this.fromDatePay.year}-${this.fromDatePay.month}-${this.fromDatePay.day}`;
+        const endDatePay = this.toDatePay === null ? '' : `${this.toDatePay.year}-${this.toDatePay.month}-${this.toDatePay.day}`;
 
         let data: LoanRequest = {
             collector: this.collector === null ? 0 : this.collector,
@@ -288,6 +334,8 @@ export class ListLoanComponent implements OnInit {
             zoneId: this.zoneId === null ? 0 : this.zoneId,
             startDate: startDate === null ? '' : startDate,
             endDate: endDate === null ? '' : endDate,
+            startDatePay: startDatePay === null ? '' : startDatePay,
+            endDatePay: endDatePay === null ? '' : endDatePay,
             paymentMethod: this.formePay === null ? 0 : this.formePay,
             numPage: this.page,
             allPage: 0,

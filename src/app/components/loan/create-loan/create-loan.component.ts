@@ -13,6 +13,8 @@ import {LoansReponse} from '../../../shared/models/loanResponse';
 import {ListPayComponent} from '../components/list-pay/list-pay.component';
 import {DismissReason} from '../../../shared/common/dismissReason';
 import {AllPdfLoanComponent} from '../components/all-pdf-loan/all-pdf-loan.component';
+import {catchError, tap} from 'rxjs/operators';
+import {throwError} from 'rxjs';
 
 @Component({
     selector: 'app-create-loan',
@@ -51,6 +53,7 @@ export class CreateLoanComponent implements OnInit {
     startDate = '';
     isVisibleFormPay: boolean = false;
     formLoan: FormGroup;
+    typeCalculate: boolean = true;
 
     constructor(
         private apiLoan: LoanService,
@@ -172,17 +175,29 @@ export class CreateLoanComponent implements OnInit {
             startDate: `${this.startDate['year']}-${this.startDate['month']}-${this.startDate['day']}`,
         };
         console.log(requestData);
-        this.apiLoan.calculcateLoanPay(requestData).subscribe((res: Result) => {
-            this.calculateLoan = res.payload.data;
+        const calculateLoanObservable = this.typeCalculate
+            ? this.apiLoan.calculcateLoanPay_v2(requestData)
+            : this.apiLoan.calculcateLoanPay(requestData);
 
-            this.interesCuota = this.calculateLoan.reduce((total, response) => total + response.interesPagado, 0);
-            this.totalCapital = this.calculateLoan.reduce((total, response) => total + response.cuota, 0);
-            this.quotaTotal = this.calculateLoan[0].cuota;
+        calculateLoanObservable
+            .pipe(
+                tap((res: Result) => {
+                    this.calculateLoan = res.payload.data;
+                    this.interesCuota = this.calculateLoan.reduce((total, response) => total + response.interesPagado, 0);
+                    this.totalCapital = this.calculateLoan.reduce((total, response) => total + response.cuota, 0);
+                    this.quotaTotal = this.calculateLoan[0].cuota;
 
-            this.formLoan.get('interestGained').patchValue(this.interesCuota);
-            this.formLoan.get('total').patchValue(this.totalCapital);
-            this.formLoan.get('quotaValue').patchValue(this.quotaTotal);
-        });
+                    this.formLoan.get('interestGained').patchValue(this.interesCuota);
+                    this.formLoan.get('total').patchValue(this.totalCapital);
+                    this.formLoan.get('quotaValue').patchValue(this.quotaTotal);
+                }),
+                catchError((error) => {
+                    console.error('Error al calcular el préstamo:', error);
+
+                    return throwError(error);
+                })
+            )
+            .subscribe();
     }
 
     searchCustomer(event) {
@@ -212,6 +227,14 @@ export class CreateLoanComponent implements OnInit {
     onItemChange(event) {
         console.log(event);
         this.optionFrequency = parseInt(event);
+    }
+
+    onCalculateChange(event) {
+        if (event == 1) {
+            this.typeCalculate = true;
+            return;
+        }
+        this.typeCalculate = false;
     }
 
     onFormeChange() {
@@ -309,5 +332,8 @@ export class CreateLoanComponent implements OnInit {
         this.formLoan.get('dateIssue').patchValue(this.today);
         this.customerName = '';
         this.address = '';
+        this.quotaTotal = 0;
+        this.interesCuota = 0;
+        this.totalCapital = 0;
     }
 }

@@ -51,7 +51,7 @@
                         </div>
                     </div>
                     <div class="input-group">
-                        <input #dpFromDate class="form-control" placeholder="yyyy-mm-dd" name="dpFromDate"
+                        <input #dpFromDate class="form-control" placeholder="dd/mm/yyyy" name="dpFromDate"
                                [value]="formatter.format(fromDateEmision)"
                                (input)="fromDateEmision = validateInput(fromDateEmision, dpFromDate.value)"/>
                         <button class="btn btn-outline-dark bi bi-calendar3" (click)="datepicker.toggle()"
@@ -62,7 +62,7 @@
                 <div class="col-12 col-sm-3 col-md-3 col-xl-3">
                     <label>FECHA EMISION FIN</label>
                     <div class="input-group">
-                        <input #dpToDate class="form-control" placeholder="yyyy-mm-dd" name="dpToDate"
+                        <input #dpToDate class="form-control" placeholder="dd/mm/yyyy" name="dpToDate"
                                [value]="formatter.format(toDateEmision)"
                                (input)="toDateEmision = validateInput(toDateEmision, dpToDate.value)"/>
                         <button class="btn btn-outline-dark bi bi-calendar3" (click)="datepicker.toggle()"
@@ -91,7 +91,7 @@
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input #dpFromDate class="form-control" placeholder="yyyy-mm-dd" name="dpFromDate"
+                        <input #dpFromDate class="form-control" placeholder="dd/mm/yyyy" name="dpFromDate"
                                [value]="formatter.format(fromDatePay)"
                                (input)="fromDatePay = validateInput(fromDatePay, dpFromDate.value)"/>
                         <button class="btn btn-outline-dark bi bi-calendar3" (click)="datepickerPay.toggle()"
@@ -102,7 +102,7 @@
                 <div class="col-12 col-sm-3 col-md-3 col-xl-3">
                     <label>FECHA PAGO FIN</label>
                     <div class="input-group">
-                        <input #dpToDatePay class="form-control" placeholder="yyyy-mm-dd" name="dpToDatePay"
+                        <input #dpToDatePay class="form-control" placeholder="dd/mm/yyyy" name="dpToDatePay"
                                [value]="formatter.format(toDatePay)"
                                (input)="toDatePay = validateInput(toDatePay, dpToDatePay.value)"/>
                         <button class="btn btn-outline-dark bi bi-calendar3" (click)="datepickerPay.toggle()"

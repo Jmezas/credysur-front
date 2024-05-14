@@ -31,23 +31,8 @@ export class ReportService {
         });
     }
 
-
-    getReportSchedulePDFId(id: number) {
-        return this.http.get(`${this.baseUrl}/report/ReportSchedulePDF/${id}`, {
-            headers: this.headers,
-            responseType: 'blob'
-        });
-    }
-
-    getReportCommitmentPDFId(id: number) {
-        return this.http.get(`${this.baseUrl}/report/ReportCommitmentPDF/${id}`, {
-            headers: this.headers,
-            responseType: 'blob'
-        });
-    }
-
-    postReportDayExcel(data: any) {
-        return this.http.post(`${this.baseUrl}/report/ReportLoanExcel`, data, {
+    getReportDayEscel(data: any) {
+        return this.http.post(`${this.baseUrl}/report/ReportLoanDayExcel/`,data, {
             headers: this.headers,
             responseType: 'blob'
         });

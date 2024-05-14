@@ -81,8 +81,8 @@ export class CustomerComponent implements OnInit {
       typeStatus: [null, Validators.required],
       zoneId: [null, Validators.required],
       validateId: [null,],
-      category: [null, Validators.required],
-      observation: [""],
+      category: [null],
+      observation: [null],
     });
   }
 
@@ -264,7 +264,7 @@ export class CustomerComponent implements OnInit {
         total: data.total,
         typeStatus: data.typeStatus,
         zoneId: data.zoneId,
-        validateId: data.validateId,
+        validateId: data.validateId == 0 ? null: data.validateId,
         category: data.categoryId,
         observation: data.observation,
       });
@@ -272,6 +272,7 @@ export class CustomerComponent implements OnInit {
 
   }
   onClear() {
+    this.id = 0;
     this.customerForm.reset();
   }
 
@@ -314,7 +315,7 @@ export class CustomerComponent implements OnInit {
       observation: this.customerForm.value.observation,
     }
 
-    if (this.id != 0) {
+    if (this.id !== 0) {
       data.id = this.id;
       this.apiCustomer.putCustomer(data).subscribe({
         next: (res) => {

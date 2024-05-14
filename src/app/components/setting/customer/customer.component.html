@@ -84,7 +84,7 @@
 </div>
 <ng-template #content let-modal>
     <div class="modal-header">
-        <h5 class="modal-title f-w-600" id="exampleModalLabel">Cliente</h5>
+        <h5 class="modal-title f-w-600" id="exampleModalLabel">Cliente - {{id}}</h5>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -149,7 +149,8 @@
 
                 <div class="col-12 col-xl-4 col-sm-4">
                     <label for="validationCustom01" class="mb-1">Monto:</label>
-                    <input class="form-control mb-3" id="validationCustom01" type="text" formControlName="total" name="total"
+                    <input class="form-control mb-3" id="validationCustom01" type="text" formControlName="total"
+                           name="total"
                            required
                            [ngClass]="{'is-invalid': isInvalid('total')}"/>
                     <div *ngIf="isFieldInvalid('total', 'required')" class="text text-danger">

@@ -30,7 +30,6 @@ export class ListLoanComponent implements OnInit {
     totalRecords: number;
     totalPage: number;
     collectionSize = 0;
-    numberPage: number;
 
     calendar = inject(NgbCalendar);
     formatter = inject(NgbDateParserFormatter);
@@ -153,31 +152,9 @@ export class ListLoanComponent implements OnInit {
     }
 
     loadPage($event: any) {
-        const startDate = this.fromDateEmision === null ? '' : `${this.fromDateEmision.year}-${this.fromDateEmision.month}-${this.fromDateEmision.day}`;
-        const endDate = this.toDateEmision === null ? '' : `${this.toDateEmision.year}-${this.toDateEmision.month}-${this.toDateEmision.day}`;
 
-        const startDatePay = this.fromDatePay === null ? '' : `${this.fromDatePay.year}-${this.fromDatePay.month}-${this.fromDatePay.day}`;
-        const endDatePay = this.toDatePay === null ? '' : `${this.toDatePay.year}-${this.toDatePay.month}-${this.toDatePay.day}`;
-
-        const data: LoanRequest = {
-            collector: this.collector === null ? 0 : this.collector,
-            customer: this.customer === '' ? '' : this.customer,
-            typeDocument: this.typeDocument === null ? 0 : this.typeDocument,
-            statePay: this.statePay === null ? 0 : this.statePay,
-            currency: this.currency === null ? 0 : this.currency,
-            zoneId: this.zoneId === null ? 0 : this.zoneId,
-            startDate: startDate === null ? '' : startDate,
-            endDate: endDate === null ? '' : endDate,
-            startDatePay: startDatePay === null ? '' : startDatePay,
-            endDatePay: endDatePay === null ? '' : endDatePay,
-            paymentMethod: this.formePay === null ? 0 : this.formePay,
-            numPage: $event === undefined ? 1 : $event,
-            allPage: 0,
-            cantFile: this.pageSize
-        };
-        //asignar valor el numero de pagina
-        this.numberPage = $event;
-        console.log('data', data);
+        this.page = $event;
+        const data = this.prepareteList();
         this.apiLoan.getLoanReport(data).subscribe((res: Result) => {
             console.log(res);
             this.listReport = res.payload.data;
@@ -315,7 +292,7 @@ export class ListLoanComponent implements OnInit {
             }
         );
         modalRefPayList.hidden.subscribe(() => {
-            this.loadPage(this.numberPage);
+            this.loadPage(this.page);
         });
     }
 

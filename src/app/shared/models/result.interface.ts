@@ -5,5 +5,8 @@ export interface Result {
       total?: number;
       totalPage: number;
     };
+    success:boolean;
+    message:string;
+    statusCode:number;
   }
   

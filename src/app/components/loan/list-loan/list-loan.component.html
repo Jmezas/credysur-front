@@ -130,26 +130,22 @@
                         </ng-select>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-12 col-sm-2 col-md-2 col-xl-2">
-                    <div class="form-group  mb-4">
+                <div class="col-12 col-sm-6 col-md-6 col-xl-6">
+                    <label></label>
+                    <div class="form-group  mb-3">
                         <button class="btn btn-primary" type="button" (click)="getLoanReport()"> Buscar
                             <i class="fa fa-search"></i>
                         </button>
-                    </div>
-                </div>
-                <div class="col-12 col-sm-2 col-md-2 col-xl-2">
-                    <div class="form-group  mb-3">
+                        &nbsp;
                         <button class="btn btn-primary" type="button" (click)="onClean()"> Limpiar
                             <i class="fa fa-trash"></i>
                         </button>
+                        &nbsp;
+                        <button class="btn btn-primary" type="button" (click)="donwloadExcel()"> Excel
+                            <i class="fa fa-file-excel-o"></i>
+                        </button>
                     </div>
-                </div>
-                <div class="col-12 col-sm-3col-md-3 col-xl-3">
-                    <button class="btn btn-primary" type="button" (click)="donwloadExcel()"> Excel
-                        <i class="fa fa-file-excel-o"></i>
-                    </button>
+
                 </div>
             </div>
             <div class="custom-datatable transcation-datatable">
@@ -165,6 +161,7 @@
                             <th scope="col">Fecha pago fin</th>
                             <th scope="col">Monto prestamo</th>
                             <th scope="col">Monto faltante</th>
+                            <th scope="col">Cuotas Vencidas</th>
                             <th scope="col">Estado</th>
                             <th scope="col">Acción</th>
                         </tr>
@@ -179,6 +176,7 @@
                             <td> {{ item.fechaPagoFin }}</td>
                             <td>{{ item.nTotal | number: '1.2-2' }}</td>
                             <td>{{ item.nPendiente | number: '1.2-2' }}</td>
+                            <td>{{ item.expiredQuota  }}</td>
                             <td [ngClass]="
                                 {
                                   'pendiente': item.estado === 'PENDIENTE',

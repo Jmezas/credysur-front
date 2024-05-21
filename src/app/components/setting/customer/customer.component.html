@@ -31,11 +31,10 @@
                             <th scope="col">Telefono</th>
                             <th scope="col">Celular</th>
                             <th scope="col">Direccion</th>
-                            <th scope="col">Fecha R.</th>
                             <th scope="col">Estado</th>
                             <th scope="col">Cobrador</th>
                             <th scope="col">Observacion</th>
-                            <th scope="col" style="width: 1rm;">Accions</th>
+                            <th scope="col" style="width: 1rem;">Acciones</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -46,11 +45,10 @@
                             <td>{{ item.phone }}</td>
                             <td>{{ item.cellPhone }}</td>
                             <td>{{ item.address }}</td>
-                            <td>{{ item.registerDate | date :"dd/MM/yyyy":'es' }}</td>
                             <td>{{ item.typeDescription }}</td>
                             <td>{{ item.userName }}</td>
                             <td>{{ item.observation }}</td>
-                            <td style="width: 1rm;">
+                            <td style="width: 1rem;">
                                 <a href="javascript:void(0)" (click)="openModal(content,item.id)"><i
                                         class="fa fa-edit f-12"></i></a>&nbsp;
                                 <a href="javascript:void(0)" (click)="onDelete(item.id)"><i
@@ -93,7 +91,7 @@
         <form class="needs-validation" autocomplete="off" #forma="ngForm" [formGroup]="customerForm">
             <div class="row">
                 <div class="col-12 col-xl-4 col-sm-4 ">
-                    <label for="exampleFormControlInput1" class="form-label">Tipo documento</label>
+                    <label for="exampleFormControlInput1" class="form-label"> <span>*</span> Tipo documento</label>
                     <ng-select placeholder="Seleccionar documento" formControlName='type'
                                [ngClass]="{'is-invalid': isInvalid('type')}">
                         <ng-option *ngFor="let item of general" [value]="item.code">{{ item.description }}
@@ -105,7 +103,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-xl-8 col-sm-8 ">
-                    <label for="exampleFormControlInput1" class="form-label">Nro documento</label>
+                    <label for="exampleFormControlInput1" class="form-label"><span>*</span> Nro documento</label>
                     <div class="input-group mb-3">
                         <span class="input-group-text" (click)="getBucarDocumento()">
                           <i class="fa fa-search"></i>
@@ -121,9 +119,9 @@
                     </div>
                 </div>
 
-                <div class="col-12 ">
-                    <label for="validationCustom01" class="mb-1">Razón Social / Nombres y Apellidos :</label>
-                    <input class="form-control mb-3" id="validationCustom01" type="text" formControlName="customerName"
+                <div class="col-12">
+                    <label for="validationCustom01" class="mb-1"> <span>*</span> Razón Social / Nombres y Apellidos :</label>
+                    <input class="form-control mb-3" type="text" formControlName="customerName"
                            name="name"
                            required [ngClass]="{'is-invalid': isInvalid('customerName')}"/>
                     <div class="text text-danger" *ngIf="isFieldInvalid('customerName', 'required')">
@@ -131,12 +129,12 @@
                     </div>
                 </div>
                 <div class="col-12 col-xl-4 col-sm-4">
-                    <label for="validationCustom01" class="mb-1">Telefono:</label>
+                    <label for="validationCustom01" class="mb-1"> <span>*</span>  Telefono:</label>
                     <input class="form-control mb-3" id="phone" type="text" formControlName="phone"
                            name="phone"/>
                 </div>
                 <div class="col-12 col-xl-4 col-sm-4">
-                    <label for="validationCustom01" class="mb-1">Celular (WhatsApp):</label>
+                    <label for="validationCustom01" class="mb-1"> <span>*</span>  Celular (WhatsApp):</label>
                     <input class="form-control mb-3" id="validationCustom01" type="text" formControlName="cellPhone"
                            name="cellPhone"/>
                 </div>
@@ -148,7 +146,7 @@
                 </div>
 
                 <div class="col-12 col-xl-4 col-sm-4">
-                    <label for="validationCustom01" class="mb-1">Monto:</label>
+                    <label for="validationCustom01" class="mb-1"><span>*</span>  Monto:</label>
                     <input class="form-control mb-3" id="validationCustom01" type="text" formControlName="total"
                            name="total"
                            required
@@ -159,7 +157,7 @@
                 </div>
 
                 <div class="col-12 col-xl-12 col-sm-12 ">
-                    <label for="validationCustom01" class="mb-1">Direccion:</label>
+                    <label for="validationCustom01" class="mb-1"><span>*</span>  Direccion:</label>
                     <input #input class="form-control mb-3" id="validationCustom01" type="text"
                            [formControl]="customerForm.controls['address']" name="address" required
                            [ngClass]="{'is-invalid': isInvalid('address')}"/>
@@ -169,7 +167,7 @@
                 </div>
 
                 <div class="col-12 col-xl-4 col-sm-4 mb-3">
-                    <label for="validationCustom01" class="mb-1">Cobrador:</label>
+                    <label for="validationCustom01" class="mb-1"> <span>*</span>  Cobrador:</label>
                     <ng-select placeholder="Seleccionar documento" formControlName='collectorId'>
                         <ng-option *ngFor="let item of user" [value]="item.id">{{ item.name }}
                         </ng-option>
@@ -180,7 +178,7 @@
                 </div>
 
                 <div class="col-12 col-xl-4 col-sm-4">
-                    <label for="validationCustom01" class="mb-1">Estado:</label>
+                    <label for="validationCustom01" class="mb-1"><span>*</span>  Estado:</label>
                     <ng-select placeholder="Seleccionar documento" formControlName='typeStatus'>
                         <ng-option *ngFor="let item of status" [value]="item.code">{{ item.description }}
                         </ng-option>
@@ -191,7 +189,7 @@
                 </div>
 
                 <div class="col-12 col-xl-4 col-sm-4">
-                    <label for="validationCustom01" class="mb-1">Zona:</label>
+                    <label for="validationCustom01" class="mb-1"><span>*</span>  Zona:</label>
                     <ng-select placeholder="Seleccionar documento" formControlName='zoneId'>
                         <ng-option *ngFor="let item of zone" [value]="item.id">{{ item.name }}
                         </ng-option>

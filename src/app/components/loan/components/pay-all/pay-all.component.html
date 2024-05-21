@@ -1,0 +1,93 @@
+<div class="modal-header">
+    <h5 class="modal-title f-w-600" id="exampleModalLabel">Pagar</h5>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+            <div class="form-group  mb-3">
+                <label>Nro documento</label>
+                <input type="text" class="form-control" [(ngModel)]="loan.documento" disabled="true">
+            </div>
+        </div>
+        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+            <div class="form-group  mb-3">
+                <label>Fecha Vencimiento</label>
+                <input type="text" class="form-control" [ngModel]="loan.fechaVenta | date : 'dd/MM/yyyy'" disabled="true">
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-6 col-xl-6">
+            <div class="form-group  mb-3">
+                <label>Cliente</label>
+                <textarea type="text" class="form-control" [(ngModel)]="loan.sRazonSocial" disabled="true"></textarea>
+            </div>
+        </div>
+        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+            <div class="form-group  mb-3">
+                <label>Fecha Pago</label>
+                <div class="input-group">
+                    <input class="datepicker-here form-control digits" ngbDatepicker #f="ngbDatepicker"
+                           placeholder="dd/mm/yyyy"
+                           [(ngModel)]="datePay">
+                    <div class="input-group-append">
+                        <button class="btn calendar" (click)="f.toggle()" type="button"><i class="fa fa-calendar"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+            <div class="form-group  mb-3">
+                <label>Tipo de Pago</label>
+                <ng-select placeholder="Seleccionar" (change)="onTypePayChange($event)" [(ngModel)]="typePay">
+                    <ng-option *ngFor="let item of listTypePay" [value]="item.code">{{ item.description }}
+                    </ng-option>
+                </ng-select>
+            </div>
+        </div>
+        <div class="col-12 col-sm-3 col-md-3 col-xl-3" *ngIf="isVisibledBank">
+            <div class="form-group  mb-3">
+                <label>Tipo Banco</label>
+                <ng-select placeholder="Seleccionar" [(ngModel)]="typeBank">
+                    <ng-option *ngFor="let item of listBank" [value]="item.id">{{ item.name }}
+                    </ng-option>
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+            <div class="form-group  mb-3">
+                <label>Total</label>
+                <input type="text" class="form-control" value="{{ loan.nTotal | number: '1.2-2'}}" disabled="true">
+            </div>
+        </div>
+        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+            <div class="form-group  mb-3">
+                <label>Pago</label>
+                <input type="text" class="form-control" [(ngModel)]="pay">
+            </div>
+        </div>
+        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+            <div class="form-group  mb-3">
+                <label>Descuento</label>
+                <input type="text" class="form-control" [(ngModel)]="discount">
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="onSavePay()">
+        <i class="fa fa-save"></i>
+        Guardar
+    </button>
+    <button class="btn btn-secondary" type="button" data-dismiss="modal" (click)="activeModal.dismiss('Cross click')">
+        <i class="fa fa-window-close"></i>
+        Cerrar
+    </button>
+
+</div>

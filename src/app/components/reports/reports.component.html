@@ -12,13 +12,6 @@
                 </div>
                 <div class="col-12 col-sm-2 col-md-2 col-xl-2">
                     <div class="form-group mb-2">
-                        <label>Numero Documento</label>
-                        <input type="text" class="form-control" [(ngModel)]="nroDocument"
-                               (keyup.enter)="getDailyReport()" autocomplete="off">
-                    </div>
-                </div>
-                <div class="col-12 col-sm-2 col-md-2 col-xl-2">
-                    <div class="form-group mb-2">
                         <label>Numero Prestamo</label>
                         <input type="text" class="form-control" [(ngModel)]="nroLoan" (keyup.enter)="getDailyReport()"
                                autocomplete="off">
@@ -85,7 +78,7 @@
                 </div>
 
                 <div class="col-12 col-sm-3 col-md-3 col-xl-3">
-                    <label>Fecha pago Inicio</label>
+                    <label>Fecha Pago Inicio</label>
                     <div class="dp-hidden position-absolute">
                         <div class="input-group mb-2">
                             <input name="datepickerPay" class="form-control" ngbDatepicker
@@ -114,7 +107,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-sm-3 col-md-3 col-xl-3">
-                    <label>Fecha pago Fin</label>
+                    <label>Fecha Pago Fin</label>
                     <div class="input-group mb-2">
                         <input #dpToDatePay class="form-control" placeholder="dd/mm/yyyy" name="dpToDatePay"
                                [value]="formatter.format(toDatePay)"
@@ -124,35 +117,44 @@
                             <i class="fa fa-calendar"></i></button>
                     </div>
                 </div>
-
                 <div class="col-12 col-sm-3 col-md-3 col-xl-3">
-                    <div class="form-group mb-2">
-                        <label>Tipo de Documento</label>
-                        <ng-select placeholder="Seleccionar el cobrador" [(ngModel)]="typeDocument"
-                                   (keyup.enter)="getDailyReport()">
-                            <ng-option *ngFor="let item of documentList" [value]="item.code">{{ item.description }}
-                            </ng-option>
-                        </ng-select>
+                    <label>Fecha Cuota Inicio</label>
+                    <div class="dp-hidden position-absolute">
+                        <div class="input-group mb-2">
+                            <input name="datepickerCuota" class="form-control" ngbDatepicker
+                                   #datepickerCuota="ngbDatepicker"
+                                   [autoClose]="'outside'" (dateSelect)="onDateSelectionCuota($event)" [displayMonths]="2"
+                                   [dayTemplate]="p" outsideDays="hidden" [startDate]="fromDatePay!" tabindex="-1"
+                                   autocomplete="off"/>
+                            <ng-template #p let-dateCuota let-focused="focused">
+                                <span class="custom-day" [class.focused]="focused" [class.range]="isRangeCuota(dateCuota)"
+                                      [class.faded]="isHoveredCuota(dateCuota) || isInsideCuota(dateCuota)"
+                                      (mouseenter)="hoveredDate = dateCuota"
+                                      (mouseleave)="hoveredDate = null">
+                                    {{ dateCuota.day }}
+                                </span>
+                            </ng-template>
+                        </div>
+                    </div>
+                    <div class="input-group mb-2">
+                        <input #dpFromDatePay class="form-control" placeholder="dd/mm/yyyy" name="dpFromDatePay"
+                               [value]="formatter.format(fromDateCuota)"
+                               (input)="fromDateCuota = validateInput(fromDateCuota, dpFromDatePay.value)"
+                               autocomplete="off"/>
+                        <button class="btn btn-outline-dark bi bi-calendar3" (click)="datepickerCuota.toggle()"
+                                type="button">
+                            <i class="fa fa-calendar"></i></button>
                     </div>
                 </div>
                 <div class="col-12 col-sm-3 col-md-3 col-xl-3">
-                    <div class="form-group mb-2">
-                        <label>Tipo Pago</label>
-                        <ng-select placeholder="Seleccionar el cobrador" [(ngModel)]="statePay"
-                                   (keyup.enter)="getDailyReport()">
-                            <ng-option *ngFor="let item of stateList" [value]="item.code">{{ item.description }}
-                            </ng-option>
-                        </ng-select>
-                    </div>
-                </div>
-                <div class="col-12 col-sm-3 col-md-3 col-xl-3">
-                    <div class="form-group mb-2">
-                        <label>Moneda</label>
-                        <ng-select placeholder="Seleccionar el cobrador" [(ngModel)]="currency"
-                                   (keyup.enter)="getDailyReport()">
-                            <ng-option *ngFor="let item of currencyList" [value]="item.code">{{ item.description }}
-                            </ng-option>
-                        </ng-select>
+                    <label>Fecha Cuota Fin</label>
+                    <div class="input-group mb-2">
+                        <input #dpToDateCuota class="form-control" placeholder="dd/mm/yyyy" name="dpToDatePay"
+                               [value]="formatter.format(toDateCuota)"
+                               (input)="toDateCuota = validateInput(toDateCuota, dpToDatePay.value)" autocomplete="off"/>
+                        <button class="btn btn-outline-dark bi bi-calendar3" (click)="datepickerCuota.toggle()"
+                                type="button">
+                            <i class="fa fa-calendar"></i></button>
                     </div>
                 </div>
                 <div class="col-12 col-sm-3 col-md-3 col-xl-3">
@@ -187,6 +189,7 @@
                             <th scope="col">Numero</th>
                             <th scope="col">Pagado</th>
                             <th scope="col">Descuento</th>
+                            <th scope="col">Fecha Cuota</th>
                             <th scope="col">Fecha Pago</th>
                             <th scope="col">Fecha registro</th>
                             <th scope="col">Mora</th>
@@ -211,6 +214,7 @@
                                 <td>{{ item.nMonto | number: '1.2-2' }}</td>
                                 <td>{{ item.discount | number: '1.2-2' }}</td>
                                 <td>{{ item.dFechaPago| date:'dd MMM yyyy' }}</td>
+                                <td>{{ item.dFecha| date:'dd MMM yyyy' }}</td>
                                 <td>{{ item.dFecReg| date:'dd MMM yyyy' }}</td>
                                 <td>{{ item.mora }}</td>
                                 <td>{{ item.moraPor | number: '1.2-2' }}</td>

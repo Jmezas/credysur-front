@@ -43,6 +43,9 @@ export class ReportsComponent implements OnInit {
     fromDatePay: NgbDate | null = null;
     toDatePay: NgbDate | null = null;
 
+    fromDateCuota: NgbDate | null = null;
+    toDateCuota: NgbDate | null = null;
+
     pagosProcesados = [];
     zoneList = [];
     collectoList = [];
@@ -222,6 +225,7 @@ export class ReportsComponent implements OnInit {
 
 
     onDateSelection(date: NgbDate) {
+        console.log(date);
         if (!this.fromDate && !this.toDate) {
             this.fromDate = date;
         } else if (this.fromDate && !this.toDate && date && date.after(this.fromDate)) {
@@ -282,38 +286,81 @@ export class ReportsComponent implements OnInit {
         );
     }
 
+    //fecha de cuota
+    onDateSelectionCuota(date: NgbDate) {
+        if (!this.fromDateCuota && !this.toDateCuota) {
+            this.fromDateCuota = date;
+        } else if (this.fromDateCuota && !this.toDateCuota && date && date.after(this.fromDateCuota)) {
+            this.toDateCuota = date;
+        } else {
+            this.toDateCuota = null;
+            this.fromDateCuota = date;
+        }
+    }
+
+    isHoveredCuota(date: NgbDate) {
+        return (
+            this.fromDateCuota && !this.toDateCuota && this.hoveredDate && date.after(this.fromDateCuota) && date.before(this.hoveredDate)
+        );
+    }
+
+    isInsideCuota(date: NgbDate) {
+        return this.toDateCuota && date.after(this.fromDateCuota) && date.before(this.toDateCuota);
+    }
+
+    isRangeCuota(date: NgbDate) {
+        return (
+            date.equals(this.fromDateCuota) ||
+            (this.toDateCuota && date.equals(this.toDateCuota)) ||
+            this.isInside(date) ||
+            this.isHovered(date)
+        );
+    }
+
     validateInput(currentValue: NgbDate | null, input: string): NgbDate | null {
         const parsed = this.formatter.parse(input);
         return parsed && this.calendar.isValid(NgbDate.from(parsed)) ? NgbDate.from(parsed) : currentValue;
     }
 
     prepareteList() {
-        let startDate = this.fromDate === null ? '' : `${this.fromDate.year}-${this.fromDate.month}-${this.fromDate.day}`;
-        let endDate = this.toDate === null ? '' : `${this.toDate.year}-${this.toDate.month}-${this.toDate.day}`;
+        const formatDate = (date) => date ? `${date.year}-${date.month}-${date.day}` : '';
 
-        let startDatePay = this.fromDatePay === null ? '' : `${this.fromDatePay.year}-${this.fromDatePay.month}-${this.fromDatePay.day}`;
-        let endDatePay = this.toDatePay === null ? '' : `${this.toDatePay.year}-${this.toDatePay.month}-${this.toDatePay.day}`;
+        let startDate = formatDate(this.fromDate);
+        let endDate = formatDate(this.toDate) || startDate;
 
-        let data: DailyRequest = {
-            collector: this.collector === null ? 0 : this.collector,
-            customer: this.customer === '' ? '' : this.customer,
-            typeDocument: this.typeDocument === null ? 0 : this.typeDocument,
-            documentPay: this.statePay === null ? 0 : this.statePay,
-            currency: this.currency === null ? 0 : this.currency,
-            zoneId: this.zoneId === null ? 0 : this.zoneId,
-            nroDocument: this.nroDocument === '' ? '' : this.nroDocument,
-            nroLoan: this.nroLoan === null ? 0 : this.nroLoan,
-            typePay: this.typePay === null ? 0 : this.typePay,
+        let startDatePay = formatDate(this.fromDatePay);
+        let endDatePay = formatDate(this.toDatePay) || startDatePay;
+
+        let startDateCuota = formatDate(this.fromDateCuota);
+        let endDateCuota = formatDate(this.toDateCuota) || startDateCuota;
+
+        console.log('consoles date', endDatePay);
+        console.log('consoles date', endDateCuota);
+
+        let data = {
+            collector: this.collector ?? 0,
+            customer: this.customer || '',
+            typeDocument: this.typeDocument ?? 0,
+            documentPay: this.statePay ?? 0,
+            currency: this.currency ?? 0,
+            zoneId: this.zoneId ?? 0,
+            nroDocument: this.nroDocument || '',
+            nroLoan: this.nroLoan ?? 0,
+            typePay: this.typePay ?? 0,
             startDate: startDate,
             endDate: endDate,
             startDatePay: startDatePay,
             endDatePay: endDatePay,
+            startDateCuota: startDateCuota,
+            endDateCuota: endDateCuota,
             numPage: this.page,
             allPage: 0,
             cantFile: this.pageSize
         };
+
         return data;
     }
+
 
     donwloadExcel() {
         let data = this.prepareteList();
@@ -327,7 +374,7 @@ export class ReportsComponent implements OnInit {
         });
     }
 
-    onClean(){
+    onClean() {
         this.collector = null;
         this.customer = '';
         this.typeDocument = null;
@@ -341,8 +388,10 @@ export class ReportsComponent implements OnInit {
         this.toDate = null;
         this.fromDatePay = null;
         this.toDatePay = null;
+        this.fromDateCuota = null;
+        this.toDateCuota = null;
         this.page = 1;
         this.pageSize = 10;
-        this.getDailyReport()
+        this.getDailyReport();
     }
 }

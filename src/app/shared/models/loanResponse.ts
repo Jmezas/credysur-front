@@ -11,6 +11,7 @@ export interface LoansReponse {
     fechaPagoFin: string;
     nTotal: number;
     nPendiente: number;
+    ExpiredQuota: number;
     estado: string;
     fechaVenta: string;
     totalPaginas: number;

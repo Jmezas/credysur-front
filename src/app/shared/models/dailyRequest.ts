@@ -12,6 +12,8 @@ export interface DailyRequest {
     endDate: string,
     startDatePay: string,
     endDatePay: string,
+    startDateCuota: string,
+    endDateCuota: string,
     numPage: number,
     allPage: number,
     cantFile: number

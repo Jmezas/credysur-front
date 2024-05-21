@@ -14,7 +14,8 @@ import {ListPayComponent} from './components/list-pay/list-pay.component';
 import {PayComponent} from './components/pay/pay.component';
 import {DetailPayComponent} from './components/detail-pay/detail-pay.component';
 import {AmortizationPayComponent} from './components/amortization-pay/amortization-pay.component';
-import { InputMaskModule } from '@ngneat/input-mask';
+import {InputMaskModule} from '@ngneat/input-mask';
+import {PayAllComponent} from './components/pay-all/pay-all.component';
 
 @NgModule({
     declarations: [
@@ -24,7 +25,8 @@ import { InputMaskModule } from '@ngneat/input-mask';
         ListPayComponent,
         PayComponent,
         DetailPayComponent,
-        AmortizationPayComponent
+        AmortizationPayComponent,
+        PayAllComponent
     ],
     imports: [
         CommonModule,

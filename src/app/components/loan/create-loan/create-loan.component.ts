@@ -15,6 +15,7 @@ import {DismissReason} from '../../../shared/common/dismissReason';
 import {AllPdfLoanComponent} from '../components/all-pdf-loan/all-pdf-loan.component';
 import {catchError, tap} from 'rxjs/operators';
 import {throwError} from 'rxjs';
+import {ReportService} from '../../../shared/service/reports/report.service';
 
 @Component({
     selector: 'app-create-loan',
@@ -64,6 +65,7 @@ export class CreateLoanComponent implements OnInit {
         private ngbCalendar: NgbCalendar,
         private formBuilder: FormBuilder,
         private modalService: NgbModal,
+        private apiReport: ReportService
     ) {
     }
 
@@ -315,6 +317,7 @@ export class CreateLoanComponent implements OnInit {
             Swal.fire(swalOptions).then((result) => {
                 if (result.isConfirmed && status === 'success') {
                     this.onCleanForm();
+                    this.onDonwloadCronograma(additionalData)
                     this.openModal(additionalData);
                 }
             });
@@ -335,5 +338,22 @@ export class CreateLoanComponent implements OnInit {
         this.quotaTotal = 0;
         this.interesCuota = 0;
         this.totalCapital = 0;
+    }
+
+    onDonwloadCronograma(idLoans){
+        const  typePDF= 3 //tipo de pdf = cronograma
+        this.apiReport.getReportLoanPDF(idLoans, typePDF).subscribe((response) => {
+            const blob = new Blob([response], { type: 'application/pdf' });
+            const fileURL = URL.createObjectURL(blob);
+
+            // Para descargar el archivo directamente
+            const link = document.createElement('a');
+            link.href = fileURL;
+            link.download = 'reporte.pdf';  // Puedes cambiar el nombre del archivo aquí
+            link.click();
+
+            // Limpiar el URL del blob después de su uso
+            URL.revokeObjectURL(fileURL);
+        });
     }
 }

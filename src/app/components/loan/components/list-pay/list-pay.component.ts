@@ -12,6 +12,7 @@ import {AmortizationPayComponent} from '../amortization-pay/amortization-pay.com
 import {PdfViewerComponent} from '../../../../shared/components/pdf-viewer/pdf-viewer.component';
 import {PdfViewerPayComponent} from '../../../../shared/components/pdf-viewer-pay/pdf-viewer-pay.component';
 import {ConstantPDF} from '../../../../shared/models/Constants';
+import {PayAllComponent} from '../pay-all/pay-all.component';
 
 @Component({
     selector: 'app-list-pay',
@@ -100,6 +101,19 @@ export class ListPayComponent implements OnInit {
             }
         );
         modalAmortizaton.hidden.subscribe(() => {
+            // Lógica después de cerrar el modal
+            this.getListDetail(this.loan.iIdPrestamo);
+        });
+    }
+
+    onAllPayLoan() {
+        const modalPayAll = this.modalService.open(PayAllComponent, {
+            ariaLabelledBy: 'modal-basic-title',
+            size: 'lg',
+            centered: true
+        });
+        modalPayAll.componentInstance.loan = this.loan;
+        modalPayAll.hidden.subscribe(() => {
             // Lógica después de cerrar el modal
             this.getListDetail(this.loan.iIdPrestamo);
         });

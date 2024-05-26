@@ -16,7 +16,7 @@ export class RoleService {
     });
   }
   getAllRoles(page: number, limit: number, search: string) {
-    return this.http.get(`${this.baseUrl}/roles/fullpage?page=${page}&limit=${limit}&search=${search}`, {
+    return this.http.get(`${this.baseUrl}/Role/fullpage?page=${page}&limit=${limit}&search=${search}`, {
       headers: this.headers,
     });
   }
@@ -27,25 +27,32 @@ export class RoleService {
   }
 
   getRoleById(id: number) {
-    return this.http.get(`${this.baseUrl}/roles/${id}`, {
+    return this.http.get(`${this.baseUrl}/Role/${id}`, {
       headers: this.headers,
     });
   }
 
   postRole(role: any) {
-    return this.http.post(`${this.baseUrl}/roles`, role, {
+    console.log(role);
+    return this.http.post(`${this.baseUrl}/Role/Create`, role, {
       headers: this.headers,
     });
   }
 
   putRole(id: number, role: any) {
-    return this.http.put(`${this.baseUrl}/roles/${id}`, role, {
+    return this.http.put(`${this.baseUrl}/Role/Update/${id}`, role, {
       headers: this.headers,
     });
   }
 
   deleteRole(id: number) {
-    return this.http.delete(`${this.baseUrl}/roles/${id}`, {
+    return this.http.delete(`${this.baseUrl}/Role/create/${id}`, {
+      headers: this.headers,
+    });
+  }
+
+  getListMenuActionRole(id:number) {
+    return this.http.get(`${this.baseUrl}/Role/ListMenuActionRole/${id}`, {
       headers: this.headers,
     });
   }

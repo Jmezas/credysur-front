@@ -18,7 +18,7 @@ import { AuthInterceptor } from './shared/service/auth-interceptor';
 import { ToastrModule } from "ngx-toastr";
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';  
 import { LoanModule } from './components/loan/loan.module';
-
+import { NzTreeViewModule } from 'ng-zorro-antd/tree-view';
 
 @NgModule({
   declarations: [
@@ -38,6 +38,7 @@ import { LoanModule } from './components/loan/loan.module';
     LoanModule,
     AgGridModule,
     HttpClientModule,
+    NzTreeViewModule,
     ToastrModule.forRoot(),
     SweetAlert2Module.forRoot()
   ],

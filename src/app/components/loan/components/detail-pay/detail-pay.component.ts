@@ -5,12 +5,12 @@ import {ListDetailPayResponse} from '../../../../shared/models/listDetailPayResp
 import {Result} from '../../../../shared/models/result.interface';
 import {LoanService} from '../../../../shared/service/loans/loan.service';
 import {ListDetailResponse} from '../../../../shared/models/listDetailResponse';
-import {LoansReponse} from '../../../../shared/models/loanResponse';
 import Swal from 'sweetalert2';
 import {ToastrService} from 'ngx-toastr';
 import {Constants} from 'src/app/shared/common/constants';
 import {PdfViewerPayComponent} from '../../../../shared/components/pdf-viewer-pay/pdf-viewer-pay.component';
 import {DismissReason} from '../../../../shared/common/dismissReason';
+import {LoansReponse} from '../../../../shared/models/loan.interface';
 
 @Component({
     selector: 'app-detail-pay',

@@ -9,8 +9,6 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {createMask} from '@ngneat/input-mask';
 import {Calculate, LoanRequest} from '../../../shared/service/loans/models/loan';
 import Swal from 'sweetalert2';
-import {LoansReponse} from '../../../shared/models/loanResponse';
-import {ListPayComponent} from '../components/list-pay/list-pay.component';
 import {DismissReason} from '../../../shared/common/dismissReason';
 import {AllPdfLoanComponent} from '../components/all-pdf-loan/all-pdf-loan.component';
 import {catchError, tap} from 'rxjs/operators';

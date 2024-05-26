@@ -1,11 +1,11 @@
 import {Component, inject, Input, OnInit} from '@angular/core';
 import {NgbActiveModal, NgbCalendar, NgbDateAdapter,  } from '@ng-bootstrap/ng-bootstrap';
-import {LoansReponse} from '../../../../shared/models/loanResponse';
 import {GeneralService} from '../../../../shared/service/General/general.service';
 import {BankService} from '../../../../shared/service/bank/bank.service';
 import {ToastrService} from 'ngx-toastr';
 import {LoanService} from '../../../../shared/service/loans/loan.service';
 import {Droplist} from '../../../../shared/models/droplist';
+import {LoansReponse} from '../../../../shared/models/loan.interface';
 
 @Component({
     selector: 'app-pay-all',

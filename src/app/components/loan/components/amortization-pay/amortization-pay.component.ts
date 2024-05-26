@@ -4,11 +4,11 @@ import {BankService} from '../../../../shared/service/bank/bank.service';
 import {Result} from '../../../../shared/models/result.interface';
 import {ListDetailResponse} from '../../../../shared/models/listDetailResponse';
 import Swal from 'sweetalert2';
-import {LoansReponse} from '../../../../shared/models/loanResponse';
 import {LoanService} from '../../../../shared/service/loans/loan.service';
 import {GeneralService} from '../../../../shared/service/General/general.service';
 import {ToastrService} from 'ngx-toastr';
 import {Droplist} from '../../../../shared/models/droplist';
+import {LoansReponse} from '../../../../shared/models/loan.interface';
 
 @Component({
     selector: 'app-amortization-pay',
@@ -77,19 +77,29 @@ export class AmortizationPayComponent implements OnInit {
             .forEach((item) => {
                 this.dataAmortizar.push({
                     number: item.numero,
-                    pay: item.totales,
+                    pay: item.totales - item.pago,
+                    cuota: item.totales,
                     monto: item.pago,
                     payDate: item.fecha,
-                    discount: 0
+                    discount: 0,
+                    accumulatedAmount: 0,
+                    accumulatedAmountPorcentaje: 0,
                 });
-                this.totalPay += item.totales;
-                this.remainingPayment += item.pago;
+                this.totalPay += item.totales - item.pago;
+                this.remainingPayment += 0;
             });
         console.log(this.dataAmortizar);
     }
 
     onCalculateInteres() {
+        debugger
         this.remainingPaymentPorcentje = this.totalPay * (this.moraPorcentaje / 100);
+        const calculatemoraNumber =   this.remainingPaymentPorcentje / this.dataAmortizar.length
+        const calculateMora = this.moraPorcentaje /this.dataAmortizar.length
+        this.dataAmortizar.map((item) => {
+            item.accumulatedAmountPorcentaje = calculatemoraNumber;
+            item.moraPor = calculateMora
+        });
     }
 
     /**
@@ -108,7 +118,7 @@ export class AmortizationPayComponent implements OnInit {
      * aplicar mora
      * @param event checkbox
      */
-    onChangeMora(event) {
+    onChangeMora(event :any) {
         const value = event.target.value;
         if (value === 'true') {
             this.isVisibledMora = true;
@@ -116,6 +126,10 @@ export class AmortizationPayComponent implements OnInit {
             this.isVisibledMora = false;
             this.remainingPaymentPorcentje = 0;
             this.moraPorcentaje = 0;
+            this.dataAmortizar.map((item) => {
+                item.accumulatedAmountPorcentaje = 0;
+                item.moraPor = 0
+            });
         }
     }
 
@@ -164,7 +178,6 @@ export class AmortizationPayComponent implements OnInit {
             item.idLoan = this.loan.iIdPrestamo;
             item.typeBank = this.typeBank === null ? 0 : this.typeBank;
             item.mora = this.isVisibledMora ? 'Si' : 'No';
-            item.moraPor = this.moraPorcentaje;
             item.typePay = this.typePay;
             item.type = 2;
             item.payDate = `${this.datePayAmortizar['year']}-${this.datePayAmortizar['month']}-${this.datePayAmortizar['day']}`;

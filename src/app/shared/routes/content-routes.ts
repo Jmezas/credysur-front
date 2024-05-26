@@ -20,6 +20,13 @@ export const content: Routes = [
     }
   },
   {
+    path: 'menus',
+    loadChildren: () => import('../../components/menus/menus-routing.module').then(m => m.MenusRoutingModule),
+    data: {
+      breadcrumb: "Menus"
+    }
+  },
+  {
     path: 'reports',
     loadChildren: () => import('../../components/reports/reports.module').then(m => m.ReportsModule),
   },

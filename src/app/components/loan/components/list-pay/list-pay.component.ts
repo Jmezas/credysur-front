@@ -4,7 +4,6 @@ import {DismissReason} from '../../../../shared/common/dismissReason';
 import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import {Result} from '../../../../shared/models/result.interface';
-import {LoansReponse} from '../../../../shared/models/loanResponse';
 import {LoanService} from '../../../../shared/service/loans/loan.service';
 import {PayComponent} from '../pay/pay.component';
 import {DetailPayComponent} from '../detail-pay/detail-pay.component';
@@ -13,6 +12,7 @@ import {PdfViewerComponent} from '../../../../shared/components/pdf-viewer/pdf-v
 import {PdfViewerPayComponent} from '../../../../shared/components/pdf-viewer-pay/pdf-viewer-pay.component';
 import {ConstantPDF} from '../../../../shared/models/Constants';
 import {PayAllComponent} from '../pay-all/pay-all.component';
+import {LoansReponse} from '../../../../shared/models/loan.interface';
 
 @Component({
     selector: 'app-list-pay',

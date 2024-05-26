@@ -1,7 +1,6 @@
 import {Component, inject, Input, OnInit} from '@angular/core';
 import {NgbActiveModal, NgbCalendar, NgbDateAdapter, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ListDetailResponse} from '../../../../shared/models/listDetailResponse';
-import {LoansReponse} from '../../../../shared/models/loanResponse';
 import {GeneralService} from '../../../../shared/service/General/general.service';
 import {Result} from '../../../../shared/models/result.interface';
 import {BankService} from '../../../../shared/service/bank/bank.service';
@@ -11,6 +10,7 @@ import Swal from 'sweetalert2';
 import {Droplist} from '../../../../shared/models/droplist';
 import {PdfViewerPayComponent} from '../../../../shared/components/pdf-viewer-pay/pdf-viewer-pay.component';
 import {DismissReason} from '../../../../shared/common/dismissReason';
+import {LoansReponse} from '../../../../shared/models/loan.interface';
 @Component({
     selector: 'app-pay',
     templateUrl: './pay.component.html',

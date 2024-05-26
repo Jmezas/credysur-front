@@ -11,8 +11,8 @@ const routes: Routes = [
         path: 'list-menu',
         component: ListMenuComponent,
         data: {
-          title: "Menu Lists",
-          breadcrumb: "Menu Lists"
+          title: "Lista Menu",
+          breadcrumb: "Lista Menu"
         }
       },
       {

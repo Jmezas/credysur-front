@@ -22,19 +22,22 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let item of listDetailPay">
-                        <td>{{ item.item }}</td>
-                        <td>{{ item.sHora }}</td>
-                        <td>{{ item.nMonto }}</td>
-                        <td>{{ item.discount }}</td>
-                        <td>{{ item.dFecha }}</td>
-                        <td>{{ item.dFecReg }}</td>
-                        <td>{{ item.usuario }}</td>
-                        <td>
-                            <a href="javascript:void(0)" title="Descargar" (click)="openModalPayPDF(item.numero)" ><i class="fa fa-download"></i> </a>&nbsp;
-                            <a href="javascript:void(0)" title="Eliminar" (click)="onDeletePay(item.numero)"><i
-                                    class="fa fa-trash"></i> </a>&nbsp;
-                        </td>
+                    <tr>
+                        @for(item of listDetailPay; track item.item){
+                            <td>{{ item.item }}</td>
+                            <td>{{ item.sHora }}</td>
+                            <td>{{ item.nMonto }}</td>
+                            <td>{{ item.discount }}</td>
+                            <td>{{ item.dFecha }}</td>
+                            <td>{{ item.dFecReg }}</td>
+                            <td>{{ item.usuario }}</td>
+                            <td>
+                                <a href="javascript:void(0)" title="Descargar" (click)="openModalPayPDF(item.numero)" ><i class="fa fa-download"></i> </a>&nbsp;
+                                <a href="javascript:void(0)" title="Eliminar" (click)="onDeletePay(item.numero)"><i
+                                        class="fa fa-trash"></i> </a>&nbsp;
+                            </td>
+                        }
+
                     </tr>
                     </tbody>
                 </table>

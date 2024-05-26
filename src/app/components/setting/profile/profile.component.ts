@@ -1,15 +1,38 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ReportService} from '../../../shared/service/reports/report.service';
+import {RoleService} from '../../../shared/service/roles/role.service';
+import {Result} from '../../../shared/models/result.interface';
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+    selector: 'app-profile',
+    templateUrl: './profile.component.html',
+    styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-  public active = 1;
+    listRole = [];
+    searchText: string = '';
+    totalRecords: number;
+    totalPage: number;
+    collectionSize = 0;
+    page = 1;
+    pageSize = 5;
+    constructor(
+        private apiRoles: RoleService
+    ) {
+    }
 
-  constructor() { }
+    ngOnInit() {
+        this.getListRole();
+    }
 
-  ngOnInit() { }
+    getListRole() {
+        this.apiRoles.getAllRoles(0, 10, this.searchText).subscribe((resp:Result)=> {
+            this.listRole = resp.payload.data;
+        });
+    }
 
+    onDelete() {
+
+    }
+    loadPage($event){}
 }

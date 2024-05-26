@@ -3,18 +3,15 @@ import {NgbCalendar, NgbDateParserFormatter, NgbDate, NgbModal, NgbDateAdapter} 
 import {ToastrService} from 'ngx-toastr';
 import {Constants} from 'src/app/shared/common/constants';
 import {DismissReason} from 'src/app/shared/common/dismissReason';
-import {ListDetailResponse} from 'src/app/shared/models/listDetailResponse';
-import {LoanRequest} from 'src/app/shared/models/loanRequest';
-import {LoansReponse} from 'src/app/shared/models/loanResponse';
 import {Result} from 'src/app/shared/models/result.interface';
 import {GeneralService} from 'src/app/shared/service/General/general.service';
-import {BankService} from 'src/app/shared/service/bank/bank.service';
 import {LoanService} from 'src/app/shared/service/loans/loan.service';
 import {ReportService} from 'src/app/shared/service/reports/report.service';
 import {UserService} from 'src/app/shared/service/users/user.service';
 import {ZoneService} from 'src/app/shared/service/zone/zone.service';
 import Swal from 'sweetalert2';
 import {ListPayComponent} from '../components/list-pay/list-pay.component';
+import {LoanRequest, LoansReponse} from '../../../shared/models/loan.interface';
 
 @Component({
     selector: 'app-list-loan',

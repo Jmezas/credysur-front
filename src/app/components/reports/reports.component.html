@@ -123,11 +123,13 @@
                         <div class="input-group mb-2">
                             <input name="datepickerCuota" class="form-control" ngbDatepicker
                                    #datepickerCuota="ngbDatepicker"
-                                   [autoClose]="'outside'" (dateSelect)="onDateSelectionCuota($event)" [displayMonths]="2"
+                                   [autoClose]="'outside'" (dateSelect)="onDateSelectionCuota($event)"
+                                   [displayMonths]="2"
                                    [dayTemplate]="p" outsideDays="hidden" [startDate]="fromDatePay!" tabindex="-1"
                                    autocomplete="off"/>
                             <ng-template #p let-dateCuota let-focused="focused">
-                                <span class="custom-day" [class.focused]="focused" [class.range]="isRangeCuota(dateCuota)"
+                                <span class="custom-day" [class.focused]="focused"
+                                      [class.range]="isRangeCuota(dateCuota)"
                                       [class.faded]="isHoveredCuota(dateCuota) || isInsideCuota(dateCuota)"
                                       (mouseenter)="hoveredDate = dateCuota"
                                       (mouseleave)="hoveredDate = null">
@@ -151,7 +153,8 @@
                     <div class="input-group mb-2">
                         <input #dpToDateCuota class="form-control" placeholder="dd/mm/yyyy" name="dpToDatePay"
                                [value]="formatter.format(toDateCuota)"
-                               (input)="toDateCuota = validateInput(toDateCuota, dpToDatePay.value)" autocomplete="off"/>
+                               (input)="toDateCuota = validateInput(toDateCuota, dpToDatePay.value)"
+                               autocomplete="off"/>
                         <button class="btn btn-outline-dark bi bi-calendar3" (click)="datepickerCuota.toggle()"
                                 type="button">
                             <i class="fa fa-calendar"></i></button>
@@ -202,26 +205,26 @@
                         <tr *ngIf="noResultados">
                             <td colspan="15">No hay resultados para el filtro ingresado</td>
                         </tr>
-                        <ng-container *ngFor="let item of pagosProcesados">
-                            <tr *ngIf="item.esEncabezado" class="table-subtitle">
-                                <td colspan="20">{{ item.sRazonSocial }} - ({{ item.serie }}) - {{ item.zona }}
-                                </td>
-                            </tr>
-                            <tr *ngIf="!item.esEncabezado">
-                                <td>{{ item.item }}</td>
-                                <td>{{ item.sHora }}</td>
-                                <td>{{ item.paymentNumber }}</td>
-                                <td>{{ item.nMonto | number: '1.2-2' }}</td>
-                                <td>{{ item.discount | number: '1.2-2' }}</td>
-                                <td>{{ item.dFechaPago| date:'dd MMM yyyy' }}</td>
-                                <td>{{ item.dFecha| date:'dd MMM yyyy' }}</td>
-                                <td>{{ item.dFecReg| date:'dd MMM yyyy' }}</td>
-                                <td>{{ item.mora }}</td>
-                                <td>{{ item.moraPor | number: '1.2-2' }}</td>
-                                <td>{{ item.montoAcomulado | number: '1.2-2' }}</td>
-                                <td>{{ item.tipoPago }}</td>
-                            </tr>
-                        </ng-container>
+                            @for (item of pagosProcesados; track item.item) {
+                                <tr *ngIf="item.esEncabezado" class="table-subtitle">
+                                    <td colspan="20">{{ item.sRazonSocial }} - ({{ item.serie }}) - {{ item.zona }}
+                                    </td>
+                                </tr>
+                                <tr *ngIf="!item.esEncabezado">
+                                    <td>{{ item.item }}</td>
+                                    <td>{{ item.sHora }}</td>
+                                    <td>{{ item.paymentNumber }}</td>
+                                    <td>{{ item.nMonto | number: '1.2-2' }}</td>
+                                    <td>{{ item.discount | number: '1.2-2' }}</td>
+                                    <td>{{ item.dFechaPago| date:'dd MMM yyyy' }}</td>
+                                    <td>{{ item.dFecha| date:'dd MMM yyyy' }}</td>
+                                    <td>{{ item.dFecReg| date:'dd MMM yyyy' }}</td>
+                                    <td>{{ item.mora }}</td>
+                                    <td>{{ item.moraPor | number: '1.2-2' }}</td>
+                                    <td>{{ item.montoAcomulado | number: '1.2-2' }}</td>
+                                    <td>{{ item.tipoPago }}</td>
+                                </tr>
+                            }
                         <tr *ngIf="!noResultados">
                             <td colspan="2">
                                 TOTALES: {{ totalPayday | number: '1.2-2' }}

@@ -5,78 +5,130 @@
     </button>
 </div>
 <div class="modal-body">
-    <div class="row">
-        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
-            <div class="form-group  mb-3">
-                <label>Nro documento</label>
-                <input type="text" class="form-control" [(ngModel)]="loan.documento" disabled="true">
-            </div>
-        </div>
-        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
-            <div class="form-group  mb-3">
-                <label>Fecha Vencimiento</label>
-                <input type="text" class="form-control" [ngModel]="loan.fechaVenta | date : 'dd/MM/yyyy'" disabled="true">
-            </div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-6 col-xl-6">
-            <div class="form-group  mb-3">
-                <label>Cliente</label>
-                <textarea type="text" class="form-control" [(ngModel)]="loan.sRazonSocial" disabled="true"></textarea>
-            </div>
-        </div>
-        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
-            <div class="form-group  mb-3">
-                <label>Fecha Pago</label>
-                <div class="input-group">
-                    <input class="datepicker-here form-control digits" ngbDatepicker #f="ngbDatepicker"
-                           placeholder="dd/mm/yyyy"
-                           [(ngModel)]="datePay">
-                    <div class="input-group-append">
-                        <button class="btn calendar" (click)="f.toggle()" type="button"><i class="fa fa-calendar"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="tab2-card">
+        <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+            <li [ngbNavItem]="1">
+                <a ngbNavLink><i class="me-2" data-feather="user"></i> Pago</a>
+                <ng-template ngbNavContent>
+                    <div class="tab-pane fade show active" id="top-profile" role="tabpanel"
+                         aria-labelledby="top-profile-tab">
+                        <div class="row">
+                            <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                                <div class="form-group  mb-3">
+                                    <label>Nro documento</label>
+                                    <input type="text" class="form-control" [(ngModel)]="loan.documento"
+                                           disabled="true">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                                <div class="form-group  mb-3">
+                                    <label>Fecha Vencimiento</label>
+                                    <input type="text" class="form-control"
+                                           [ngModel]="loan.fechaVenta | date : 'dd/MM/yyyy'"
+                                           disabled="true">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-6 col-xl-6">
+                                <div class="form-group  mb-3">
+                                    <label>Cliente</label>
+                                    <textarea type="text" class="form-control" [(ngModel)]="loan.sRazonSocial"
+                                              disabled="true"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                                <div class="form-group  mb-3">
+                                    <label>Fecha Pago</label>
+                                    <div class="input-group">
+                                        <input class="datepicker-here form-control digits" ngbDatepicker
+                                               #f="ngbDatepicker"
+                                               placeholder="dd/mm/yyyy"
+                                               [(ngModel)]="datePay">
+                                        <div class="input-group-append">
+                                            <button class="btn calendar" (click)="f.toggle()" type="button"><i
+                                                    class="fa fa-calendar"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
-            <div class="form-group  mb-3">
-                <label>Tipo de Pago</label>
-                <ng-select placeholder="Seleccionar" (change)="onTypePayChange($event)" [(ngModel)]="typePay">
-                    <ng-option *ngFor="let item of listTypePay" [value]="item.code">{{ item.description }}
-                    </ng-option>
-                </ng-select>
-            </div>
-        </div>
-        <div class="col-12 col-sm-3 col-md-3 col-xl-3" *ngIf="isVisibledBank">
-            <div class="form-group  mb-3">
-                <label>Tipo Banco</label>
-                <ng-select placeholder="Seleccionar" [(ngModel)]="typeBank">
-                    <ng-option *ngFor="let item of listBank" [value]="item.id">{{ item.name }}
-                    </ng-option>
-                </ng-select>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
-            <div class="form-group  mb-3">
-                <label>Total</label>
-                <input type="text" class="form-control" value="{{ loan.nTotal | number: '1.2-2'}}" disabled="true">
-            </div>
-        </div>
-        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
-            <div class="form-group  mb-3">
-                <label>Pago</label>
-                <input type="text" class="form-control" [(ngModel)]="pay">
-            </div>
-        </div>
-        <div class="col-12 col-sm-3 col-md-3 col-xl-3">
-            <div class="form-group  mb-3">
-                <label>Descuento</label>
-                <input type="text" class="form-control" [(ngModel)]="discount">
-            </div>
-        </div>
+                            <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                                <div class="form-group  mb-3">
+                                    <label>Tipo de Pago</label>
+                                    <ng-select placeholder="Seleccionar" (change)="onTypePayChange($event)"
+                                               [(ngModel)]="typePay">
+                                        <ng-option *ngFor="let item of listTypePay"
+                                                   [value]="item.code">{{ item.description }}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-3 col-md-3 col-xl-3" *ngIf="isVisibledBank">
+                                <div class="form-group  mb-3">
+                                    <label>Tipo Banco</label>
+                                    <ng-select placeholder="Seleccionar" [(ngModel)]="typeBank">
+                                        <ng-option *ngFor="let item of listBank" [value]="item.id">{{ item.name }}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+
+
+                            <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                                <div class="form-group  mb-3">
+                                    <label>Total</label>
+                                    <input type="text" class="form-control" value="{{ loan.nTotal | number: '1.2-2'}}"
+                                           disabled="true">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                                <div class="form-group  mb-3">
+                                    <label>Pago</label>
+                                    <input type="text" class="form-control" [(ngModel)]="pay">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                                <div class="form-group  mb-3">
+                                    <label>Descuento</label>
+                                    <input type="text" class="form-control" [(ngModel)]="discount">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </li>
+            <li [ngbNavItem]="2">
+                <a ngbNavLink class="d-flex align-items-center"><i data-feather="settings" class="me-2"></i>Lista de Pago</a>
+                <ng-template ngbNavContent>
+                    <div class="account-setting">
+                        <h5 class="f-w-600">Notifications</h5>
+                        <div class="row">
+                            <div class="col">
+                                <label class="d-block mb-2" for="chk-ani">
+                                    <input class="checkbox_animated" id="chk-ani" type="checkbox">
+                                    Allow Desktop Notifications
+                                </label>
+                                <label class="d-block mb-2" for="chk-ani1">
+                                    <input class="checkbox_animated" id="chk-ani1" type="checkbox">
+                                    Enable Notifications
+                                </label>
+                                <label class="d-block mb-2" for="chk-ani2">
+                                    <input class="checkbox_animated" id="chk-ani2" type="checkbox">
+                                    Get notification for my own activity
+                                </label>
+                                <label class="d-block mb-0" for="chk-ani3">
+                                    <input class="checkbox_animated" id="chk-ani3" type="checkbox"
+                                           checked="">
+                                    DND
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </li>
+        </ul>
+        <div [ngbNavOutlet]="nav" class="mt-2"></div>
+
     </div>
 
 </div>

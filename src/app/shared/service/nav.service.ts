@@ -1,73 +1,58 @@
-import {Injectable, HostListener, Inject} from '@angular/core';
-import {BehaviorSubject, Observable, Subscriber} from 'rxjs';
+import {Injectable, HostListener, Inject, OnInit} from '@angular/core';
+import {Observable} from 'rxjs';
 import {WINDOW} from './windows.service';
-
-// Menu
-export interface Menu {
-    path?: string;
-    title?: string;
-    icon?: string;
-    type?: string;
-    badgeType?: string;
-    badgeValue?: string;
-    active?: boolean;
-    bookmark?: boolean;
-    children?: Menu[];
-}
+import {MenuTree} from '../models/Menu.inteface';
+import {RoleService} from './roles/role.service';
+import {Result} from '../models/result.interface';
 
 @Injectable({
     providedIn: 'root'
 })
 
-export class NavService {
+export class NavService implements OnInit {
 
     public screenWidth: any;
     public collapseSidebar: boolean = false;
+    MENUITEMS: MenuTree[] = [];
 
-    constructor(@Inject(WINDOW) private window) {
+    constructor(@Inject(WINDOW) private window, private apiRole: RoleService) {
         this.onResize();
         if (this.screenWidth < 991) {
+            console.log('this.screenWidth', this.screenWidth);
             this.collapseSidebar = true;
         }
+    }
+
+    ngOnInit() {
+        this.apiRole.getListMenuRole().subscribe((resp: Result) => {
+            console.log(resp);
+            this.MENUITEMS = resp.payload.data;
+            console.log(this.MENUITEMS);
+        });
+    }
+
+    itemMenu(): Observable<MenuTree[]> {
+        return new Observable((observer) => {
+            this.apiRole.getListMenuRole().subscribe({
+                next: (resp: Result) => {
+                    this.MENUITEMS = resp.payload.data;
+                    observer.next(this.MENUITEMS);
+                    observer.complete();
+                    console.log(this.MENUITEMS);
+                },
+                error: (error) => {
+                    console.error('Error fetching menu role', error);
+                    observer.error(error);
+                }
+            });
+        });
     }
 
     // Windows width
     @HostListener('window:resize', ['$event'])
     onResize(event?) {
+        console.log('sidedar', event);
         this.screenWidth = window.innerWidth;
     }
 
-    MENUITEMS: Menu[] = [
-        {
-            path: '/dashboard/default', title: 'panel', icon: 'home', type: 'link', badgeType: 'primary', active: false
-        },
-
-        {
-            title: 'Prestamo', icon: 'dollar-sign', type: 'sub', active: false, children: [
-                {path: '/loans/list-loan', title: 'Cobranza', type: 'link', icon: 'fa fa-trash'},
-                {path: '/loans/create-loan', title: 'Crear prestamo', type: 'link'},
-            ]
-        },
-        {
-            title: 'Usuarios', icon: 'users', type: 'sub', active: false, children: [
-                {path: '/users/list-user', title: 'Lista de usuarios', type: 'link'},
-                {path: '/users/create-user', title: 'Crear usuario', type: 'link'},
-            ]
-        },
-
-        {
-            title: 'Reporte Pago', path: '/reports', icon: 'bar-chart', type: 'link', active: false
-        },
-        {
-            title: 'Configuracion', icon: 'settings', type: 'sub', children: [
-                {path: '/settings/customer', title: 'Cliente', type: 'link'},
-                {path: '/settings/profile', title: 'Perfil', type: 'link'},
-                {path: '/settings/zone', title: 'Zona', type: 'link'},
-                {path: '/settings/category', title: 'Rubro', type: 'link'},
-                {path: '/menus/list-menu', title: 'Menu', type: 'link'},
-            ]
-        }
-    ];
-    // Array
-    items = new BehaviorSubject<Menu[]>(this.MENUITEMS);
 }

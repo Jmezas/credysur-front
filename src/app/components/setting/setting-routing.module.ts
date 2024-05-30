@@ -6,13 +6,14 @@ import { CategoryComponent } from './category/category.component';
 import { CustomerComponent } from './customer/customer.component';
 import {CreateProfileComponent} from './profile/create-profile/create-profile.component';
 import {AuthGuard} from '../auth/auth.guard';
-
+import {RoleGuard} from '../auth/role.guard';
+import {AccessDeniedComponent} from '../../shared/components/access-denied/access-denied.component';
 
 const routes: Routes = [
   {
     path: 'customer',
     component: CustomerComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard,RoleGuard],
     data: {
       title: "Cliente",
       breadcrumb: "Panel"
@@ -21,7 +22,7 @@ const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard,RoleGuard],
     data: {
       title: "Pefil de usuario",
       breadcrumb: "Pefil"
@@ -48,7 +49,7 @@ const routes: Routes = [
   {
     path: 'zone',
     component: ZoneComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard,RoleGuard],
     data: {
       title: "Zona",
       breadcrumb: "Zona"
@@ -57,12 +58,12 @@ const routes: Routes = [
   {
     path: 'category',
     component: CategoryComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard,RoleGuard],
     data: {
       title: "Rubro de negocio",
       breadcrumb: "Rubro"
     }
-  },
+  }
 ];
 
 @NgModule({

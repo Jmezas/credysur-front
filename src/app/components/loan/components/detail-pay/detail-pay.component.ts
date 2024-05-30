@@ -41,6 +41,7 @@ export class DetailPayComponent implements OnInit {
     getDetailPay(id: number, number: number) {
         this.apiLoan.getListDetailPay(id, number).subscribe({
             next: (res: Result) => {
+                console.log("lista",res.payload.data )
                 this.listDetailPay = res.payload.data;
             },
             error: (err) => {

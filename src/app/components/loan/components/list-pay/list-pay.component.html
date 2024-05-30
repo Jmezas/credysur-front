@@ -45,7 +45,7 @@
                 <button class="btn btn-primary" title="Visualizar pdf del pagare"
                         (click)="openModal(constantPDF.Pagare, 'PAGARE')"><i class="fa fa-file-pdf-o"
                                                                              aria-hidden="true"></i>
-                     <strong> PAGARE</strong>
+                    <strong> PAGARE</strong>
                 </button>
                 &nbsp;&nbsp;
                 <button class="btn btn-primary" title="Visualizar pdf de Fianza Solida"
@@ -87,31 +87,34 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let item of listDetail" [ngClass]="
-                      {
-                        'pendiente': item.estado === 'POR VENCER',
-                        'vencido': item.estado === 'VENCIDO',
-                      }">
-                        <td>{{ item.item }}</td>
-                        <td>{{ item.descripcion }}</td>
-                        <td>{{ item.totales | number: '1.2-2' }}</td>
-                        <td>{{ item.pago | number: '1.2-2' }}</td>
-                        <td>{{ item.discount | number: '1.2-2' }}</td>
-                        <td>{{ item.fecha }}</td>
-                        <td>{{ item.estado }}</td>
-                        <td>{{ item.tipoPago }}</td>
-                        <td><input type="checkbox" [checked]="selectAlls[item.numero]"
-                                   (change)="selectItem(item.numero, $event)" *ngIf="item.estado !='PAGADO'"></td>
-                        <td>
-                            <a href="javascript:void(0)" *ngIf="item.pago !=0" title="Descargar"
-                               (click)="openModalPayPDF(item.item)"><i class="fa fa-download"></i> </a>&nbsp;
-                            <a *ngIf="item.estado !='PAGADO'" href="javascript:void(0)" title="Pagar"
-                               (click)="openModalPago(item)" style="color:#b2da00"><i class="fa fa-money"></i>
-                            </a>&nbsp;
-                            <a *ngIf="item.pago !==0" href="javascript:void(0)" title="Lista de Pago"
-                               (click)="openModalDetail(item)"><i class="fa fa-th-list"></i> </a>
-                        </td>
-                    </tr>
+                        @for (item of listDetail; track item.item) {
+                            <tr [ngClass]="
+                                  {
+                                    'pendiente': item.estado === 'POR VENCER',
+                                    'vencido': item.estado === 'VENCIDO',
+                                  }">
+                                <td>{{ item.item }}</td>
+                                <td>{{ item.descripcion }}</td>
+                                <td>{{ item.totales | number: '1.2-2' }}</td>
+                                <td>{{ item.pago | number: '1.2-2' }}</td>
+                                <td>{{ item.discount | number: '1.2-2' }}</td>
+                                <td>{{ item.fecha }}</td>
+                                <td>{{ item.estado }}</td>
+                                <td>{{ item.tipoPago }}</td>
+                                <td><input type="checkbox" [checked]="selectAlls[item.numero]"
+                                           (change)="selectItem(item.numero, $event)" *ngIf="item.estado !='PAGADO'">
+                                </td>
+                                <td>
+                                    <a href="javascript:void(0)" *ngIf="item.pago !=0" title="Descargar"
+                                       (click)="openModalPayPDF(item.item)"><i class="fa fa-download"></i> </a>&nbsp;
+                                    <a *ngIf="item.estado !='PAGADO'" href="javascript:void(0)" title="Pagar"
+                                       (click)="openModalPago(item)" style="color:#b2da00"><i class="fa fa-money"></i>
+                                    </a>&nbsp;
+                                    <a *ngIf="item.pago !==0" href="javascript:void(0)" title="Lista de Pago"
+                                       (click)="openModalDetail(item)"><i class="fa fa-th-list"></i> </a>
+                                </td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>

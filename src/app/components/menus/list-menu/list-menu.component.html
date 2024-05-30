@@ -29,6 +29,7 @@
                                     <th scope="col">Descripcion</th>
                                     <th scope="col">Url</th>
                                     <th scope="col">Tipo menu</th>
+                                    <th scope="col">Orden</th>
                                     <th scope="col">icono</th>
                                     <th scope="col" style="width: 1rem;">Accions</th>
                                 </tr>
@@ -39,6 +40,7 @@
                                     <td>{{ item.description }}</td>
                                     <td>{{ item.path }}</td>
                                     <td>{{ item.type }}</td>
+                                    <td>{{ item.orderby }}</td>
                                     <td>{{ item.icon }}</td>
                                     <td style="width: 1rem;">
                                         <a href="javascript:void(0)" (click)="openModal(content,item.id)"><i
@@ -76,7 +78,7 @@
 </div>
 <ng-template #content let-modal>
     <div class="modal-header">
-        <h5 class="modal-title f-w-600" id="exampleModalLabel">Rubro</h5>
+        <h5 class="modal-title f-w-600" id="exampleModalLabel">Menu {{idMenu}}</h5>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>

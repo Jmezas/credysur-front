@@ -23,6 +23,8 @@ export class PayAllComponent implements OnInit {
     listTypePay: Droplist[] = [];
     discount: number = 0;
     pay: number = 0;
+    public active = 1;
+
     constructor(private dateAdapter: NgbDateAdapter<string>,
                 private ngbCalendar: NgbCalendar,
                 private apiGeneral: GeneralService,

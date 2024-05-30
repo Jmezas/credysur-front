@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ListUserComponent } from './list-user/list-user.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { AuthGuard } from '../auth/auth.guard';
+import {RoleGuard} from '../auth/role.guard';
 
 const routes: Routes = [
   {
@@ -11,10 +12,10 @@ const routes: Routes = [
       {
         path: 'list-user',
         component: ListUserComponent,
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard,RoleGuard],
         data: {
-          title: "User List",
-          breadcrumb: "User List"
+          title: "Lista de usuario",
+          breadcrumb: "Lista de usuario",
         }
       },
       {
@@ -22,8 +23,8 @@ const routes: Routes = [
         component: CreateUserComponent,
         canActivate: [AuthGuard],
         data: {
-          title: "Create User",
-          breadcrumb: "Create User"
+          title: "Crar Usuario",
+          breadcrumb: "Crar Usuario"
         }
       },
       {

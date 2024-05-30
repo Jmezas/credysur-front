@@ -11,6 +11,8 @@ import {Droplist} from '../../../../shared/models/droplist';
 import {PdfViewerPayComponent} from '../../../../shared/components/pdf-viewer-pay/pdf-viewer-pay.component';
 import {DismissReason} from '../../../../shared/common/dismissReason';
 import {LoansReponse} from '../../../../shared/models/loan.interface';
+
+
 @Component({
     selector: 'app-pay',
     templateUrl: './pay.component.html',
@@ -31,8 +33,9 @@ export class PayComponent implements OnInit {
     typePay;
     typeBank;
     payMountRest: number = 0;
-    discount : number  =0;
+    discount: number = 0;
     closeResult: string = '';
+
     constructor(private dateAdapter: NgbDateAdapter<string>,
                 private ngbCalendar: NgbCalendar,
                 private apiGeneral: GeneralService,
@@ -40,7 +43,7 @@ export class PayComponent implements OnInit {
                 private toastr: ToastrService,
                 private apiLoan: LoanService,
                 private modalService: NgbModal,
-                ) {
+    ) {
     }
 
     ngOnInit(): void {
@@ -61,7 +64,7 @@ export class PayComponent implements OnInit {
             this.isVisibledBank = true;
         } else {
             this.isVisibledBank = false;
-            this.typeBank = null
+            this.typeBank = null;
         }
     }
 
@@ -127,6 +130,7 @@ export class PayComponent implements OnInit {
         this.payMount = value == 0 ? 0 : this.payMount;
 
     }
+
     onSavePay() {
         if (!this.typePay) {
             this.toastr.warning('Seleccionar el tipo de pago', '¡Advertencia!');
@@ -138,7 +142,7 @@ export class PayComponent implements OnInit {
             return;
         }
 
-        if (this.payMount ===0) {
+        if (this.payMount === 0) {
             this.toastr.warning('Agregar el monto de pago', '¡Advertencia!');
             return;
         }
@@ -158,31 +162,38 @@ export class PayComponent implements OnInit {
             discount: this.discount === null ? 0 : this.discount
         };
         console.log(data);
-        this.apiLoan.payment(data).subscribe((res: Result) => {
-            const [status, message, additionalData] = res.payload.data.split('|');
-            const swalOptions = {
-                title: status === 'success' ? 'Exito!' : 'Error!',
-                text: message,
-                icon: status,
-                confirmButtonText: 'Aceptar',
-                confirmButtonColor: '#3085d6'
-            };
-            Swal.fire(swalOptions).then((result) => {
-                if (result.isConfirmed && status === 'success') {
-                    this.activeModal.close();
-                    this.openModalPayPDF(additionalData);
+        this.apiLoan.payment(data).subscribe({
+                next: (res: Result) => {
+                    const [status, message, additionalData] = res.payload.data.split('|');
+                    const swalOptions = {
+                        title: status === 'success' ? 'Exito!' : 'Error!',
+                        text: message,
+                        icon: status,
+                        confirmButtonText: 'Aceptar',
+                        confirmButtonColor: '#3085d6'
+                    };
+                    Swal.fire(swalOptions).then((result) => {
+                        if (result.isConfirmed && status === 'success') {
+                            this.activeModal.close();
+                            this.openModalPayPDF(additionalData);
+                        }
+                    });
+                }, error(error: any) {
+                    const messageError = error || 'Ocurrió un error en el pago';
+                    this.toastr.error(messageError, this.constants.TITLE_ERROR);
                 }
-            });
-        });
+            }
+        );
     }
-    openModalPayPDF(payId:number) {
+
+    openModalPayPDF(payId: number) {
         const modalPdf = this.modalService.open(PdfViewerPayComponent, {ariaLabelledBy: 'modal-basic-title', size: 'lg', centered: true});
         modalPdf.componentInstance.loanId = this.loan.iIdPrestamo;
         modalPdf.componentInstance.numberId = this.detailPay.numero;
         modalPdf.componentInstance.payId = payId;
         modalPdf.componentInstance.title = 'TICKET DE PAGO';
         modalPdf.componentInstance.send = true;
-        modalPdf.result.then ((result) => {
+        modalPdf.result.then((result) => {
                 this.closeResult = `Closed with: ${result}`;
             },
             (reason) => {

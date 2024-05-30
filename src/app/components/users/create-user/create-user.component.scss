@@ -7,3 +7,18 @@
     min-height: 0px;
     border-radius: 0;
 }
+
+.password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-input {
+    padding-right: 80px;
+}
+
+button {
+    margin-left: 10px;
+    cursor: pointer;
+}

@@ -1,30 +1,44 @@
-import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-import { Result } from 'src/app/shared/models/result.interface';
-import { AuthService } from 'src/app/shared/service/auth.service';
+import {inject, Injectable} from '@angular/core';
+import {
+    CanActivate,
+    ActivatedRouteSnapshot,
+    RouterStateSnapshot,
+    UrlTree,
+    Router,
+    CanLoad,
+    Route,
+    UrlSegment,
+    CanActivateFn
+} from '@angular/router';
+import {Observable, of, throwError} from 'rxjs';
+import {map, catchError} from 'rxjs/operators';
+import {Result} from 'src/app/shared/models/result.interface';
+import {AuthService} from 'src/app/shared/service/auth.service';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class AuthGuard implements CanActivate {
-  constructor(private auth: AuthService, private router: Router) {}
-
-  canActivate(
+export const AuthGuard: CanActivateFn = (
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Observable<boolean | UrlTree> {
-    return this.auth.isLogged() ? of(true) : this.handleNotLoggedIn();
-  }
+): Observable<boolean | UrlTree>
+    | Promise<boolean | UrlTree>
+    | boolean
+    | UrlTree => {
 
-  private handleNotLoggedIn(): Observable<boolean | UrlTree> {
-    return this.auth.refreshToken().pipe(
-      map((res: Result) => {
-        this.auth.saveToken(res.payload.data.accessToken, res.payload.data.refreshToken);
-        return true;
-      }),
-      catchError(() => of(this.router.createUrlTree(['/auth/login'])))
-    );
-  }
+    return inject(AuthService).isLogged() ? of(true) : handleNotLoggedIn(inject(AuthService),inject(Router));
+};
+
+
+function handleNotLoggedIn(AuthService: any,router: Router): UrlTree {
+    if (!AuthService.isLogged()) {
+        console.log('Not logged in');
+        return router.createUrlTree(['/auth/login']);
+    } else {
+        console.log('logeado ')
+        return AuthService.refreshToken().pipe(
+            map((res: Result) => {
+                this.auth.saveToken(res.payload.data.accessToken, res.payload.data.refreshToken);
+                return true;
+            }),
+            catchError(() => of(router.createUrlTree(['/auth/login'])))
+        );
+    }
 }

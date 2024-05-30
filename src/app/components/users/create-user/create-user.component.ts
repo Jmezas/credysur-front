@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { NgbDate, NgbDateStruct, NgbDatepickerI18n } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
@@ -38,6 +38,8 @@ export class CreateUserComponent implements OnInit {
   id: number = 0;
   departmentOne: string;
   provinceOne: string;
+  showPassword: boolean = false;
+
   constructor(private formBuilder: UntypedFormBuilder
     , private generalService: GeneralService
     , private toastr: ToastrService
@@ -45,7 +47,8 @@ export class CreateUserComponent implements OnInit {
     , private apiRole: RoleService
     , private apiUbigeo: UbigeoService
     , private apiUser: UserService
-    , private activatedRoute: ActivatedRoute) { }
+    , private activatedRoute: ActivatedRoute
+    , private router: Router) { }
   //get form
 
 
@@ -75,7 +78,7 @@ export class CreateUserComponent implements OnInit {
     this.activatedRoute.params.subscribe((params) => {
       this.id = params["id"];
     });
-    if (this.id != 0) {
+    if (this.id) {
       this.getUser(this.id);
     }
   }
@@ -172,12 +175,13 @@ export class CreateUserComponent implements OnInit {
       email: this.accountForm.value.email,
       roleIds: this.accountForm.value.roles,
     }
-    console.log(data);
-    if (this.id != 0) {
+
+    if (this.id) {
       data.id = this.id;
       this.apiUser.putUser(data).subscribe({
         next: (res: Result) => {
           this.toastr.success(this.constants.MESSAGE_SUCCESS_UPDATE, this.constants.TITLE_SUCCESS);
+
         },
         error: (err) => {
           console.log(err);
@@ -189,6 +193,7 @@ export class CreateUserComponent implements OnInit {
     this.apiUser.postUser(data).subscribe({
       next: (res: Result) => {
         this.toastr.success(this.constants.MESSAGE_SUCCESS, this.constants.TITLE_SUCCESS);
+        this.router.navigate(["/users/list-user"])
       },
       error: (err) => {
         console.log(err);
@@ -228,5 +233,8 @@ export class CreateUserComponent implements OnInit {
       month: todayDate.getMonth() + 1,
       day: todayDate.getDate()
     }
+  }
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 }

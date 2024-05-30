@@ -14,6 +14,7 @@ import {AllPdfLoanComponent} from '../components/all-pdf-loan/all-pdf-loan.compo
 import {catchError, tap} from 'rxjs/operators';
 import {throwError} from 'rxjs';
 import {ReportService} from '../../../shared/service/reports/report.service';
+import {Constants} from '../../../shared/common/constants';
 
 @Component({
     selector: 'app-create-loan',
@@ -35,7 +36,6 @@ export class CreateLoanComponent implements OnInit {
 
     // Variables para el tipo de pago
     formeList = [];
-    formePay: number = null;
 
     // Variables para el buscador de clientes
     customerList = [];
@@ -53,7 +53,7 @@ export class CreateLoanComponent implements OnInit {
     isVisibleFormPay: boolean = false;
     formLoan: FormGroup;
     typeCalculate: boolean = true;
-
+    constants: Constants = new Constants();
     constructor(
         private apiLoan: LoanService,
         private apiGeneral: GeneralService,
@@ -302,23 +302,29 @@ export class CreateLoanComponent implements OnInit {
             observation: this.formLoan.value.observation,
         };
         console.log('data====>', data);
-        this.apiLoan.insertLoan(data).subscribe((res: Result) => {
-            const [status, message, additionalData] = res.payload.data.split('|');
-            const swalOptions = {
-                title: status === 'success' ? 'Exito!' : 'Error!',
-                text: message,
-                icon: status,
-                confirmButtonText: 'Aceptar',
-                confirmButtonColor: '#3085d6'
-            };
+        this.apiLoan.insertLoan(data).subscribe({
+            next: (res: Result) => {
+                const [status, message, additionalData] = res.payload.data.split('|');
+                const swalOptions = {
+                    title: status === 'success' ? 'Exito!' : 'Error!',
+                    text: message,
+                    icon: status,
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor: '#3085d6'
+                };
 
-            Swal.fire(swalOptions).then((result) => {
-                if (result.isConfirmed && status === 'success') {
-                    this.onCleanForm();
-                    this.onDonwloadCronograma(additionalData)
-                    this.openModal(additionalData);
-                }
-            });
+                Swal.fire(swalOptions).then((result) => {
+                    if (result.isConfirmed && status === 'success') {
+                        this.onCleanForm();
+                        this.onDonwloadCronograma(additionalData);
+                        this.openModal(additionalData);
+                    }
+                });
+            },
+            error:(error )=> {
+                const message = error|| "Ocurrió un error en el sistema"
+                this.toastr.error(message , this.constants.TITLE_ERROR )
+            }
         });
     }
 
@@ -338,10 +344,10 @@ export class CreateLoanComponent implements OnInit {
         this.totalCapital = 0;
     }
 
-    onDonwloadCronograma(idLoans){
-        const  typePDF= 3 //tipo de pdf = cronograma
+    onDonwloadCronograma(idLoans) {
+        const typePDF = 3; //tipo de pdf = cronograma
         this.apiReport.getReportLoanPDF(idLoans, typePDF).subscribe((response) => {
-            const blob = new Blob([response], { type: 'application/pdf' });
+            const blob = new Blob([response], {type: 'application/pdf'});
             const fileURL = URL.createObjectURL(blob);
 
             // Para descargar el archivo directamente

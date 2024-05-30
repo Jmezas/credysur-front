@@ -1,0 +1,19 @@
+<div class="container text-center mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="access-denied">
+                <div class="animated-wrapper mb-4">
+                    <img src="assets/images/access-denied.png" class="animated-image" alt="Access Denied">
+                </div>
+                <h1 class="display-4 animated-text bounce-in">Acceso Denegado</h1>
+                <p class="lead animated-text fade-in">No tienes permiso para acceder a esta página.</p>
+                <div class="mt-4">
+                    <button class="btn btn-primary me-3 animated-button pulse" (click)="goBack()">
+                        <i class="fa fa-reply-all" aria-hidden="true"></i> Regresar</button>
+                    <button class="btn btn-danger animated-button pulse" (click)="logout()">
+                        <i class="fa fa-sign-out" aria-hidden="true"></i> Salir del Sistema</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

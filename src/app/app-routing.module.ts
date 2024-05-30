@@ -4,6 +4,8 @@ import { content } from './shared/routes/content-routes';
 import { ContentLayoutComponent } from './shared/layout/content-layout/content-layout.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { ForgetPasswordComponent } from './components/auth/forget-password/forget-password.component';
+import {AccessDeniedComponent} from './shared/components/access-denied/access-denied.component';
+import {NotFoundComponent} from './shared/components/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -24,6 +26,14 @@ const routes: Routes = [
     path: "auth/forget-password",
     component: ForgetPasswordComponent,
   },
+  {
+    path: "access-denied",
+    component: AccessDeniedComponent,
+  },
+  { path: 'not-found', component: NotFoundComponent  },
+  { path: '**', redirectTo: '/not-found', pathMatch: 'full' },
+
+
 ];
 
 @NgModule({

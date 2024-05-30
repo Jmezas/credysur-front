@@ -8,8 +8,7 @@ import {Result} from '../../../shared/models/result.interface';
 import {DismissReason} from '../../../shared/common/dismissReason';
 import Swal from 'sweetalert2';
 import {MenuService} from '../../../shared/service/menu/menu.service';
-import {Droplist, DroplistRes, TYPELINK} from '../../../shared/models/droplist';
-import {MenuResquest} from '../../../shared/models/Menu.inteface';
+import {DroplistRes, TYPELINK} from '../../../shared/models/droplist';
 
 @Component({
     selector: 'app-list-menu',
@@ -136,39 +135,42 @@ export class ListMenuComponent implements OnInit {
     }
 
     onClear() {
+        this.idMenu = 0;
         this.menuForm.reset();
     }
 
     onSave() {
-        let data: MenuResquest = this.menuForm.value;
+        let data = this.menuForm.value;
         console.log(data);
-        if (this.idMenu != 0) {
-            data.id = this.idMenu;
-            this.apiMenu.putMenu(data).subscribe({
-                next: (res) => {
-                    this.getAllMenu();
-                    this.onClear();
-                    this.modalService.dismissAll();
-                    this.toastr.success(this.constants.MESSAGE_SUCCESS_UPDATE, this.constants.TITLE_SUCCESS);
-                },
-                error: (err) => {
-                    this.toastr.error(err.error.message, this.constants.TITLE_ERROR);
-                },
-            });
-            return;
-        }
 
-        this.apiMenu.postMenu(data).subscribe({
-            next: (res) => {
-                this.getAllMenu();
-                this.onClear();
-                this.modalService.dismissAll();
-                this.toastr.success(this.constants.MESSAGE_SUCCESS, this.constants.TITLE_SUCCESS);
+        const request$ = this.idMenu !== 0
+            ? this.apiMenu.putMenu({ ...data, id: this.idMenu })
+            : this.apiMenu.postMenu(data);
+
+        request$.subscribe({
+            next: () => {
+                this.handleSuccess();
             },
             error: (err) => {
-                this.toastr.error(err.error.message, this.constants.TITLE_ERROR);
-            },
+                this.handleError(err);
+            }
         });
     }
+
+    handleSuccess() {
+        this.getAllMenu();
+        this.getListMenu();
+        this.onClear();
+        this.modalService.dismissAll();
+        const successMessage = this.idMenu !== 0
+            ? this.constants.MESSAGE_SUCCESS_UPDATE
+            : this.constants.MESSAGE_SUCCESS;
+        this.toastr.success(successMessage, this.constants.TITLE_SUCCESS);
+    }
+
+    handleError(err: any) {
+        this.toastr.error(err.error.message, this.constants.TITLE_ERROR);
+    }
+
 
 }

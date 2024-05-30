@@ -70,6 +70,9 @@ export class AmortizationPayComponent implements OnInit {
         return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
     }
 
+    /**
+     * Listar cuota para amortizar pagos
+     */
     onAmortizar() {
         this.dataAmortizar = [];
         this.datePayAmortizar = this.today;
@@ -88,17 +91,17 @@ export class AmortizationPayComponent implements OnInit {
                 this.totalPay += item.totales - item.pago;
                 this.remainingPayment += 0;
             });
-        console.log(this.dataAmortizar);
     }
-
+    /**
+     * Calcular interes
+     */
     onCalculateInteres() {
-        debugger
         this.remainingPaymentPorcentje = this.totalPay * (this.moraPorcentaje / 100);
-        const calculatemoraNumber =   this.remainingPaymentPorcentje / this.dataAmortizar.length
-        const calculateMora = this.moraPorcentaje /this.dataAmortizar.length
+        const calculatemoraNumber = this.remainingPaymentPorcentje / this.dataAmortizar.length;
+        const calculateMora = this.moraPorcentaje / this.dataAmortizar.length;
         this.dataAmortizar.map((item) => {
             item.accumulatedAmountPorcentaje = calculatemoraNumber;
-            item.moraPor = calculateMora
+            item.moraPor = calculateMora;
         });
     }
 
@@ -118,7 +121,7 @@ export class AmortizationPayComponent implements OnInit {
      * aplicar mora
      * @param event checkbox
      */
-    onChangeMora(event :any) {
+    onChangeMora(event: any) {
         const value = event.target.value;
         if (value === 'true') {
             this.isVisibledMora = true;
@@ -128,11 +131,14 @@ export class AmortizationPayComponent implements OnInit {
             this.moraPorcentaje = 0;
             this.dataAmortizar.map((item) => {
                 item.accumulatedAmountPorcentaje = 0;
-                item.moraPor = 0
+                item.moraPor = 0;
             });
         }
     }
 
+    /**
+     * Calcular el descuento
+     */
     onCalculateDiscount() {
         // Convertir directamente a número y tratar valores falsy como 0
         this.discountAmortizacion = Number(this.discountAmortizacion) || 0;
@@ -185,17 +191,20 @@ export class AmortizationPayComponent implements OnInit {
             item.accumulatedAmountPorcentaje = this.remainingPaymentPorcentje;
         });
         console.log(this.dataAmortizar);
-        this.apiLoan.paymentAmortization(this.dataAmortizar).subscribe((res: Result) => {
-            console.log(res);
-            Swal.fire({
-                title: '¡Exito!',
-                text: res.payload.data,
-                icon: 'success',
-                confirmButtonText: 'Aceptar',
-            });
-            // this.getListDetail(this.idPay);
-            // this.getLoanReport();
-            this.activeModal.close();
+        this.apiLoan.paymentAmortization(this.dataAmortizar).subscribe({
+            next: (res: Result) => {
+                console.log(res);
+                Swal.fire({
+                    title: '¡Exito!',
+                    text: res.payload.data,
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar',
+                });
+                this.activeModal.close();
+            }, error(error: any) {
+                const messageError = error || 'Ocurrió un error en el pago';
+                this.toastr.error(messageError, this.constants.TITLE_ERROR);
+            }
         });
 
     }

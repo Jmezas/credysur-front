@@ -13,8 +13,9 @@ export class LoginComponent implements OnInit {
 
   public loginForm: UntypedFormGroup;
   public registerForm: UntypedFormGroup;
-  public active = 1;
+  public active = 0;
   public iconStart = "assets/svg/icon-start.svg";
+  showPassword: boolean = false;
 
   public item = signal<any[]>([]);
   constructor(private formBuilder: UntypedFormBuilder,private api: AuthService, private router: Router
@@ -24,7 +25,7 @@ export class LoginComponent implements OnInit {
       console.log("active")
       this.loginForm = this.formBuilder.group({
         userName: [active.userName, [Validators.required]],
-        password: [active.password, Validators.required],
+          password: [active.password, Validators.required],
         active: [active.active],
       });
     } else {
@@ -64,7 +65,9 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
   }
-
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
   onSubmit() {
     if (this.loginForm.invalid) {
       return Object.values(this.loginForm.controls).forEach((control) => {

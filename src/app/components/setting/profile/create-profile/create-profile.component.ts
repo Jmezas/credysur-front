@@ -42,11 +42,11 @@ export class CreateProfileComponent implements OnInit {
 
         this.apiRole.getListMenuActionRole(idRole).subscribe((resp: Result) => {
             console.log(resp);
+            this.actionSave = []
             this.TREE_DATA = resp.payload.data.menus;
             this.nameRole = resp.payload.data.name;
             this.actions = resp.payload.data.actions;
             for (let item of this.actions){
-                console.log(item);
                 if (item.checked){
                     this.actionSave.push(Number(item.id));
                 }
@@ -190,11 +190,11 @@ export class CreateProfileComponent implements OnInit {
 
     onChangeAction(event) {
         console.log(event.target.checked, event.target.id);
+        const ids = Number(event.target.id);
         if (event.target.checked) {
-            const ids = Number(event.target.id);
             this.actionSave.push(ids);
         } else {
-            this.actionSave = this.actionSave.filter(item => item !== event.target.id);
+            this.actionSave = this.actionSave.filter(item => item !== ids);
 
         }
     }

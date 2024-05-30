@@ -1,82 +1,98 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Router } from "@angular/router";
-import { environment } from "src/environments/environment";
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
+import {environment} from 'src/environments/environment';
 
 @Injectable({
-  providedIn: "root",
+    providedIn: 'root',
 })
 export class AuthService {
-  private token: string;
-  private baseUrl: string;
-  menus: any[] = [];
-  constructor(private http: HttpClient, private router: Router) {
-    this.baseUrl = `${environment.urlAPI}`;
-  }
+    private token: string;
+    private baseUrl: string;
+    private userPermissions: string[] = [];
 
-  saveToken(token: string, refreshToken?: string) {
-    localStorage.setItem("ACCESS_TOKEN", token);
-    if (refreshToken) {
-      localStorage.setItem("REFRESH_TOKEN", refreshToken);
+    menus: any[] = [];
+
+    constructor(private http: HttpClient, private router: Router) {
+        this.baseUrl = `${environment.urlAPI}`;
     }
 
-    this.token = token;
-  }
+    saveToken(token: string, refreshToken?: string) {
+        localStorage.setItem('ACCESS_TOKEN', token);
+        if (refreshToken) {
+            localStorage.setItem('REFRESH_TOKEN', refreshToken);
+        }
 
-  public getToken() {
-    if (!this.token) {
-      return localStorage.getItem("ACCESS_TOKEN");
+        this.token = token;
     }
-    return this.token;
-  }
 
-  logOut() {
-    this.token = "";
-    localStorage.removeItem("ACCESS_TOKEN");
-    localStorage.removeItem("REFRESH_TOKEN");
-    localStorage.removeItem("MENU");
-    this.router.navigateByUrl("/auth/login");
-  }
-
-  getUserInfo() {
-    const token = this.getToken();
-    let payload;
-    if (token) {
-      payload = token.split(".")[1];
-      return JSON.parse(window.atob(payload));
-    } else {
-      return null;
+    public getToken() {
+        if (!this.token) {
+            return localStorage.getItem('ACCESS_TOKEN');
+        }
+        return this.token;
     }
-  }
 
-  isLogged() {
-    const user = this.getUserInfo();
+    logOut() {
+        this.token = '';
+        localStorage.removeItem('ACCESS_TOKEN');
+        localStorage.removeItem('REFRESH_TOKEN');
+        localStorage.removeItem('MENU');
+        this.userPermissions = [];
+        this.router.navigateByUrl('/auth/login');
+    }
 
-    return user ? user.exp > Date.now() / 1000 : false;
-  }
+    getUserInfo() {
+        const token = this.getToken();
+        let payload;
+        if (token) {
+            payload = this.getPayloadFromToken(token);
+            this.setUserPermissions(payload);
+            return payload;
+        } else {
+            return null;
+        }
+    }
 
-  login(user) {
-    return this.http.post(`${this.baseUrl}/auth/login`, user);
-  }
+    isLogged() {
+        const user = this.getUserInfo();
 
-  returnToken() {
-    return this.isLogged ? this.getToken() : null;
-  }
+        return user ? user.exp > Date.now() / 1000 : false;
+    }
 
-  menuRole(role) {
-    let headers = new HttpHeaders({
-      Authorization: "Bearer " + localStorage.getItem("ACCESS_TOKEN"),
-      "Content-type": "application/json",
-    });
-    return this.http.get(`${this.baseUrl}/menu/treeRole/${role}`, { headers: headers });
-  }
+    login(user) {
+        return this.http.post(`${this.baseUrl}/auth/login`, user);
+    }
 
-  refreshToken() {
-    const refreshToken = localStorage.getItem("REFRESH_TOKEN");
-    return this.http.get(`${this.baseUrl}/auth/refreshtoken/${refreshToken}`);
-  }
-  
-  getByEmail(email) {
-    return this.http.get(`${this.baseUrl}/auth/getEmail/${email}`);
-  }
+    returnToken() {
+        return this.isLogged ? this.getToken() : null;
+    }
+
+    refreshToken() {
+        const refreshToken = localStorage.getItem('REFRESH_TOKEN');
+        return this.http.get(`${this.baseUrl}/auth/refreshtoken/${refreshToken}`);
+    }
+
+    getByEmail(email) {
+        return this.http.get(`${this.baseUrl}/auth/getEmail/${email}`);
+    }
+
+    private getPayloadFromToken(token: string): any | null {
+        const payloadEncoded = token.split('.')[1];
+        return payloadEncoded ? JSON.parse(atob(payloadEncoded)) : null;
+    }
+
+    private setUserPermissions(payload: string): void {
+        let listActions = JSON.parse(payload["Actions"]);
+        console.log(listActions);
+        if (this.userPermissions.length === 0) {
+            this.userPermissions = listActions;
+        }
+    }
+
+    hasPermission(permission: string): boolean {
+        console.log("this.userPermissions",this.userPermissions);
+        return this.userPermissions.includes(permission);
+    }
+
 }

@@ -26,6 +26,7 @@
               "lodash",
               "chartist",
               "chart.js",
+              "chart.js",
               "clone-deep",
               "lodash"
             ],
@@ -53,8 +54,7 @@
               "src/assets/scss/style.scss",
               "node_modules/ngx-spinner/animations/square-jelly-box.css",
               "node_modules/font-awesome/scss/font-awesome.scss",
-              "node_modules/ngx-toastr/toastr.css",
-
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [],
             "vendorChunk": true,

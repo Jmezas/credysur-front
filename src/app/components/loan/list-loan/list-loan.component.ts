@@ -258,6 +258,7 @@ export class ListLoanComponent implements OnInit {
             if (result.isConfirmed) {
                 this.apiLoan.delete(id).subscribe({
                     next: (response) => {
+                        console.log(response);
                         this.getLoanReport();
                         this.toastr.success(this.constants.MESSAGE_SUCCESS_DELETE, this.constants.TITLE_SUCCESS);
                     },

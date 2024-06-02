@@ -83,15 +83,29 @@ export class AuthService {
     }
 
     private setUserPermissions(payload: string): void {
-        let listActions = JSON.parse(payload["Actions"]);
-        console.log(listActions);
-        if (this.userPermissions.length === 0) {
-            this.userPermissions = listActions;
+       let listActions = null;
+        if (payload && payload['Actions']) {
+            try {
+                listActions = JSON.parse(payload['Actions']);
+            } catch (e) {
+                console.error("Error parsing JSON: ", e);
+            }
         }
+
+        console.log(listActions);
+        if (listActions) {
+            if (this.userPermissions.length === 0) {
+                this.userPermissions = listActions;
+            }
+        } else {
+            return;
+        }
+
+
     }
 
     hasPermission(permission: string): boolean {
-        console.log("this.userPermissions",this.userPermissions);
+        console.log('this.userPermissions', this.userPermissions);
         return this.userPermissions.includes(permission);
     }
 

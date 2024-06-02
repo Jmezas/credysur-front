@@ -87,6 +87,11 @@
                     </tr>
                     </thead>
                     <tbody>
+                        @if (listDetail.length === 0) {
+                            <tr>
+                                <td colspan="15">No Existe datos para mostrar</td>
+                            </tr>
+                        }
                         @for (item of listDetail; track item.item) {
                             <tr [ngClass]="
                                   {

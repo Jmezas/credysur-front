@@ -111,9 +111,19 @@ export class LoanService {
     }).pipe(catchError(HandleError));
   }
 
-  reportPaymentSchedule(){
-    return this.http.get(`${this.baseUrl}/loan/ReportSchedulePDF`, {
+  paymentGeneral(data: any) {
+    return this.http.post(`${this.baseUrl}/loan/PaymentGeneral`, data, {
       headers: this.headers,
-    }).pipe(catchError(HandleError))
+    }).pipe(catchError(HandleError));
+  }
+  getListDetailPayGeneral(id:number) {
+    return this.http.get(`${this.baseUrl}/loan/ListReportDetailPayGeneral/${id}`, {
+      headers: this.headers,
+    }).pipe(catchError(HandleError));
+  }
+  deleteDetailPayGeneral(data: any) {
+    return this.http.post(`${this.baseUrl}/loan/DeletePaymentGeneral`, data, {
+      headers: this.headers,
+    }).pipe(catchError(HandleError));
   }
 }

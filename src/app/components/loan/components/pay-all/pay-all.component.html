@@ -6,7 +6,7 @@
 </div>
 <div class="modal-body">
     <div class="tab2-card">
-        <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+        <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs" (click)="onActive()">
             <li [ngbNavItem]="1">
                 <a ngbNavLink><i class="me-2" data-feather="user"></i> Pago</a>
                 <ng-template ngbNavContent>
@@ -72,19 +72,26 @@
                                     </ng-select>
                                 </div>
                             </div>
-
-
                             <div class="col-12 col-sm-3 col-md-3 col-xl-3">
                                 <div class="form-group  mb-3">
                                     <label>Total</label>
-                                    <input type="text" class="form-control" value="{{ loan.nTotal | number: '1.2-2'}}"
+                                    <input type="text" class="form-control"
+                                           value="{{ loan.nPendiente | number: '1.2-2'}}"
                                            disabled="true">
                                 </div>
                             </div>
                             <div class="col-12 col-sm-3 col-md-3 col-xl-3">
                                 <div class="form-group  mb-3">
-                                    <label>Pago</label>
-                                    <input type="text" class="form-control" [(ngModel)]="pay">
+                                    <label>Monto de pago</label>
+                                    <input type="text" class="form-control" [(ngModel)]="payMount" autofocus
+                                           (ngModelChange)="onChangeMonto()">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-3 col-md-3 col-xl-3">
+                                <div class="form-group  mb-3">
+                                    <label>Monto Restante</label>
+                                    <input type="text" class="form-control" value="{{ payMountRest | number: '1.2-2'}}"
+                                           disabled="true">
                                 </div>
                             </div>
                             <div class="col-12 col-sm-3 col-md-3 col-xl-3">
@@ -98,29 +105,53 @@
                 </ng-template>
             </li>
             <li [ngbNavItem]="2">
-                <a ngbNavLink class="d-flex align-items-center"><i data-feather="settings" class="me-2"></i>Lista de Pago</a>
+                <a ngbNavLink class="d-flex align-items-center"><i data-feather="settings" class="me-2"></i>Lista de
+                    Pago</a>
                 <ng-template ngbNavContent>
-                    <div class="account-setting">
-                        <h5 class="f-w-600">Notifications</h5>
-                        <div class="row">
-                            <div class="col">
-                                <label class="d-block mb-2" for="chk-ani">
-                                    <input class="checkbox_animated" id="chk-ani" type="checkbox">
-                                    Allow Desktop Notifications
-                                </label>
-                                <label class="d-block mb-2" for="chk-ani1">
-                                    <input class="checkbox_animated" id="chk-ani1" type="checkbox">
-                                    Enable Notifications
-                                </label>
-                                <label class="d-block mb-2" for="chk-ani2">
-                                    <input class="checkbox_animated" id="chk-ani2" type="checkbox">
-                                    Get notification for my own activity
-                                </label>
-                                <label class="d-block mb-0" for="chk-ani3">
-                                    <input class="checkbox_animated" id="chk-ani3" type="checkbox"
-                                           checked="">
-                                    DND
-                                </label>
+                    <div class="row">
+                        <div id="batchDelete" class="custom-datatable transcation-datatable">
+                            <div class="table-responsive contenedor-tabla detallePago">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Item</th>
+                                        <th scope="col">Hora</th>
+                                        <th scope="col">Monto</th>
+                                        <th scope="col">Descuento</th>
+                                        <th scope="col">Fecha pago</th>
+                                        <th scope="col">Fecha registro</th>
+                                        <th scope="col">Usuario registro</th>
+                                        <th scope="col">Accion</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (listDetailPay.length === 0) {
+                                            <tr>
+                                                <td colspan="15">No Existe datos para mostrar</td>
+                                            </tr>
+                                        }
+                                        @for (item of listDetailPay; track item.item) {
+                                            <tr>
+                                                <td>{{ item.item }}</td>
+                                                <td>{{ item.sHora }}</td>
+                                                <td>{{ item.nMonto }}</td>
+                                                <td>{{ item.discount }}</td>
+                                                <td>{{ item.dFecha }}</td>
+                                                <td>{{ item.dFecReg }}</td>
+                                                <td>{{ item.usuario }}</td>
+                                                <td>
+                                                    <a href="javascript:void(0)" title="Descargar"
+                                                       (click)="openModalPayPDF(item.numero,false)"><i
+                                                            class="fa fa-download"></i> </a>&nbsp;
+                                                    <a href="javascript:void(0)" title="Eliminar"
+                                                       (click)="onDeletePay(item.numero)"><i
+                                                            class="fa fa-trash"></i> </a>&nbsp;
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

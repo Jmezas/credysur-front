@@ -22,6 +22,11 @@
                     </tr>
                     </thead>
                     <tbody>
+                        @if (listDetailPay.length === 0) {
+                            <tr>
+                                <td colspan="15">No Existe datos para mostrar</td>
+                            </tr>
+                        }
                         @for (item of listDetailPay; track item.item) {
                             <tr>
                                 <td>{{ item.item }}</td>
